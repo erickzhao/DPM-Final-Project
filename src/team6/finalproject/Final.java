@@ -3,6 +3,9 @@ package team6.finalproject;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
+import lejos.hardware.sensor.SensorModes;
+import lejos.robotics.SampleProvider;
 
 /* TODO:
  *  1)	Get Odometry && Correction to work well
@@ -37,7 +40,17 @@ public class Final {
 
 	
 	public static void main(String[] args) {
-		System.out.println("Hello world!");
+		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true);
+		
+		@SuppressWarnings("resource")
+		SensorModes usSensor = new EV3UltrasonicSensor(usPort);
+		SampleProvider usValue = usSensor.getMode("Distance");
+		float[] usData = new float[usValue.sampleSize()];
+		
+		@SuppressWarnings("unused")
+		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData);
+		@SuppressWarnings("unused")
+		LCDInfo lcd = new LCDInfo(odo);
 	}
 
 }

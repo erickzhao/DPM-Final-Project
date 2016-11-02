@@ -6,6 +6,15 @@ import lejos.hardware.Sound;
 /* 
  * OdometryCorrection.java
  */
+
+/*	POSSIBLE APPROACH:
+ * 	1) Get X,Y values when it first hits a line, and when it hits a second line
+ * 	2) Use that as deltaX and deltaY
+ * 	3) If deltaY is 0, deltaX should be 30.48 and vice versa. If this isn't the
+ * 	case, we know by how much the robot is off and we can correct both his trajectory
+ * 	as well as the odometer readings.
+ * 
+ */
 public class OdometryCorrection extends Thread {
 	
 	//variables

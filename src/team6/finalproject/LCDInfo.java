@@ -13,6 +13,7 @@ public class LCDInfo implements TimerListener{
 	
 	// arrays for displaying data
 	private double [] pos;
+	private double distance;
 	
 	public LCDInfo(Odometer odo) {
 		this.odo = odo;
@@ -25,14 +26,17 @@ public class LCDInfo implements TimerListener{
 		lcdTimer.start();
 	}
 	
-	public void timedOut() { 
+	public void timedOut() {
+		distance=UltrasonicPoller.getDistance();
 		odo.getPosition(pos);
 		LCD.clear();
 		LCD.drawString("X: ", 0, 0);
 		LCD.drawString("Y: ", 0, 1);
 		LCD.drawString("H: ", 0, 2);
+		LCD.drawString("Distance: ",0,3);
 		LCD.drawInt((int)(pos[0] * 10), 3, 0);
 		LCD.drawInt((int)(pos[1] * 10), 3, 1);
 		LCD.drawInt((int)pos[2], 3, 2);
+		LCD.drawInt((int)distance,3,3);
 	}
 }
