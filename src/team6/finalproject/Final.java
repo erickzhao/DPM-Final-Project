@@ -1,5 +1,6 @@
 package team6.finalproject;
 
+import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
@@ -31,12 +32,12 @@ public class Final {
 	 */
 	
 	 private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
-	 private static final EV3LargeRegulatedMotor lightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
-	 private static final EV3LargeRegulatedMotor armMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+	 //private static final EV3LargeRegulatedMotor lightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
+	 //private static final EV3LargeRegulatedMotor armMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	 private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	
 	 private static final Port usPort = LocalEV3.get().getPort("S1");  
-	 private static final Port colorPort = LocalEV3.get().getPort("S4"); 
+	 //private static final Port colorPort = LocalEV3.get().getPort("S4"); 
 
 	
 	public static void main(String[] args) {
@@ -51,6 +52,9 @@ public class Final {
 		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData);
 		@SuppressWarnings("unused")
 		LCDInfo lcd = new LCDInfo(odo);
+		
+		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
+		System.exit(0);	
 	}
 
 }
