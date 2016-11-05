@@ -69,8 +69,8 @@ public class OdometryCorrection extends Thread {
 				firstBrightnessLevel = currBrightnessLevel;
 			}else{ 
 				/*
-				 * We have two conditions for a black line. First, if it is below an absolute amount.
-				 * Second, if the percent difference between our first measurement and now is greater
+				 * We have one condition for a black line:
+				 * If the percent difference between our first measurement and now is greater
 				 * than a set threshold.
 				 */
 				if(100*Math.abs(currBrightnessLevel - firstBrightnessLevel)/firstBrightnessLevel > significantPercentThreshold){
