@@ -73,9 +73,7 @@ public class OdometryCorrection extends Thread {
 				 * Second, if the percent difference between our first measurement and now is greater
 				 * than a set threshold.
 				 */
-				if (currBrightnessLevel < MINIMUMWHITEVALUE) {
-					reachedBlackLine = true;
-				}else if(100*Math.abs(currBrightnessLevel - firstBrightnessLevel)/firstBrightnessLevel > significantPercentThreshold){
+				if(100*Math.abs(currBrightnessLevel - firstBrightnessLevel)/firstBrightnessLevel > significantPercentThreshold){
 					//we have a significant change
 					if(currBrightnessLevel < firstBrightnessLevel){
 						//we've reached a black line!!!
