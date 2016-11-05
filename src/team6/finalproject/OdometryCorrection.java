@@ -16,30 +16,30 @@ import lejos.hardware.Sound;
  * 
  */
 public class OdometryCorrection extends Thread {
-	
+
 	//variables
 	private static final long CORRECTION_PERIOD = 10;
 	private static final double SENSORDIST = 4.5; 			//distance from the sensor to the centre of rotation
 	private static final double MINIMUMWHITEVALUE = 0.20; 	//the minimum value of RGB that could be called white.
 	private Odometer odometer;
 	private EV3ColorSensor colorSensor;
-	
+
 	//first and current brightnesses.
 	private double firstBrightnessLevel;
 	private double currBrightnessLevel;
-	
-	
+
+
 	private double significantPercentThreshold = 20; //the percent difference in our reading to consider it a different color (used for reading black)
-	
+
 	//array to store the measured RGB values
 	private float[] RGBValues = new float[3];
-	
+
 	private boolean reachedBlackLine = false;
-	
+
 	//variables to see if it is the first X or Y correction. It always starts in same first square (-15,-15)-->(15,15)
 	private boolean isFirstXCorrection = true;
 	private boolean isFirstYCorrection = true;
-	
+
 	// constructor
 	public OdometryCorrection(Odometer odometer, EV3ColorSensor colorSense) {
 		this.odometer = odometer;
@@ -50,49 +50,47 @@ public class OdometryCorrection extends Thread {
 	// run method (required for Thread)
 	public void run() {
 		long correctionStart, correctionEnd;
-		
+
 		firstBrightnessLevel = -1; //start the first brightness at -1 (to know it is first reading)
 		colorSensor.setFloodlight(lejos.robotics.Color.WHITE); //we set our light to White (we use white over R)
+
+
+
 		while (true) {
 			correctionStart = System.currentTimeMillis();
-			
-			//gets the RGB data we measure
-			colorSensor.getRGBMode().fetchSample(RGBValues, 0); 
-			//we define the brightness as the average of the magnitudes of R,G,B (really "Whiteness")
-			currBrightnessLevel = (RGBValues[0] + RGBValues[1] + RGBValues[2]);
-			
-			/*
-			 * If it is our first brightness level, we just set it to our measured
-			 * Else, it is not our FIRST measurement, so we check to see if we hit a black line. 
-			 */
-			if (firstBrightnessLevel == -1){
-				firstBrightnessLevel = currBrightnessLevel;
-			}else{ 
-				/*
-				 * We have one condition for a black line:
-				 * If the percent difference between our first measurement and now is greater
-				 * than a set threshold.
-				 */
-				if(100*Math.abs(currBrightnessLevel - firstBrightnessLevel)/firstBrightnessLevel > significantPercentThreshold){
-					//we have a significant change
-					if(currBrightnessLevel < firstBrightnessLevel){
-						//we've reached a black line!!!
-						reachedBlackLine = true;
-						Sound.beep();
-					}
-				}else{
-					reachedBlackLine = false;
-				}
-				
-				//if we've reached a black line, correct the position of the robot.
-				if(reachedBlackLine == true){
-					correctOdometerPosition();
-				}
+			//			
+			//			//gets the RGB data we measure
+			//			colorSensor.getRGBMode().fetchSample(RGBValues, 0); 
+			//			//we define the brightness as the average of the magnitudes of R,G,B (really "Whiteness")
+			//			currBrightnessLevel = (RGBValues[0] + RGBValues[1] + RGBValues[2]);
+			//			
+			//			/*
+			//			 * If it is our first brightness level, we just set it to our measured
+			//			 * Else, it is not our FIRST measurement, so we check to see if we hit a black line. 
+			//			 */
+			//			if (firstBrightnessLevel == -1){
+			//				firstBrightnessLevel = currBrightnessLevel;
+			//			}else{ 
+			//				/*
+			//				 * We have one condition for a black line:
+			//				 * If the percent difference between our first measurement and now is greater
+			//				 * than a set threshold.
+			//				 */
+			//				if(100*Math.abs(currBrightnessLevel - firstBrightnessLevel)/firstBrightnessLevel > significantPercentThreshold){
+			//					//we have a significant change
+			//					if(currBrightnessLevel < firstBrightnessLevel){
+			//						//we've reached a black line!!!
+			//						reachedBlackLine = true;
+			//						Sound.beep();
+			//					}
+			//				}else{
+			//					reachedBlackLine = false;
+			//				}
+			//				
+			//if we've reached a black line, correct the position of the robot.
+			if(LightPoller.blackLine() == true){
+				correctOdometerPosition();
 			}
-
-			
-			
-			// this ensure the odometry correction occurs only once every period
 			correctionEnd = System.currentTimeMillis();
 			if (correctionEnd - correctionStart < CORRECTION_PERIOD) {
 				try {
@@ -105,7 +103,13 @@ public class OdometryCorrection extends Thread {
 				}
 			}
 		}
+
+
+
+		// this ensure the odometry correction occurs only once every period
+
 	}
+
 	/*
 	 * Corrects the odometer's position (is triggered on hitting a black line).
 	 */
@@ -116,11 +120,11 @@ public class OdometryCorrection extends Thread {
 		int currT = (int) odometer.getAng();
 		double correctedX = 0;
 		double correctedY = 0;
-		
+
 		//we find the nearest right theta (call it 0 (0,180,360) or 90 (90,270)) to see whether
 		//we're moving in X or Y.
 		int robotDirection = findRightAngleRobotDirection(currT);
-		
+
 		/*
 		 * If our direction is 0 (or 180,360), we're moving in X, correct X.
 		 * If our direction is 90 (or 270), we're moving in Y, correct Y.
@@ -135,7 +139,7 @@ public class OdometryCorrection extends Thread {
 			}else{
 				correctedX += SENSORDIST;
 			}
-			
+
 		}else if(robotDirection == 90){ 
 			//get corrected Y
 			correctedY = findCorrectedY(currY);
@@ -159,7 +163,7 @@ public class OdometryCorrection extends Thread {
 		update[2] = false;
 		//now use those two arrays to set the position of the odometer (it is now corrected).
 		odometer.setPosition(position,update);
-		
+
 	}
 	/*
 	 * Finds the "corrected" X value, assuming (0,0) is in the middle of the first square,
@@ -222,10 +226,10 @@ public class OdometryCorrection extends Thread {
 		}else if (Math.abs(t-90) < allowedError || Math.abs(t+90) < allowedError || Math.abs(t-270) < allowedError || Math.abs(t+270) < allowedError){
 			result = 90;
 		}
-		
+
 		return result;
 	}
-	
+
 	//accessors used for displaying text on LCD.
 	public boolean isReadingBlack(){
 		return reachedBlackLine;
