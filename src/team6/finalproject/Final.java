@@ -39,9 +39,12 @@ public class Final {
 	 private static final Port usPort = LocalEV3.get().getPort("S1");  
 	 //private static final Port colorPort = LocalEV3.get().getPort("S4"); 
 
+	 //constants
+	 public static final double WHEEL_RADIUS = 2.15; //needs to be changed for robots physical configs
+	 public static final double TRACK = 15.6; //needs to be changed for robots physical configs
 	
 	public static void main(String[] args) {
-		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true);
+		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
 		
 		@SuppressWarnings("resource")
 		SensorModes usSensor = new EV3UltrasonicSensor(usPort);
