@@ -38,7 +38,7 @@ public class TestOdometer extends Thread{
 	 
 	//constants
 	public static final double WHEEL_RADIUS = 2.15; //needs to be changed for robots physical configs
-	public static final double TRACK = 15.6; //needs to be changed for robots physical configs
+	public static final double TRACK = 15.2; //needs to be changed for robots physical configs
 
 	public static void main(String[] args) {
 
