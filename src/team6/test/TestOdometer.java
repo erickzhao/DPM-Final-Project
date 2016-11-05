@@ -8,6 +8,7 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 import team6.finalproject.LCDInfo;
+import team6.finalproject.LightPoller;
 import team6.finalproject.Odometer;
 import team6.finalproject.OdometryCorrection;
 import team6.finalproject.SquareDriver;
@@ -34,7 +35,7 @@ public class TestOdometer extends Thread{
 	//private static final EV3LargeRegulatedMotor armMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	 
-	private static final Port colorPort = LocalEV3.get().getPort("S4"); 
+	private static final Port lightPort = LocalEV3.get().getPort("S4"); 
 	 
 	//constants
 	public static final double WHEEL_RADIUS = 2.15; //needs to be changed for robots physical configs
@@ -43,12 +44,16 @@ public class TestOdometer extends Thread{
 	public static void main(String[] args) {
 
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
-		SensorModes colorSensor = new EV3ColorSensor(colorPort);
 		
-		@SuppressWarnings("unused")
 		LCDInfo lcd = new LCDInfo(odo);
+
+		SensorModes lightSensor = new EV3ColorSensor(lightPort);
+		SampleProvider lightValue = lightSensor.getMode("Red");
+		float[] lightData = new float[lightValue.sampleSize()];
+
+		LightPoller lightpoll = new LightPoller(lightValue, lightData);
 		
-		OdometryCorrection odoCorrection = new OdometryCorrection(odo, (EV3ColorSensor) colorSensor); 
+		OdometryCorrection odoCorrection = new OdometryCorrection(odo); 
 		
 		odo.start();
 		odoCorrection.start();

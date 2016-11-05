@@ -22,7 +22,6 @@ public class OdometryCorrection extends Thread {
 	private static final double SENSORDIST = 4.5; 			//distance from the sensor to the centre of rotation
 	private static final double MINIMUMWHITEVALUE = 0.20; 	//the minimum value of RGB that could be called white.
 	private Odometer odometer;
-	private EV3ColorSensor colorSensor;
 
 	//first and current brightnesses.
 	private double firstBrightnessLevel;
@@ -41,9 +40,8 @@ public class OdometryCorrection extends Thread {
 	private boolean isFirstYCorrection = true;
 
 	// constructor
-	public OdometryCorrection(Odometer odometer, EV3ColorSensor colorSense) {
+	public OdometryCorrection(Odometer odometer) {
 		this.odometer = odometer;
-		colorSensor = colorSense;
 		Sound.setVolume(100);
 	}
 
@@ -51,11 +49,8 @@ public class OdometryCorrection extends Thread {
 	public void run() {
 		long correctionStart, correctionEnd;
 
-		firstBrightnessLevel = -1; //start the first brightness at -1 (to know it is first reading)
-		colorSensor.setFloodlight(lejos.robotics.Color.WHITE); //we set our light to White (we use white over R)
-
-
-
+		firstBrightnessLevel = -1; //start the first brightness at -1 (to know it is first reading)\
+		
 		while (true) {
 			correctionStart = System.currentTimeMillis();
 			//			
