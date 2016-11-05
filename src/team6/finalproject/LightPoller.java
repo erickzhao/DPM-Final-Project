@@ -36,7 +36,7 @@ public class LightPoller implements TimerListener{
 	
 	//"distance" is sometimes accessed in a static way from outside this class
 	public static boolean blackLine(){
-		currentLight=lightValue*100;	
+		currentLight=lightValue;	
 		if(100*Math.abs(currentLight - previousLight)/previousLight > significantPercentThreshold){
 			if (currentLight < previousLight){
 				Sound.beep();
@@ -45,5 +45,8 @@ public class LightPoller implements TimerListener{
 		}
 		previousLight = currentLight;
 		return false;
+	}
+	public static float getReading(){
+		return lightValue;
 	}
 }

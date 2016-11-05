@@ -4,6 +4,7 @@ import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
+import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
@@ -53,13 +54,13 @@ public class Final {
 		float[] usData = new float[usValue.sampleSize()];
 		
 		@SuppressWarnings("resource")
-		SensorModes lightSensor = new EV3UltrasonicSensor(lightPort);
-		SampleProvider lightValue = usSensor.getMode("Red");
+		SensorModes lightSensor = new EV3ColorSensor(lightPort);
+		SampleProvider lightValue = lightSensor.getMode("Red");
 		float[] lightData = new float[lightValue.sampleSize()];
 		
 		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData);
 		LightPoller lightpoll = new LightPoller(lightValue,lightData);
-		LCDInfo lcd = new LCDInfo(odo);
+		LCDInfo lcd = new LCDInfo(odo); 
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);	
