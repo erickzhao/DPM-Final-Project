@@ -37,12 +37,13 @@ public class Final {
 	 private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	
 	 private static final Port usPort = LocalEV3.get().getPort("S1");  
-	 //private static final Port colorPort = LocalEV3.get().getPort("S4"); 
+	 private static final Port lightPort = LocalEV3.get().getPort("S4"); 
 
 	 //constants
 	 public static final double WHEEL_RADIUS = 2.15; //needs to be changed for robots physical configs
 	 public static final double TRACK = 15.6; //needs to be changed for robots physical configs
 	
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
 		
@@ -51,9 +52,13 @@ public class Final {
 		SampleProvider usValue = usSensor.getMode("Distance");
 		float[] usData = new float[usValue.sampleSize()];
 		
-		@SuppressWarnings("unused")
+		@SuppressWarnings("resource")
+		SensorModes lightSensor = new EV3UltrasonicSensor(lightPort);
+		SampleProvider lightValue = usSensor.getMode("Red");
+		float[] lightData = new float[lightValue.sampleSize()];
+		
 		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData);
-		@SuppressWarnings("unused")
+		LightPoller lightpoll = new LightPoller(lightValue,lightData);
 		LCDInfo lcd = new LCDInfo(odo);
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
