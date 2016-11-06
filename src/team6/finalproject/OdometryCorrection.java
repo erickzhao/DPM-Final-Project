@@ -77,7 +77,10 @@ public class OdometryCorrection extends PausableTimerListener {
 	 */
 	private boolean isRobotNearGridLine(double position) {
 		
-		double distanceFromLine = GRID_WIDTH-position%GRID_WIDTH;
+		double distanceFromLine = GRID_WIDTH-position%GRID_WIDTH; 
+		if (position%GRID_WIDTH < 15){
+			distanceFromLine = position%GRID_WIDTH;
+		}
 		
 		if (Math.abs(distanceFromLine) <= ODOMETER_ERROR_THRESHOLD) {
 			return true;
