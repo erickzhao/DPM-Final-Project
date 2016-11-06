@@ -1,5 +1,7 @@
 package team6.finalproject;
 
+import lejos.hardware.Sound;
+
 /**
  * Odometer correction class.
  * 
@@ -15,9 +17,9 @@ public class OdometryCorrection extends PausableTimerListener {
 	//variables
 	private Odometer odometer;
 	
-	private static final double SENSOR_TO_CENTRE = 4.5;
+	private static final double SENSOR_TO_CENTRE = 10.5;
 	private static final double GRID_WIDTH = 30.48;
-	private static final double ODOMETER_ERROR_THRESHOLD = 0.5;
+	private static final double ODOMETER_ERROR_THRESHOLD = 3;
 
 	/**
 	 * Constructor for the odometer correction
@@ -46,23 +48,24 @@ public class OdometryCorrection extends PausableTimerListener {
 	 */
 	private void correctOdometerPosition(){
 		
-		double positionX = odometer.getX();
-		double positionY = odometer.getY();
+		double positionX = odometer.getX()+getHorizontalSensorToCentreDistance();
+		double positionY = odometer.getY()+getVerticalSensorToCentreDistance();
 		
 		if (isRobotNearGridLine(positionX)) {
-			double actualPosition = getNearestGridLine(positionX)+getHorizontalSensorToCentreDistance();
+			double actualPosition = getNearestGridLine(positionX)-getHorizontalSensorToCentreDistance();
 			double[] position = {actualPosition,0,0};
 			boolean[] update =  {true,false,false};
-			
 			odometer.setPosition(position,update);
+			Sound.beepSequenceUp();
 		}
 		
 		if (isRobotNearGridLine(positionY)) {
-			double actualPosition = getNearestGridLine(positionY)+getVerticalSensorToCentreDistance();
+			double actualPosition = getNearestGridLine(positionY)-getVerticalSensorToCentreDistance();
 			double[] position = {0,actualPosition,0};
 			boolean[] update = {false,true,false};
 			
 			odometer.setPosition(position,update);
+			Sound.beepSequence();
 		}
 	}
 	
@@ -76,7 +79,7 @@ public class OdometryCorrection extends PausableTimerListener {
 		
 		double distanceFromLine = GRID_WIDTH-position%GRID_WIDTH;
 		
-		if (Math.abs(distanceFromLine) < ODOMETER_ERROR_THRESHOLD) {
+		if (Math.abs(distanceFromLine) <= ODOMETER_ERROR_THRESHOLD) {
 			return true;
 		} else {
 			return false;
