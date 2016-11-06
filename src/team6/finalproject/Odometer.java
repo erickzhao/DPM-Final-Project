@@ -22,20 +22,15 @@ package team6.finalproject;
  * 							|
  * 					270Deg:neg y-axis
  * 
- * The odometer is initalized to 90 degrees, assuming the robot is facing up the positive y-axis
+ * The odometer is initialized to 90 degrees, assuming the robot is facing up the positive y-axis
  * 
  */
 
-//Default Odometer that teacher gave us
-import lejos.utility.Timer;
-import lejos.utility.TimerListener;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
-public class Odometer implements TimerListener {
+public class Odometer extends PausableTimerListener {
 
-	private Timer timer;
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
-	private final int DEFAULT_TIMEOUT_PERIOD = 20;
 	private double leftRadius, rightRadius, width;
 	private double x, y, theta;
 	private double[] oldDH, dDH;
@@ -57,25 +52,7 @@ public class Odometer implements TimerListener {
 		this.theta = 90.0;
 		this.oldDH = new double[2];
 		this.dDH = new double[2];
-
-		if (autostart) {
-			// if the timeout interval is given as <= 0, default to 20ms timeout 
-			this.timer = new Timer((INTERVAL <= 0) ? INTERVAL : DEFAULT_TIMEOUT_PERIOD, this);
-			this.timer.start();
-		} else
-			this.timer = null;
 	}
-
-	// functions to start/stop the timerlistener
-	public void stop() {
-		if (this.timer != null)
-			this.timer.stop();
-	}
-	public void start() {
-		if (this.timer != null)
-			this.timer.start();
-	}
-
 	/*
 	 * Calculates displacement and heading as title suggests
 	 */
