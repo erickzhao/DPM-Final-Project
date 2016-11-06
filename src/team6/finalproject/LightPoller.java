@@ -15,7 +15,6 @@ public class LightPoller implements TimerListener{
 	private SampleProvider light;
 	private float[] lightData;
 	private static float lightValue;
-	
 	private static float currentLight;
 	private static float previousLight = -1;
 	private static double significantPercentThreshold = 20;
@@ -28,7 +27,6 @@ public class LightPoller implements TimerListener{
 	}
 	
 	// start the timer
-	Thread navigate = null;
 	public void timedOut() {
 		light.fetchSample(lightData,0);						// acquire data
 		lightValue=lightData[0]*100;						// extract from buffer, cast to int

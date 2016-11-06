@@ -23,11 +23,9 @@ public class UltrasonicPoller implements TimerListener{
 	}
 	
 	// start the timer
-	Thread navigate = null;
 	public void timedOut() {
 		us.fetchSample(usData,0);							// acquire data
 		distance=usData[0]*100;								// extract from buffer, cast to int
-		try { Thread.sleep(50); } catch(Exception e){}		// Timed sampling
 	}
 	
 	//"distance" is sometimes accessed in a static way from outside this class
