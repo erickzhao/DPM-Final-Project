@@ -22,20 +22,17 @@ public class USLocalizer {
 		navigator=new Navigation(odo);
 		
 		//Falling Edge navigation
-		//Setup and display distance
-		distance=getFilteredData();
-		
 		//For falling edge, the robot should be facing a wall first
-		while(distance==255){
+		while(!seeWall()){
 			distance=getFilteredData();
-			navigator.setSpeeds(speed, -speed);
+			navigator.setSpeeds(-speed, speed);
 		}
 		Sound.beep();
 		//Robot saw a wall
 		//Continue rotation in the same direction for a second to ensure that it faces a wall
 		//And that the reading wasn't erronous
 		navigator.setSpeeds(0,0);
-		navigator.setSpeeds(speed,-speed);
+		navigator.setSpeeds(-speed,speed);
 		try{Thread.sleep(1000);}catch(Exception e){};
 		
 		//Stop movement, set starting position to the position when it faces the wall
@@ -44,7 +41,7 @@ public class USLocalizer {
 		try{Thread.sleep(1000);}catch(Exception e){};
 		Sound.beep();
 		//Robot sees a wall : Rotate until it doesn't
-		while (distance<255){
+		while (!seeWall()){
 			distance=getFilteredData();
 			navigator.setSpeeds(speed, -speed);
 		}
@@ -55,7 +52,7 @@ public class USLocalizer {
 		try{Thread.sleep(200);}catch (Exception e){};
 		Sound.beep();
 		//Keep rotating until the robot sees a wall again, then latch the angle
-		while (distance==255){
+		while (seeWall()){
 			navigator.setSpeeds(speed,-speed);
 			distance=getFilteredData();
 		}
@@ -69,18 +66,19 @@ public class USLocalizer {
 		Sound.beep();
 		
 		//Switch direction and wait until it sees no wall
-		while (distance<255){
+		while (seeWall()){
 			navigator.setSpeeds(-speed, speed);
 			distance=getFilteredData();
 		}
 		Sound.beep();
+		
 		//Stop and wait to show this part ended
 		navigator.setSpeeds(0,0);
 		navigator.setSpeeds(-speed,speed);
 		try{Thread.sleep(200);}catch (Exception e){};
 		
 		//Keep rotating until the robot sees a wall, then latch the angle
-		while (distance==255){
+		while (!seeWall()){
 			navigator.setSpeeds(-speed,speed);
 			distance=getFilteredData();
 		}
@@ -92,17 +90,10 @@ public class USLocalizer {
 		angleB=odo.getAng();
 		
 		//Compute original angle. Formula used is that from slides
-		double finalAng;
-		
-		//Bigger values than 45/225 : overturn clockwise
-		//Lower values than  ' ' '  : overturn counter-clockwise
-		if (angleA<angleB){
-			finalAng=35-(angleA+angleB)/2;
-		} else {
-			finalAng=215-(angleA+angleB)/2;
-		}
+		double finalAng = getEndAngle(angleA,angleB);
+
 		finalAng=wrapAngle(finalAng);
-		Sound.beep();
+		
 		//Rotate robot to 90, which was its "initial" position
 		navigator.turnTo(90,true);
 		
@@ -154,5 +145,19 @@ public class USLocalizer {
 			return angle-360;
 		}
 		return angle;
+	}
+	
+	private double getEndAngle(double a, double b) {
+		if (a > b) {
+			return ((a+b)/2 - 225);
+		}
+		return ((a+b)/2 - 45);
+	}
+	
+	private boolean seeWall(){
+		if (getFilteredData()==255){
+			return false;
+		}
+		return true;
 	}
 }
