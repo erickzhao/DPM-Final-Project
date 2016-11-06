@@ -9,16 +9,12 @@ package team6.finalproject;
  * @author erick
  * @version 0.1
  */
-import lejos.utility.Timer;
-import lejos.utility.TimerListener;
 
-public class OdometryCorrection implements TimerListener {
+public class OdometryCorrection extends PausableTimerListener {
 	
 	//variables
-	private Timer timer;
 	private Odometer odometer;
 	
-	private static final int REFRESH_RATE = 10;
 	private static final double SENSOR_TO_CENTRE = 4.5;
 	private static final double GRID_WIDTH = 30.48;
 	private static final double ODOMETER_ERROR_THRESHOLD = 0.5;
@@ -29,7 +25,6 @@ public class OdometryCorrection implements TimerListener {
 	 */
 	public OdometryCorrection(Odometer odometer) {
 		this.odometer = odometer;
-		this.timer = new Timer(REFRESH_RATE,this);
 	}
 
 	/**
@@ -69,7 +64,6 @@ public class OdometryCorrection implements TimerListener {
 			
 			odometer.setPosition(position,update);
 		}
-		
 	}
 	
 	/**
@@ -126,15 +120,6 @@ public class OdometryCorrection implements TimerListener {
 	 */
 	private double angleToRadians(double angle) {
 		return 2*Math.PI*angle/360;
-	}
-	
-	public void stop() {
-		if (this.timer != null)
-			this.timer.stop();
-	}
-	public void start() {
-		if (this.timer != null)
-			this.timer.start();
 	}
 	
 }

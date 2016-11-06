@@ -1,15 +1,11 @@
 package team6.finalproject;
 
 import lejos.robotics.SampleProvider;
-import lejos.utility.TimerListener;
-import lejos.utility.Timer;
 
 //UltrasonicPoller gets data from the US and can output it through
 //getDistance. It runs every 50 seconds as it implements TimerListener.
 
-public class UltrasonicPoller implements TimerListener{
-	private Timer timer;
-	private final int refreshRate = 50;
+public class UltrasonicPoller extends PausableTimerListener {
 	
 	private SampleProvider us;
 	private float[] usData;
@@ -18,8 +14,6 @@ public class UltrasonicPoller implements TimerListener{
 	public UltrasonicPoller(SampleProvider us, float[] usData) {
 		this.us = us;
 		this.usData = usData;
-		this.timer = new Timer(refreshRate, this);
-		timer.start();
 	}
 	
 	// start the timer
