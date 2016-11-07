@@ -20,7 +20,7 @@ public class UltrasonicPoller extends PausableTimerListener {
 	/**
 	 * Constructor for the Ultrasonic Poller.
 	 * @param us		the <code>SampleProvider</code> that fetches the readings
-	 * @param usData	the <code>double</code> array in which the <code>SampleProvider</code> stores its data
+	 * @param usData	the <code>float</code> array in which the <code>SampleProvider</code> stores its data
 	 */
 	public UltrasonicPoller(SampleProvider us, float[] usData) {
 		this.us = us;
