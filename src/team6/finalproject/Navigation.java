@@ -1,7 +1,15 @@
 package team6.finalproject;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
-
+/**
+ * Navigation Class
+ * <p>
+ * Uses the {@link #odometer} class to create and travel along a coordinate plane.
+ * Creates a (0,0) with localization and uses hardcoded measurements to travel along the competition surface
+ * 
+ * @author Andrei Ungur 
+ * @version 0.1 
+ */
 public class Navigation 
 {
 	final static int FAST = 200, SLOW = 100, ACCELERATION = 2000; 
@@ -11,6 +19,10 @@ public class Navigation
 	//Determines side which head faces
 	public static int headSide;
 
+	/**
+	 * Constructor for navigation. 
+	 * @param odo The odometer object used to keep track of the robot's location
+	 */
 	public Navigation(Odometer odo) 
 	{
 		this.odometer = odo;
@@ -24,8 +36,10 @@ public class Navigation
 		this.rightMotor.setAcceleration(ACCELERATION);
 	}
 
-	/*
-	 * Functions to set the motor speeds jointly
+	/**
+	 * Sets both of the motor speeds jointly
+	 * @param lSpd Left motor speed -- float
+	 * @param rSpd Right motor speed -- float
 	 */
 	public void setSpeeds(float lSpd, float rSpd) {
 		this.leftMotor.setSpeed(lSpd);
@@ -40,6 +54,11 @@ public class Navigation
 			this.rightMotor.forward();
 	}
 
+	/**
+	 * Sets both of the motor speeds jointly
+	 * @param lSpd Left motor speed -- int
+	 * @param rSpd Right motor speed -- int
+	 */
 	public void setSpeeds(int lSpd, int rSpd) {
 		this.leftMotor.setSpeed(lSpd);
 		this.rightMotor.setSpeed(rSpd);
@@ -53,8 +72,8 @@ public class Navigation
 			this.rightMotor.forward();
 	}
 
-	/*
-	 * Float the two motors jointly
+	/**
+	 * Float both motors
 	 */
 	public void setFloat() {
 		this.leftMotor.stop();
@@ -63,9 +82,10 @@ public class Navigation
 		this.rightMotor.flt(true);
 	}
 
-	/*
-	 * TravelTo function which takes as arguments the x and y position in cm Will travel to designated position, while
-	 * constantly updating it's heading
+	/** 
+	 * Takes as arguments the x and y position in cm. Will travel to designated position, while constantly updating it's heading
+	 * @param x X coordinate of destination
+	 * @param y Y coordinate of destination
 	 */
 	public void travelTo(double x, double y) {
 		double minAng;
@@ -79,9 +99,10 @@ public class Navigation
 		this.setSpeeds(0, 0);
 	}
 
-	/*
-	 * TurnTo function which takes an angle and boolean as arguments The boolean controls whether or not to stop the
-	 * motors when the turn is completed
+	/** 
+	 * Takes as arguments an angle in degrees and a boolean. Turns the robot to a given heading, used in conjunciton with {@link #travelTo(double, double)}
+	 * @param angle The angle (in degrees) to which the robot should turn
+	 * @param stop A boolean dictating whether or not the motors should stop upon completion of the turn
 	 */
 	public void turnTo(double angle, boolean stop) {
 
@@ -107,8 +128,9 @@ public class Navigation
 		}
 	}
 
-	/*
-	 * Go foward a set distance in cm
+	/**
+	 * Makes the robot go forward a set distance in cm
+	 * @param distance The distance in cm to go forward
 	 */
 	public void goForward(double distance) 
 	{
@@ -123,8 +145,12 @@ public class Navigation
 		}
 		this.setSpeeds(0,0);
 	}
-	
-	//Used for "goForward"
+	/**
+	 * used with {@link #goForward(double)} to convert distance to scale
+	 * @param radius radius of the wheel
+	 * @param distance distance parameter passed by the odometer
+	 * @return the converted distance value for travelling purposes 
+	 */
 	private static int convertDistance(double radius, double distance){
 		return (int) ((180.0*distance) / (Math.PI*radius));
 	}
