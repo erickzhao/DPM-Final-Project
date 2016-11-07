@@ -25,8 +25,8 @@ public class LightPoller extends PausableTimerListener{
 	
 	/**
 	 * 
-	 * @param light		the <code>SampleProvider</code>
-	 * @param lightData
+	 * @param light		the <code>SampleProvider</code> that fetches the readings
+	 * @param lightData	the <code>float</code> array in which the <code>SampleProvider</code> stores its data
 	 */
 	public LightPoller(SampleProvider light, float[] lightData) {
 		this.light = light;
