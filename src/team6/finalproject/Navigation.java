@@ -38,8 +38,8 @@ public class Navigation
 
 	/**
 	 * Sets both of the motor speeds jointly
-	 * @param lSpd Left motor speed -- float
-	 * @param rSpd Right motor speed -- float
+	 * @param lSpd Left motor speed -- <code>float</code>
+	 * @param rSpd Right motor speed -- <code>float</code>
 	 */
 	public void setSpeeds(float lSpd, float rSpd) {
 		this.leftMotor.setSpeed(lSpd);
@@ -56,8 +56,8 @@ public class Navigation
 
 	/**
 	 * Sets both of the motor speeds jointly
-	 * @param lSpd Left motor speed -- int
-	 * @param rSpd Right motor speed -- int
+	 * @param lSpd Left motor speed -- <code>int</code>
+	 * @param rSpd Right motor speed -- <code>int</code>
 	 */
 	public void setSpeeds(int lSpd, int rSpd) {
 		this.leftMotor.setSpeed(lSpd);
@@ -102,7 +102,7 @@ public class Navigation
 	/** 
 	 * Takes as arguments an angle in degrees and a boolean. Turns the robot to a given heading, used in conjunciton with {@link #travelTo(double, double)}
 	 * @param angle The angle (in degrees) to which the robot should turn
-	 * @param stop A boolean dictating whether or not the motors should stop upon completion of the turn
+	 * @param stop A <code>boolean</code> dictating whether or not the motors should stop upon completion of the turn
 	 */
 	public void turnTo(double angle, boolean stop) {
 
