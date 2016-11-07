@@ -1,6 +1,15 @@
 package team6.finalproject;
 import lejos.hardware.Sound;
 
+/**
+ * Light Localizer class
+ * Localizes the robot to (0,0) by using the light sensor to detect black lines 
+ * and performing calculation on the angles at which the lines were detected to determine 
+ * the robot's true position on the coordinate plane, updating the odometer, and then travelling to true (0,0)
+ * 
+ * @author Myriam
+ * @version 0.1
+ */
 public class LightLocalizer 
 {
 	private Odometer odo;
@@ -13,6 +22,11 @@ public class LightLocalizer
 	private double yDist;
 	private float speed=175;
 
+	/**
+	 * Constructor for the Light Localizer
+	 * @param odo		the <code>Odometer</code> object that will be used to determine the robot's position
+	 * @param LStoWB	the distance from the light sensor to the wheel base 
+	 */
 	public LightLocalizer(Odometer odo, double LStoWB) 
 	{
 		this.odo = odo;
@@ -22,6 +36,11 @@ public class LightLocalizer
 		this.saveThetas = new double[4];
 	}
 
+	/**
+	 * Localizes the robot using the light sensor by detecting the 4 black lines, 
+	 * getting the odometer angles at the point each line is detected,
+	 * and uses these values to calculate the offset of the robot from (0,0), and then travel to (0,0)
+	 */
 	public void doLocalization() 
 	{
 		
