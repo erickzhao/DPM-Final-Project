@@ -1,5 +1,6 @@
 package team6.test;
 
+import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.port.Port;
@@ -38,15 +39,17 @@ public class TestOdometer {
 		LightPoller lightPoller = new LightPoller(lightValue, lightData);
 		lightPoller.start();
 		
-		OdometryCorrection odoCorrection = new OdometryCorrection(odo); 
+		//OdometryCorrection odoCorrection = new OdometryCorrection(odo); 
 		
 		odo.start();
-		odoCorrection.start();
+		//odoCorrection.start();
 		
 		(new Thread(){
 			public void run(){
 				SquareDriver.drive(leftMotor, rightMotor, WHEEL_RADIUS, WHEEL_RADIUS, TRACK);
 			}
 		}).start();
+		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
+			System.exit(0);
 	}
 }
