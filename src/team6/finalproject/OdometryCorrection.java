@@ -4,12 +4,13 @@ import lejos.hardware.Sound;
 
 /**
  * Odometer correction class.
- * 
+ * <p>
  * Corrects odometer values while the robot is traveling to waypoints (i.e. moving in a straight line).
  * Works by snapping the odometer's position to a grid line's X or Y position when passing over it.
  * 
- * @author erick
+ * @author Erick Zhao
  * @version 0.1
+ * @see Odometer
  */
 
 public class OdometryCorrection extends PausableTimerListener {
@@ -23,14 +24,14 @@ public class OdometryCorrection extends PausableTimerListener {
 
 	/**
 	 * Constructor for the odometer correction
-	 * @param odometer	The odometer object running on a separate Timer that is to be corrected
+	 * @param odometer	the <code>Odometer</code> object running on a separate </code>Timer</code> that is to be corrected
 	 */
 	public OdometryCorrection(Odometer odometer) {
 		this.odometer = odometer;
 	}
 
 	/**
-	 * Checks if odometer reading can be corrected every Timer loop and executes the correction
+	 * Checks if the odometer reading can be corrected every <code>Timer</code> loop and executes the correction
 	 * whenever it is needed.
 	 */
 	@Override
@@ -72,8 +73,8 @@ public class OdometryCorrection extends PausableTimerListener {
 	/**
 	 * Determines if the odometer reading one one of the two axes is close enough to a grid line
 	 * to snap to it.
-	 * @param position	The x or y position of the robot according to the odometer
-	 * @return			The boolean value indicating if the odometer should snap to this grid line.
+	 * @param position	the x or y position of the robot according to the odometer
+	 * @return			the boolean value indicating if the odometer should snap to this grid line
 	 */
 	private boolean isRobotNearGridLine(double position) {
 		
@@ -96,8 +97,8 @@ public class OdometryCorrection extends PausableTimerListener {
 	 * This works by dividing the current position by the grid width to see which grid line it's closest to,
 	 * and then multiplying that number by the grid width again to get that line's distance from the origin.
 	 * 
-	 * @param position	The x or y position of the robot according to the odometer
-	 * @return			The corresponding position of the nearest grid line
+	 * @param position	the x or y position of the robot according to the odometer
+	 * @return			the corresponding <code>double</code> position of the nearest grid line
 	 */
 	private double getNearestGridLine(double position) {
 		return (int)((position+ODOMETER_ERROR_THRESHOLD)/GRID_WIDTH)*GRID_WIDTH;
@@ -105,7 +106,7 @@ public class OdometryCorrection extends PausableTimerListener {
 	
 	/**
 	 * Gets the horizontal distance between the sensor and the centre of rotation.
-	 * @return		A double representing the horizontal distance in cm
+	 * @return		a <code>double</code> representing the horizontal distance in cm
 	 */
 	private double getHorizontalSensorToCentreDistance() {
 		return Math.cos(angleToRadians(odometer.getAng()))*SENSOR_TO_CENTRE;
@@ -113,7 +114,7 @@ public class OdometryCorrection extends PausableTimerListener {
 	
 	/**
 	 * Gets the vertical distance between the sensor and the centre of rotation.
-	 * @return		A double representing the vertical distance in cm
+	 * @return		a <code>double</code> representing the vertical distance in cm
 	 */
 	private double getVerticalSensorToCentreDistance() {
 		return Math.sin(angleToRadians(odometer.getAng()))*SENSOR_TO_CENTRE;
@@ -121,8 +122,8 @@ public class OdometryCorrection extends PausableTimerListener {
 	
 	/**
 	 * Converts an angle from degrees to radians.
-	 * @param angle	A double representing an angle in degrees
-	 * @return		The equivalent angle in radians
+	 * @param angle	a <code>double</code> representing an angle in degrees
+	 * @return		the equivalent angle in radians
 	 */
 	private double angleToRadians(double angle) {
 		return 2*Math.PI*angle/360;
