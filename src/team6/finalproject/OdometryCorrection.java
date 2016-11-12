@@ -18,9 +18,9 @@ public class OdometryCorrection extends PausableTimerListener {
 	//variables
 	private Odometer odometer;
 	
-	private static final double SENSOR_TO_CENTRE = 10.5;
+	private static final double SENSOR_TO_CENTRE = 9.5;
 	private static final double GRID_WIDTH = 30.48;
-	private static final double ODOMETER_ERROR_THRESHOLD = 3;
+	private static final double ODOMETER_ERROR_THRESHOLD = 1;
 
 	/**
 	 * Constructor for the odometer correction
