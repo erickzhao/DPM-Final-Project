@@ -23,6 +23,11 @@ public class LineDriver {
 			// the odometer will be interrupted by another thread
 		}
 		
+		leftMotor.setSpeed(ROTATE_SPEED);
+		rightMotor.setSpeed(ROTATE_SPEED);
+		leftMotor.rotate(convertAngle(leftRadius, width, 30), true);
+		rightMotor.rotate(-convertAngle(rightRadius, width, 30), false);
+		
 		leftMotor.setSpeed(FORWARD_SPEED);
 		rightMotor.setSpeed(FORWARD_SPEED);
 		leftMotor.rotate(convertDistance(leftRadius, 90), true);
