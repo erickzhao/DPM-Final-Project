@@ -11,13 +11,13 @@ import lejos.robotics.SampleProvider;
  * are the Red, Green, and Blue intensities, respectively. These values are normalized from 0 to 1,
  * where 0 is no color detected and 1 is the maximum color value.
  * @author Erick Zhao
- * @version 0.1
+ * @version 0.11
  */
 public class ColorPoller extends PausableTimerListener {
 	private SampleProvider colorSensor;
 	private float[] colorData;
-	private boolean isObject = false;
-	private boolean isBlock = false;
+	private static boolean isObject = false;
+	private static boolean isBlock = false;
 	
 	private static final float MIN_OBJECT_READING_VALUE= (float)0.015;
 	/**
@@ -52,10 +52,7 @@ public class ColorPoller extends PausableTimerListener {
 		float greenReading = colorData[1];
 		
 		isObject = (redReading >MIN_OBJECT_READING_VALUE || greenReading > MIN_OBJECT_READING_VALUE) ? true:false;
-		
-		if (isObject) {
-			isBlock = (greenReading > redReading) ? true:false;
-		}
+		isBlock = (greenReading > redReading && isObject) ? true:false;
 	}
 	
 	/**
@@ -70,15 +67,15 @@ public class ColorPoller extends PausableTimerListener {
 	 * Determines whether or not an object is detected by the color sensor.
 	 * @return a <code>boolean</code> indicating whether nor not we have an object detected
 	 */
-	public boolean isObject() {
-		return this.isObject;
+	public static boolean isObject() {
+		return isObject;
 	}
 	
 	/**
 	 * Determines whether or not a styrofoam block is detected by the color sensor.
 	 * @return a <code>boolean</code> indicating whether or not we have a styrofoam block detected.
 	 */
-	public boolean isBlock() {
-		return this.isBlock;
+	public static boolean isBlock() {
+		return isBlock;
 	}
 }
