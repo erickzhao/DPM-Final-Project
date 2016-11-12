@@ -12,6 +12,7 @@ import team6.finalproject.LightPoller;
 import team6.finalproject.Odometer;
 import team6.finalproject.OdometryCorrection;
 import team6.finalproject.SquareDriver;
+import team6.finalproject.LineDriver;
 
 public class TestOdometer {
 	
