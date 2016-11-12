@@ -39,10 +39,10 @@ public class TestOdometer {
 		LightPoller lightPoller = new LightPoller(lightValue, lightData);
 		lightPoller.start();
 		
-		//OdometryCorrection odoCorrection = new OdometryCorrection(odo); 
+		OdometryCorrection odoCorrection = new OdometryCorrection(odo); 
 		
 		odo.start();
-		//odoCorrection.start();
+		odoCorrection.start();
 		
 		(new Thread(){
 			public void run(){
