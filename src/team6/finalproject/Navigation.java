@@ -145,6 +145,15 @@ public class Navigation
 		}
 		this.setSpeeds(0,0);
 	}
+	
+	/**
+	 * makes the robot travel forward until stopped/interrupted
+	 */
+	public void goForward(){
+		this.leftMotor.forward();
+		this.rightMotor.forward();	
+	}
+	
 	/**
 	 * used with {@link #goForward(double)} to convert distance to scale
 	 * @param radius radius of the wheel
