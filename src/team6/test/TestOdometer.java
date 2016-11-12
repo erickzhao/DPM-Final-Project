@@ -46,7 +46,7 @@ public class TestOdometer {
 		
 		(new Thread(){
 			public void run(){
-				SquareDriver.drive(leftMotor, rightMotor, WHEEL_RADIUS, WHEEL_RADIUS, TRACK);
+				LineDriver.drive(leftMotor, rightMotor, WHEEL_RADIUS, WHEEL_RADIUS, TRACK);
 			}
 		}).start();
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
