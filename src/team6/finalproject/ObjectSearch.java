@@ -9,16 +9,23 @@ package team6.finalproject;
 
 public class ObjectSearch {
 	
+	private Odometer odo;
+	private Navigation nav;
+	
 	/**
 	 * Constructor for Object Search.
 	 */
-	public ObjectSearch(){}
+	public ObjectSearch(Odometer odo, Navigation nav) {
+		this.odo = odo;
+		this.nav = nav;
+	}
 	
 	/**
 	 * Sweeps the current neighborhood by rotating about a point, 
 	 * keeping track of if objects are detected in the neighborhood
 	 */
-	public void turnSearch(){}
+	public void sweep(){
+	}
 	
 	/**
 	 * Uses light sensor to determine if block is wooden or if block is blue styrofoam
