@@ -28,7 +28,7 @@ public class UltrasonicPoller extends PausableTimerListener {
 	}
 	
 	/**
-	 * Fetches sampler data for every {@link lejos.utility.Timer} loop.
+	 * Fetches sampler data for every <code>Timer</code> loop.
 	 * Multiplies the ultrasonic sensor's readings by 100 to display more readable <code>int</code> values.
 	 */
 	public void timedOut() {
@@ -38,7 +38,7 @@ public class UltrasonicPoller extends PausableTimerListener {
 	
 	/**
 	 * Gets the distance value fetched by the <code>SampleProvider</code>.
-	 * @return	the float value of the distance read by the ultrasonic sensor
+	 * @return		the <code>float</code> value of the distance read by the ultrasonic sensor
 	 */
 	public static float getDistance(){
 		return distance;

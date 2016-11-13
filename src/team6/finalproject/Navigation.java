@@ -20,7 +20,7 @@ public class Navigation
 
 	/**
 	 * Constructor for Navigation. 
-	 * @param odo The <code>Odometer</code> object used to keep track of the robot's location
+	 * @param odo 		The <code>Odometer</code> object used to keep track of the robot's location
 	 */
 	public Navigation(Odometer odo) 
 	{
@@ -37,8 +37,8 @@ public class Navigation
 
 	/**
 	 * Sets both of the motor speeds jointly
-	 * @param lSpd Left motor speed -- <code>float</code>
-	 * @param rSpd Right motor speed -- <code>float</code>
+	 * @param lSpd 		a <code>float</code> representing left motor speed 
+	 * @param rSpd 		a <code>float</code> representing right motor speed
 	 */
 	public void setSpeeds(float lSpd, float rSpd) {
 		this.leftMotor.setSpeed(lSpd);
@@ -55,8 +55,8 @@ public class Navigation
 
 	/**
 	 * Sets both of the motor speeds jointly
-	 * @param lSpd Left motor speed -- <code>int</code>
-	 * @param rSpd Right motor speed -- <code>int</code>
+	 * @param lSpd 		an <code>int</code> representing left motor speed
+	 * @param rSpd 		an <code>int</code> representing right motor speed
 	 */
 	public void setSpeeds(int lSpd, int rSpd) {
 		this.leftMotor.setSpeed(lSpd);
@@ -82,9 +82,9 @@ public class Navigation
 	}
 
 	/** 
-	 * Takes as arguments the x and y position in cm. Will travel to designated position, while constantly updating it's heading
-	 * @param x X coordinate of destination
-	 * @param y Y coordinate of destination
+	 * Takes as arguments the x and y position in cm. Will travel to designated position, while constantly updating its heading.
+	 * @param x 	<code>double</code> X coordinate value of destination.
+	 * @param y 	<code>double</code> Y coordinate value of destination.
 	 */
 	public void travelTo(double x, double y) {
 		double minAng;
@@ -100,8 +100,8 @@ public class Navigation
 
 	/** 
 	 * Takes as arguments an angle in degrees and a boolean. Turns the robot to a given heading, used in conjunciton with {@link #travelTo(double, double)}
-	 * @param angle The angle (in degrees) to which the robot should turn
-	 * @param stop A <code>boolean</code> dictating whether or not the motors should stop upon completion of the turn
+	 * @param angle 	The angle (in degrees) to which the robot should turn
+	 * @param stop 		A <code>boolean</code> dictating whether or not the motors should stop upon completion of the turn
 	 */
 	public void turnTo(double angle, boolean stop) {
 
@@ -128,8 +128,8 @@ public class Navigation
 	}
 
 	/**
-	 * Makes the robot go forward a set distance in cm
-	 * @param distance The distance in cm to go forward
+	 * Makes the robot go forward a set distance in cm.
+	 * @param distance 		The <code>double</code> distance in cm to go forward
 	 */
 	public void goForward(double distance) 
 	{
@@ -152,7 +152,7 @@ public class Navigation
 	}
 	
 	/**
-	 * makes the robot travel forward until stopped/interrupted
+	 * Makes the robot travel forward indefinitely until stopped/interrupted.
 	 */
 	public void goForward(){
 		this.leftMotor.forward();
@@ -160,10 +160,10 @@ public class Navigation
 	}
 	
 	/**
-	 * used with {@link #goForward(double)} to convert distance to scale
-	 * @param radius radius of the wheel
-	 * @param distance distance parameter passed by the odometer
-	 * @return the converted distance value for travelling purposes 
+	 * Used with {@link #goForward(double)} to convert distance to scale.
+	 * @param radius 		the <code>double</code> radius of the wheel
+	 * @param distance 		the <code>double</code> distance parameter passed by the odometer
+	 * @return 				the converted <code>int</code> distance value for traveling purposes 
 	 */
 	private static int convertDistance(double radius, double distance){
 		return (int) ((180.0*distance) / (Math.PI*radius));
