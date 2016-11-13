@@ -106,13 +106,12 @@ public class USLocalizer {
 		//Rotate robot to 90, which was its "initial" position
 		navigator.turnTo(90,true);
 		navigator.setSpeeds(0,0);
-		try{Thread.sleep(1000);}catch (Exception e){};
-		//Rotate it back from "90" to the real (0,0)
-		//finalAng=360-finalAng; //"Navigation" doesn't handle negative angles, so we wrap it around
+		try{Thread.sleep(100);}catch (Exception e){};
+		
 		//Turn to 0 degrees, and set the position
 		navigator.turnTo(finalAng, true);
 		navigator.setSpeeds(0,0);
-		try{Thread.sleep(1000);}catch (Exception e){};
+		try{Thread.sleep(100);}catch (Exception e){};
 		odo.setPosition(new double [] {0.0, 0.0,0.0}, new boolean [] {true, true, true});
 		Sound.beepSequenceUp();
 	}

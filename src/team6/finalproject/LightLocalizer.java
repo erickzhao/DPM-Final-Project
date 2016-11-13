@@ -20,7 +20,7 @@ public class LightLocalizer
 	private double [] saveThetas;
 	private double xDist;
 	private double yDist;
-	private float speed=175;
+	private float speed=250;
 
 	/**
 	 * Constructor for the Light Localizer
@@ -95,8 +95,6 @@ public class LightLocalizer
 		xDist = -this.LStoWB * Math.cos(Math.toRadians(Math.abs(saveThetas[3] - saveThetas[1]) / 2));
 		yDist = -this.LStoWB * Math.cos(Math.toRadians(Math.abs(saveThetas[2] - saveThetas[0]) / 2));
 		
-		//Wait
-		try{Thread.sleep(2000);}catch(Exception e){};
 		
 		// Now we need to correct the heading
 		double angleCorrection;
