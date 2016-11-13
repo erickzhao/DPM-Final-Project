@@ -67,8 +67,8 @@ public class TestLocalize {
 		lcd.start();
 		usloc.doLocalization();
 		
-		LightLocalizer lightloc = new LightLocalizer(odo,11.5);
-		lightloc.doLocalization(); 
+		LightLocalizer lightloc = new LightLocalizer(odo,9.8);
+		lightloc.doLocalization();
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);	

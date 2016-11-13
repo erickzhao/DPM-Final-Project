@@ -32,7 +32,7 @@ public class LCDInfo extends PausableTimerListener{
 	}
 	
 	/**
-	 * Refreshes the sensor and odometer data on every Timer loop.
+	 * Refreshes the sensor and odometer data on every <code>Timer</code> loop.
 	 */
 	
 	public void timedOut() {

@@ -4,8 +4,7 @@ import team6.test.TestLocalize;
 import lejos.hardware.Sound;
 
 /**
- * Ultrasonic localizer class
- * Localizes the robot to the 0 degree angle heading using falling edge localization
+ * Class that localizes the robot to the 0 degree angle heading using falling edge localization
  * and updates the Odometer heading accordingly
  * 
  * @author Andrei Ungur
@@ -120,8 +119,8 @@ public class USLocalizer {
 	}
 	
 	/**
-	 * Filtered Data
-	 * @return filtered distance
+	 * Gets filtered data from ultrasonic sensor
+	 * @return 		filtered <code>float</code> distance
 	 */
 	private float getFilteredData() {
 		//Filter out faulty 255 data
@@ -148,8 +147,8 @@ public class USLocalizer {
 	 * Wraps angle around
 	 * Angle of 361 becomes 1
 	 * Angle of -1 becomes 359
-	 * @param angle
-	 * @return
+	 * @param angle		the <code>double</code> unwrapped angle
+	 * @return 			the <code>double</code> wrapped angle
 	 */
 	private double wrapAngle(double angle){
 		if (angle<0){
@@ -162,9 +161,9 @@ public class USLocalizer {
 	
 	/**
 	 * Calculates the angle heading offset of the robot using the angles at which the robot detected a wall
-	 * @param a		the first angle that the robot has latched
-	 * @param b		the second angle that the robot has latched
-	 * @return		the angle that the odometer is off by
+	 * @param a		the <code>double</code> first angle that the robot has latched
+	 * @param b		the <code>double</code> second angle that the robot has latched
+	 * @return		the <code>double</code> angle that the odometer is off by
 	 */
 	private double getEndAngle(double a, double b) {
 		if (a > b) {
@@ -175,7 +174,7 @@ public class USLocalizer {
 	
 	/**
 	 * Uses ultrasonic sensor readings to determine whether or not a wall has been detected
-	 * @return boolean true if wall is detected, false if wall is not detected
+	 * @return 	<code>boolean</code> true if wall is detected, false if wall is not detected
 	 */
 	private boolean seeWall(){
 		if (getFilteredData()==255){
