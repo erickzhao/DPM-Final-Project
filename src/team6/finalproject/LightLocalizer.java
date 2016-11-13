@@ -7,7 +7,7 @@ import lejos.hardware.Sound;
  * and performing calculation on the angles at which the lines were detected to determine 
  * the robot's true position on the coordinate plane, updating the odometer, and then travelling to true (0,0)
  * 
- * @author Andrei Ungur
+ * @author Myriam
  * @version 0.1
  */
 public class LightLocalizer 
