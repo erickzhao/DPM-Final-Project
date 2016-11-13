@@ -6,7 +6,7 @@ import lejos.hardware.lcd.TextLCD;
 /**
  * Class that manages the LCD display for the leJOS EV3 Brick. Displays odometer and sensor readings.
  * @author Andrei Ungur
- * @version 0.1
+ * @version 0.11
  */
 
 public class LCDInfo extends PausableTimerListener{
@@ -44,10 +44,14 @@ public class LCDInfo extends PausableTimerListener{
 		LCD.drawString("H: ", 0, 2);
 		LCD.drawString("Distance: ",0,3);
 		LCD.drawString("Light Sensor: ",0,4);
+		LCD.drawString("Object: ",0,5);
+		LCD.drawString("Block: ",0,6);
 		LCD.drawInt((int)(pos[0]), 3, 0);
 		LCD.drawInt((int)(pos[1]), 3, 1);
 		LCD.drawInt((int)pos[2], 3, 2);
 		LCD.drawInt((int)distance,11,3);
 		LCD.drawInt((int)lightReading,15,4);
+		LCD.drawString(String.valueOf(ColorPoller.isObject()), 8, 5);
+		LCD.drawString(String.valueOf(ColorPoller.isBlock()), 7, 6);
 	}
 }
