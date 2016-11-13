@@ -10,7 +10,7 @@ package team6.finalproject;
 public class ObjectSearch {
 	
 	/**
-	 * Constructor for the ObjectSearch
+	 * Constructor for Object Search.
 	 */
 	public ObjectSearch(){}
 	

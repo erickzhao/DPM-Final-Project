@@ -22,7 +22,7 @@ public class OdometryCorrection extends PausableTimerListener {
 	private static final double ODOMETER_ERROR_THRESHOLD = 1;
 
 	/**
-	 * Constructor for the odometer correction
+	 * Constructor for Odometer correction.
 	 * @param odometer	the <code>Odometer</code> object running on a separate </code>Timer</code> that is to be corrected
 	 */
 	public OdometryCorrection(Odometer odometer) {

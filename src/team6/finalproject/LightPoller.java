@@ -24,7 +24,7 @@ public class LightPoller extends PausableTimerListener{
 	private static double significantPercentThreshold = 20;
 	
 	/**
-	 * 
+	 * Constructor for Light Poller.
 	 * @param light		the <code>SampleProvider</code> that fetches the readings
 	 * @param lightData	the <code>float</code> array in which the <code>SampleProvider</code> stores its data
 	 */

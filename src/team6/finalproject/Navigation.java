@@ -19,8 +19,8 @@ public class Navigation
 	public static int headSide;
 
 	/**
-	 * Constructor for navigation. 
-	 * @param odo The odometer object used to keep track of the robot's location
+	 * Constructor for Navigation. 
+	 * @param odo The <code>Odometer</code> object used to keep track of the robot's location
 	 */
 	public Navigation(Odometer odo) 
 	{

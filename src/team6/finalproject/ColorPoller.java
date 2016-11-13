@@ -8,7 +8,7 @@ import lejos.robotics.SampleProvider;
  * <o>
  * Uses the color sensor's <code>RGBMode</code> readings to determine the color value of the
  * surface to be examined. Each reading is an array of 3 <code>float</code> values, which are
- * are the Red, Green, and Blue intensities, respectively. These values are normalized from 0 to 1,
+ * the Red, Green, and Blue intensities, respectively. These values are normalized from 0 to 1,
  * where 0 is no color detected and 1 is the maximum color value.
  * @author Erick Zhao
  * @version 0.11
@@ -21,7 +21,7 @@ public class ColorPoller extends PausableTimerListener {
 	
 	private static final float MIN_OBJECT_READING_VALUE= (float)0.015;
 	/**
-	 * Constructor for the color poller.
+	 * Constructor for Color Poller.
 	 * @param colorSensor	the <code>SampleProvider</code> that fetches the readings
 	 * @param colorData		the <code>float</code> array in which the <code>SampleProvider</code> stores its data
 	 */
