@@ -2,9 +2,8 @@ package team6.finalproject;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 /**
- * Navigation Class
- * <p>
- * Uses the {@link #odometer} class to create and travel along a coordinate plane.
+ * Class that uses the {@link #odometer} class to create and travel along a coordinate plane.
+ * <o>
  * Creates a (0,0) with localization and uses hardcoded measurements to travel along the competition surface
  * 
  * @author Andrei Ungur 

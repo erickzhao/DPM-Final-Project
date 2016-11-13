@@ -6,7 +6,7 @@ import lejos.robotics.SampleProvider;
 /**
  * Class that periodically polls a color sensor's <code>SampleProvider</code> to fetch brightness
  * values.
- * <p>
+ * <o>
  * Uses the color sensor's <code>RedMode</code> readings to determine the
  * brightness of a surface. These readings are normalized from 0 to 1, where 0 is black and 1 is white.
  * The class multiplies these readings by 100 to get more readable <code>int</code> values.
