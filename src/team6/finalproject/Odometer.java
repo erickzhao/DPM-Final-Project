@@ -28,14 +28,28 @@ package team6.finalproject;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
+/**
+ * Odometer class 
+ * <p>
+ * Creates a coordinate plane to allow the robot to understand where it is and to simplify navigation 
+ * @author Sean Lawlor, Andrei Ungur 
+ * @version 1.0
+ */
 public class Odometer extends PausableTimerListener {
 
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
 	private double leftRadius, rightRadius, width;
 	private double x, y, theta;
 	private double[] oldDH, dDH;
-
-	// constructor
+	/**
+	 * Constructor for the odometer
+	 * @param leftMotor Left Motor
+	 * @param rightMotor Right Motor
+	 * @param INTERVAL polling interval
+	 * @param autostart boolean start
+	 * @param wheelRadius radius of wheels
+	 * @param robotWidth length of robot's chasis
+	 */
 	public Odometer (EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, int INTERVAL, boolean autostart, double wheelRadius, double robotWidth) 
 	{
 
@@ -53,8 +67,9 @@ public class Odometer extends PausableTimerListener {
 		this.oldDH = new double[2];
 		this.dDH = new double[2];
 	}
-	/*
-	 * Calculates displacement and heading as title suggests
+	/** 
+	 * calculates displacement and heading 
+	 * @param data takes input data and makes necessary calculations to get displacement distance and heading
 	 */
 	private void getDisplacementAndHeading(double[] data) {
 		int leftTacho, rightTacho;
@@ -65,8 +80,8 @@ public class Odometer extends PausableTimerListener {
 		data[1] = (rightTacho * rightRadius - leftTacho * leftRadius) / width;
 	}
 
-	/*
-	 * Recompute the odometer values using the displacement and heading changes
+	/**
+	 * Recompute the odometer values using the displacement and heading changes 
 	 */
 	public void timedOut() {
 		this.getDisplacementAndHeading(dDH);
@@ -86,28 +101,41 @@ public class Odometer extends PausableTimerListener {
 		oldDH[1] += dDH[1];
 	}
 
-	// return X value
+	/**
+	 * getter for X value
+	 * @return X value to be used with navigation methods
+	 */
 	public double getX() {
 		synchronized (this) {
 			return x;
 		}
 	}
 
-	// return Y value
+	/**
+	 * getter for Y value
+	 * @return Y value to be used with navigation methods
+	 */
 	public double getY() {
 		synchronized (this) {
 			return y;
 		}
 	}
 
-	// return theta value
+	/**
+	 * getter for theta value
+	 * @return theta value to be used with navigation methods
+	 */
 	public double getAng() {
 		synchronized (this) {
 			return theta;
 		}
 	}
 
-	// set x,y,theta
+	/**
+	 * set position in the position array
+	 * @param position array holding x and y coordinates
+	 * @param update boolean array signalling if an update is needed or not
+	 */
 	public void setPosition(double[] position, boolean[] update) {
 		synchronized (this) {
 			if (update[0])
@@ -119,7 +147,10 @@ public class Odometer extends PausableTimerListener {
 		}
 	}
 
-	// return x,y,theta
+	/** 
+	 * getter for the total position array
+	 * @param position the array holding the x, y, and theta values for the odometer
+	 */
 	public void getPosition(double[] position) {
 		synchronized (this) {
 			position[0] = x;
@@ -127,14 +158,20 @@ public class Odometer extends PausableTimerListener {
 			position[2] = theta;
 		}
 	}
-
+	/**
+	 * getter for position, but in a synchronized block to return a new position
+	 * @return position array holding the x, y, and theta values for the odometer
+	 */
 	public double[] getPosition() {
 		synchronized (this) {
 			return new double[] { x, y, theta };
 		}
 	}
 
-	// accessors to motors
+	/**
+	 * motor getter
+	 * @return left and right motors (to stay synchronized)
+	 */
 	public EV3LargeRegulatedMotor [] getMotors() {
 		return new EV3LargeRegulatedMotor[] {this.leftMotor, this.rightMotor};
 	}
@@ -144,15 +181,25 @@ public class Odometer extends PausableTimerListener {
 	public EV3LargeRegulatedMotor getRightMotor() {
 		return this.rightMotor;
 	}
-
 	// static 'helper' methods
+	/** 
+	 * Helper method to convert angle into a usable, positive value
+	 * @param angle takes in angle to be converted/fixed
+	 * @return fixed angle
+	 */
 	public static double fixDegAngle(double angle) {
 		if (angle < 0.0)
 			angle = 360.0 + (angle % 360.0);
 
 		return angle % 360.0;
 	}
-
+	
+	/**
+	 * This method ensures the robot turns the minimum angle when going to a new heading
+	 * @param a angle one
+	 * @param b angle two
+	 * @return The minimum angle to turn to
+	 */
 	public static double minimumAngleFromTo(double a, double b) {
 		double d = fixDegAngle(b - a);
 

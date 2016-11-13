@@ -2,6 +2,14 @@ package team6.finalproject;
 
 import lejos.hardware.Sound;
 
+/**
+ * Ultrasonic localizer class
+ * Localizes the robot to the 0 degree angle heading using falling edge localization
+ * and updates the Odometer heading accordingly
+ * 
+ * @author Myriam
+ * @version 0.1
+ */
 public class USLocalizer {
 	public static double ROTATION_SPEED = 30;
 
@@ -10,10 +18,21 @@ public class USLocalizer {
 	private double THRESHOLD = 30.0;
 	private float speed = 175;
 
+	/**
+	 * Constructor for the UltraSonic Localizer
+	 * @param odo		the <code>Odometer</code> object that will be used to determine the robot's position
+	 */
 	public USLocalizer(Odometer odo) {
 		this.odo = odo;
 	}
 
+	/**
+	 * Localizes the robot by first rotating until it is facing a wall,
+	 * then rotating again and latching the angle at which it sees a wall,
+	 * then rotating the other direction and latching the angle at which it again sees a wall. 
+	 * These 2 angles are then used to determine the robot's true heading,
+	 * and then turn it to true 0 degrees
+	 */
 	public void doLocalization() {
 		double angleA, angleB;	//Latched on angles
 		float distance;
@@ -106,7 +125,7 @@ public class USLocalizer {
 		Sound.beepSequenceUp();
 	}
 	
-	/*
+	/**
 	 * Filtered Data
 	 * @return filtered distance
 	 */
@@ -147,6 +166,12 @@ public class USLocalizer {
 		return angle;
 	}
 	
+	/**
+	 * Calculates the angle heading offset of the robot using the angles at which the robot detected a wall
+	 * @param a		the first angle that the robot has latched
+	 * @param b		the second angle that the robot has latched
+	 * @return		the angle that the odometer is off by
+	 */
 	private double getEndAngle(double a, double b) {
 		if (a > b) {
 			return ((a+b)/2 - 225);
@@ -154,6 +179,10 @@ public class USLocalizer {
 		return ((a+b)/2 - 45);
 	}
 	
+	/**
+	 * Uses ultrasonic sensor readings to determine whether or not a wall has been detected
+	 * @return boolean true if wall is detected, false if wall is not detected
+	 */
 	private boolean seeWall(){
 		if (getFilteredData()==255){
 			return false;
