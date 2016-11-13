@@ -23,8 +23,8 @@ public abstract class PausableTimerListener implements TimerListener {
 	private static final int REFRESH_RATE = 50;
 	
 	/**
-	 * Constructor for the pausable timer listener.
-	 * <p>
+	 * Constructor for Pausable timer listener.
+	 * <o>
 	 * Instantiates a new <code>Timer</code> with a refresh rate of 50 ms, but does not
 	 * start it until the user decides to do so.
 	 */

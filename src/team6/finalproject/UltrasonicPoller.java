@@ -18,7 +18,7 @@ public class UltrasonicPoller extends PausableTimerListener {
 	private static float distance;
 	
 	/**
-	 * Constructor for the Ultrasonic Poller.
+	 * Constructor for Ultrasonic Poller.
 	 * @param us		the <code>SampleProvider</code> that fetches the readings
 	 * @param usData	the <code>float</code> array in which the <code>SampleProvider</code> stores its data
 	 */

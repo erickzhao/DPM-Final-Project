@@ -40,13 +40,13 @@ public class Odometer extends PausableTimerListener {
 	private double x, y, theta;
 	private double[] oldDH, dDH;
 	/**
-	 * Constructor for the odometer
-	 * @param leftMotor Left Motor
-	 * @param rightMotor Right Motor
-	 * @param INTERVAL polling interval
-	 * @param autostart boolean start
-	 * @param wheelRadius radius of wheels
-	 * @param robotWidth length of robot's chasis
+	 * Constructor for Odometer.
+	 * @param leftMotor the <code>EV3LargeRegulatedMotor</code> that is our left motor
+	 * @param rightMotor the <code>EV3LargeRegulatedMotor</code> that is our right motor
+	 * @param INTERVAL the <code>int</code> that is our polling interval
+	 * @param autostart the <code>boolean</code> telling us to start
+	 * @param wheelRadius the <code>double</code> that is the radius of the wheels
+	 * @param robotWidth the <code>double</code> that is the length of robot's chassis
 	 */
 	public Odometer (EV3LargeRegulatedMotor leftMotor, EV3LargeRegulatedMotor rightMotor, int INTERVAL, boolean autostart, double wheelRadius, double robotWidth) 
 	{
