@@ -11,7 +11,7 @@ import lejos.robotics.SampleProvider;
  * brightness of a surface. These readings are normalized from 0 to 1, where 0 is black and 1 is white.
  * The class multiplies these readings by 100 to get more readable <code>int</code> values.
  * Can also interpret sudden drops in light readings as passing over a black line in the grid.
- * @author Myriam Ayad
+ * @author Andrei Ungur, Myriam Ayad
  * @version 0.1
  */
 public class LightPoller extends PausableTimerListener{
