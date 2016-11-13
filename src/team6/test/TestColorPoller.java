@@ -32,7 +32,7 @@ public class TestColorPoller {
 		float[] colorData = new float[colorValue.sampleSize()];
 		ColorPoller colorPoll = new ColorPoller(colorValue,colorData);
 		
-		LCDInfo lcd = new LCDInfo(odo);
+		LCDInfo lcd = new LCDInfo(odo,null);
 		
 		odo.start();
 		lcd.start();

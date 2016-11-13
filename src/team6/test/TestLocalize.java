@@ -35,7 +35,7 @@ public class TestLocalize {
 	 //private static final EV3LargeRegulatedMotor lightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
 	 //private static final EV3LargeRegulatedMotor armMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	 private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
-	
+	 public static UltrasonicPoller uspoll;
 	 private static final Port usPort = LocalEV3.get().getPort("S4");  
 	 private static final Port lightPort = LocalEV3.get().getPort("S1"); 
 
@@ -56,10 +56,10 @@ public class TestLocalize {
 		SampleProvider lightValue = lightSensor.getMode("Red");
 		float[] lightData = new float[lightValue.sampleSize()];
 		
-		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData);
+		uspoll = new UltrasonicPoller(usValue, usData);
 		LightPoller lightpoll = new LightPoller(lightValue,lightData);
-		LCDInfo lcd = new LCDInfo(odo); 
-		USLocalizer usloc = new USLocalizer(odo);
+		LCDInfo lcd = new LCDInfo(odo,uspoll); 
+		USLocalizer usloc = new USLocalizer(odo,uspoll);
 		
 		odo.start();
 		uspoll.start();

@@ -1,5 +1,6 @@
 package team6.finalproject;
 
+import team6.test.TestLocalize;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 
@@ -17,13 +18,14 @@ public class LCDInfo extends PausableTimerListener{
 	private double [] pos;
 	private double distance;
 	private double lightReading;
-	
+	private UltrasonicPoller uspoll;
 	/**
 	 * Constructor for LCDInfo.
 	 * @param odo	the <code>Odometer</code> object whose readings are displayed on the screen
 	 */
-	public LCDInfo(Odometer odo) {
+	public LCDInfo(Odometer odo,UltrasonicPoller uspoll) {
 		this.odo = odo;
+		this.uspoll=uspoll;
 		
 		// initialise the arrays for displaying data
 		pos = new double [3];
@@ -34,7 +36,7 @@ public class LCDInfo extends PausableTimerListener{
 	 */
 	
 	public void timedOut() {
-		distance=UltrasonicPoller.getDistance();
+		distance=uspoll.getDistance();
 		lightReading=LightPoller.getReading();
 		odo.getPosition(pos);
 		LCD.clear();

@@ -11,13 +11,17 @@ public class ObjectSearch {
 	
 	private Odometer odo;
 	private Navigation nav;
-	
+	private float speed = 350;
+	private UltrasonicPoller lowerpoll;
+	private double THRESHOLD = 35;
+	private double sweepAng=90;
 	/**
 	 * Constructor for Object Search.
 	 */
-	public ObjectSearch(Odometer odo, Navigation nav) {
+	public ObjectSearch(Odometer odo, Navigation nav,UltrasonicPoller uspoll) {
 		this.odo = odo;
 		this.nav = nav;
+		this.lowerpoll = uspoll;
 	}
 	
 	/**
@@ -25,6 +29,11 @@ public class ObjectSearch {
 	 * keeping track of if objects are detected in the neighborhood
 	 */
 	public void sweep(){
+		nav.setSpeeds(-speed,speed);
+		while(odo.getAng()<sweepAng){
+			
+		}
+		nav.setSpeeds(0, 0);
 	}
 	
 	/**
