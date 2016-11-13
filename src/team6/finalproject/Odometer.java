@@ -29,9 +29,7 @@ package team6.finalproject;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**
- * Odometer class 
- * <p>
- * Creates a coordinate plane to allow the robot to understand where it is and to simplify navigation 
+ * Class that creates a coordinate plane to allow the robot to understand where it is and to simplify navigation.
  * @author Sean Lawlor, Andrei Ungur 
  * @version 1.0
  */

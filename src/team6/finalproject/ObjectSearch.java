@@ -1,8 +1,7 @@
 package team6.finalproject;
 
 /**
- * Object Search class
- * Scans the field for objects and determines if objects are to be avoided or if they are to be collected 
+ * Class that scans the field for objects and determines if objects are to be avoided or if they are to be collected.
  * 
  * @author Myriam Ayad
  * @version 0.1

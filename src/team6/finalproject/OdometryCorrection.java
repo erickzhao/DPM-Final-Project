@@ -3,9 +3,8 @@ package team6.finalproject;
 import lejos.hardware.Sound;
 
 /**
- * Odometer correction class.
- * <p>
- * Corrects odometer values while the robot is traveling to waypoints (i.e. moving in a straight line).
+ * Class that corrects odometer values while the robot is traveling to waypoints (i.e. moving in a straight line).
+ * <o>
  * Works by snapping the odometer's position to a grid line's X or Y position when passing over it.
  * 
  * @author Erick Zhao

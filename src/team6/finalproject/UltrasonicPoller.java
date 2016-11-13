@@ -4,7 +4,7 @@ import lejos.robotics.SampleProvider;
 
 /**
  * A {@link lejos.utility.TimerListener}-based ultrasonic sensor reading fetcher.
- * <p>
+ * <o>
  * Gets a reading from 0 to 2.55 metres from an ultrasonic sensor and returns the
  * reading as centimetres.
  * @author Andrei Ungur

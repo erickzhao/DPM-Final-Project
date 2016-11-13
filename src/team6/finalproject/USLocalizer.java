@@ -7,7 +7,7 @@ import lejos.hardware.Sound;
  * Localizes the robot to the 0 degree angle heading using falling edge localization
  * and updates the Odometer heading accordingly
  * 
- * @author Andrei Ungur
+ * @author Myriam
  * @version 0.1
  */
 public class USLocalizer {
