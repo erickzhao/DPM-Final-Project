@@ -1,6 +1,6 @@
 //Used to test odometry correction
 
-package team6.finalproject;
+package team6.test;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
