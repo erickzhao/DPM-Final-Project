@@ -2,8 +2,8 @@ package team6.finalproject;
 import lejos.hardware.Sound;
 
 /**
- * Light Localizer class
- * Localizes the robot to (0,0) by using the light sensor to detect black lines 
+ * Class that localizes the robot to (0,0) by using the light sensor to detect black lines 
+ * <o>
  * and performing calculation on the angles at which the lines were detected to determine 
  * the robot's true position on the coordinate plane, updating the odometer, and then travelling to true (0,0)
  * 
@@ -25,7 +25,7 @@ public class LightLocalizer
 	/**
 	 * Constructor for the Light Localizer
 	 * @param odo		the <code>Odometer</code> object that will be used to determine the robot's position
-	 * @param LStoWB	the distance from the light sensor to the wheel base 
+	 * @param LStoWB	the <code>double</code> distance from the light sensor to the wheel base 
 	 */
 	public LightLocalizer(Odometer odo, double LStoWB) 
 	{
