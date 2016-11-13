@@ -2,14 +2,13 @@ package team6.finalproject;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
-public class Navigation 
+public class Navigation extends PausableTimerListener
 {
 	final static int FAST = 200, SLOW = 100, ACCELERATION = 2000; 
 	final static double DEG_ERR = 3.0, CM_ERR = 1.0;
 	private Odometer odometer;
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
-	//Determines side which head faces
-	public static int headSide;
+	private double waypointX, waypointY;
 
 	public Navigation(Odometer odo) 
 	{
@@ -22,6 +21,35 @@ public class Navigation
 		// set acceleration
 		this.leftMotor.setAcceleration(ACCELERATION);
 		this.rightMotor.setAcceleration(ACCELERATION);
+		
+		// set default destination
+		waypointX = 0;
+		waypointY = 0;
+	}
+	
+	/*
+	 * Constructor designed for background operation
+	 */
+	public Navigation(Odometer odo, double x, double y){
+		this.odometer = odo;
+		this.waypointX = x;
+		this.waypointY = y;
+		
+		EV3LargeRegulatedMotor[] motors = this.odometer.getMotors();
+		this.leftMotor = motors[0];
+		this.rightMotor = motors[1];
+		
+		// set acceleration
+		this.leftMotor.setAcceleration(ACCELERATION);
+		this.rightMotor.setAcceleration(ACCELERATION);
+	}
+	
+	
+	/*
+	 * Required functons for TimerListener
+	 */
+	public void timedOut(){
+		travelTo(waypointX, waypointY);
 	}
 
 	/*

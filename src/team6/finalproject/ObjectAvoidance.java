@@ -8,7 +8,7 @@ public class ObjectAvoidance {
 	private Navigation nav;
 	private EV3MediumRegulatedMotor usMotor;
 	
-	ObjectAvoidance(double waypointX, double waypointY, Odometer odo, EV3MediumRegulatedMotor usMotor){
+	public ObjectAvoidance(double waypointX, double waypointY, Odometer odo, EV3MediumRegulatedMotor usMotor){
 		this.waypointX = waypointX;
 		this.waypointY = waypointY;
 		this.odo = odo;
