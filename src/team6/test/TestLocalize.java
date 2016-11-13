@@ -36,8 +36,8 @@ public class TestLocalize {
 	 //private static final EV3LargeRegulatedMotor armMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	 private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	
-	 private static final Port usPort = LocalEV3.get().getPort("S1");  
-	 private static final Port lightPort = LocalEV3.get().getPort("S4"); 
+	 private static final Port usPort = LocalEV3.get().getPort("S4");  
+	 private static final Port lightPort = LocalEV3.get().getPort("S1"); 
 
 	 //constants
 	 public static final double WHEEL_RADIUS = 2.15; //needs to be changed for robots physical configs
