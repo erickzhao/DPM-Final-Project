@@ -43,7 +43,6 @@ public class TestLocalize {
 	 public static final double WHEEL_RADIUS = 2.15; //needs to be changed for robots physical configs
 	 public static final double TRACK = 15.6; //needs to be changed for robots physical configs
 	
-	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
 		
@@ -61,7 +60,13 @@ public class TestLocalize {
 		LightPoller lightpoll = new LightPoller(lightValue,lightData);
 		LCDInfo lcd = new LCDInfo(odo); 
 		USLocalizer usloc = new USLocalizer(odo);
+		
+		odo.start();
+		uspoll.start();
+		lightpoll.start();
+		lcd.start();
 		usloc.doLocalization();
+		
 		LightLocalizer lightloc = new LightLocalizer(odo,11.5);
 		lightloc.doLocalization(); 
 		

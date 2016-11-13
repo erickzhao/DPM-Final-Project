@@ -16,7 +16,7 @@ public class USLocalizer {
 	private Odometer odo;
 	private Navigation navigator;
 	private double THRESHOLD = 30.0;
-	private float speed = 175;
+	private float speed = 350;
 
 	/**
 	 * Constructor for the UltraSonic Localizer
@@ -35,7 +35,6 @@ public class USLocalizer {
 	 */
 	public void doLocalization() {
 		double angleA, angleB;	//Latched on angles
-		float distance;
 		
 		//Setup navigation
 		navigator=new Navigation(odo);
@@ -43,25 +42,18 @@ public class USLocalizer {
 		//Falling Edge navigation
 		//For falling edge, the robot should be facing a wall first
 		while(!seeWall()){
-			distance=getFilteredData();
 			navigator.setSpeeds(-speed, speed);
 		}
+		
 		Sound.beep();
 		//Robot saw a wall
-		//Continue rotation in the same direction for a second to ensure that it faces a wall
-		//And that the reading wasn't erronous
-		navigator.setSpeeds(0,0);
-		navigator.setSpeeds(-speed,speed);
-		try{Thread.sleep(1000);}catch(Exception e){};
 		
 		//Stop movement, set starting position to the position when it faces the wall
 		navigator.setSpeeds(0,0);
 		odo.setPosition(new double [] {0.0, 0.0,90.0}, new boolean [] {true, true, true});
-		try{Thread.sleep(1000);}catch(Exception e){};
 		Sound.beep();
 		//Robot sees a wall : Rotate until it doesn't
-		while (!seeWall()){
-			distance=getFilteredData();
+		while (seeWall()){
 			navigator.setSpeeds(speed, -speed);
 		}
 		
@@ -71,23 +63,22 @@ public class USLocalizer {
 		try{Thread.sleep(200);}catch (Exception e){};
 		Sound.beep();
 		//Keep rotating until the robot sees a wall again, then latch the angle
-		while (seeWall()){
+		while (!seeWall()){
 			navigator.setSpeeds(speed,-speed);
-			distance=getFilteredData();
 		}
 		
 		//Stop the motors again
+		
+		navigator.setSpeeds(0,0);
+		try{Thread.sleep(200);}catch (Exception e){};
 		//Get AngleA
 		angleA=odo.getAng();
-		navigator.setSpeeds(0,0);
 		navigator.setSpeeds(-speed,speed);
-		try{Thread.sleep(200);}catch (Exception e){};
 		Sound.beep();
 		
 		//Switch direction and wait until it sees no wall
 		while (seeWall()){
 			navigator.setSpeeds(-speed, speed);
-			distance=getFilteredData();
 		}
 		Sound.beep();
 		
@@ -99,7 +90,6 @@ public class USLocalizer {
 		//Keep rotating until the robot sees a wall, then latch the angle
 		while (!seeWall()){
 			navigator.setSpeeds(-speed,speed);
-			distance=getFilteredData();
 		}
 		
 		navigator.setSpeeds(0,0);
@@ -115,12 +105,14 @@ public class USLocalizer {
 		
 		//Rotate robot to 90, which was its "initial" position
 		navigator.turnTo(90,true);
-		
+		navigator.setSpeeds(0,0);
+		try{Thread.sleep(1000);}catch (Exception e){};
 		//Rotate it back from "90" to the real (0,0)
-		finalAng=360-finalAng; //"Navigation" doesn't handle negative angles, so we wrap it around
-		
+		//finalAng=360-finalAng; //"Navigation" doesn't handle negative angles, so we wrap it around
 		//Turn to 0 degrees, and set the position
 		navigator.turnTo(finalAng, true);
+		navigator.setSpeeds(0,0);
+		try{Thread.sleep(1000);}catch (Exception e){};
 		odo.setPosition(new double [] {0.0, 0.0,0.0}, new boolean [] {true, true, true});
 		Sound.beepSequenceUp();
 	}
