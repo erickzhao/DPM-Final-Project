@@ -34,7 +34,7 @@ public class ObjectSearch {
 	
 	/**
 	 * Moves the robot to the starting point for the next neighborhood to scan
-	 * @param wayPoint	coordinate for start of next neighborhood to scan
+	 * @param wayPoint	the <code>int</code> coordinate for start of next neighborhood to scan
 	 */
 	public void travelToWaypoint(int wayPoint){}
 }

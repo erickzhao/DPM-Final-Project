@@ -31,7 +31,7 @@ public class ColorPoller extends PausableTimerListener {
 	}
 	
 	/**
-	 * Fetches 
+	 * Refreshes the color sensor data every <code>Timer</code> loop.
 	 */
 	@Override
 	public void timedOut() {
@@ -41,7 +41,6 @@ public class ColorPoller extends PausableTimerListener {
 	
 	/**
 	 * Reads the sensor and determines whether we're facing an object or block.
-	 * <p>
 	 * With styrofoam blocks, the green reading is approximately double the value of the red reading
 	 * and vice-versa for the wooden obstacles. Therefore, the green to red ratio in the RGB reading
 	 * determines whether or not the object detected is a block or an obstacle. There is also a threshold
@@ -57,7 +56,7 @@ public class ColorPoller extends PausableTimerListener {
 	
 	/**
 	 * Getter for color data.
-	 * @return a <code>float</code> array of RGB readings.
+	 * @return 		a <code>float</code> array of RGB readings.
 	 */
 	public float[] getReadings() {
 		return this.colorData;
@@ -65,7 +64,7 @@ public class ColorPoller extends PausableTimerListener {
 	
 	/**
 	 * Determines whether or not an object is detected by the color sensor.
-	 * @return a <code>boolean</code> indicating whether nor not we have an object detected
+	 * @return 		a <code>boolean</code> indicating whether nor not we have an object detected
 	 */
 	public static boolean isObject() {
 		return isObject;
@@ -73,7 +72,7 @@ public class ColorPoller extends PausableTimerListener {
 	
 	/**
 	 * Determines whether or not a styrofoam block is detected by the color sensor.
-	 * @return a <code>boolean</code> indicating whether or not we have a styrofoam block detected.
+	 * @return 		a <code>boolean</code> indicating whether or not we have a styrofoam block detected.
 	 */
 	public static boolean isBlock() {
 		return isBlock;

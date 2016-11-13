@@ -25,15 +25,17 @@ public class LightPoller extends PausableTimerListener{
 	
 	/**
 	 * Constructor for Light Poller.
-	 * @param light		the <code>SampleProvider</code> that fetches the readings
-	 * @param lightData	the <code>float</code> array in which the <code>SampleProvider</code> stores its data
+	 * @param light			the <code>SampleProvider</code> that fetches the readings
+	 * @param lightData		the <code>float</code> array in which the <code>SampleProvider</code> stores its data
 	 */
 	public LightPoller(SampleProvider light, float[] lightData) {
 		this.light = light;
 		this.lightData = lightData;
 	}
 	
-	// start the timer
+	/**
+	 * Refreshes the light sensor data every <code>Timer</code> loop.
+	 */
 	public void timedOut() {
 		light.fetchSample(lightData,0);						// acquire data
 		lightValue=lightData[0]*100;						// extract from buffer, cast to int
@@ -41,9 +43,10 @@ public class LightPoller extends PausableTimerListener{
 	
 	/**
 	 * Returns a <code>boolean</code> indicating if we are currently crossing a black line by comparing
-	 * the previous light sensor reading to the current one. If there is a very significant drop in
+	 * the previous light sensor reading to the current one. 
+	 * If there is a very significant drop in
 	 * the readings, then we know we have passed over a black line.
-	 * @return	whether or not we are crossing a black grid line or not
+	 * @return		a <code>boolean</code> indicating if the robot has crossed a black grid line or not.
 	 */
 	public static boolean blackLine(){
 		currentLight=lightValue;	
@@ -59,7 +62,7 @@ public class LightPoller extends PausableTimerListener{
 	
 	/**
 	 * Fetches the current light sensor reading.
-	 * @return		a <code>float</code> representing
+	 * @return		a <code>float</code> representing the light sensor reading.
 	 */
 	public static float getReading(){
 		return lightValue;
