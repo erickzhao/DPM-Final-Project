@@ -134,14 +134,20 @@ public class Navigation
 	public void goForward(double distance) 
 	{
 		//Robot rotates forward until distance to object is below a threshold
-		this.leftMotor.rotate(convertDistance(2.1, distance), false);
-		this.rightMotor.rotate(convertDistance(2.1, distance), false);
+		/*this.leftMotor.rotate(convertDistance(2.1, distance), false);
+		this.rightMotor.rotate(convertDistance(2.1, distance), false);*/
 		double x = odometer.getX();
 		double y = odometer.getY();
-		while(Math.hypot(odometer.getX()-x,odometer.getY()-y) < distance)
+		while(Math.hypot(odometer.getX()-x,odometer.getY()-y) < Math.abs(distance))
 		{
-			this.setSpeeds(SLOW,SLOW);
+			if (distance>0){
+				this.setSpeeds(SLOW,SLOW);
+			} else {
+				this.setSpeeds(-SLOW,-SLOW);
+			}
+			
 		}
+		
 		this.setSpeeds(0,0);
 	}
 	
