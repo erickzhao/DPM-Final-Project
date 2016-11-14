@@ -17,6 +17,7 @@ public class Navigation extends PausableTimerListener
 {
 	final static int FAST = 300, SLOW = 200, ACCELERATION = 4000; 
 	final static double DEG_ERR = 3.0, CM_ERR = 1.0;
+	final static double ANG_ERR = 10;
 	private Odometer odometer;
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
 	private double waypointX, waypointY;
@@ -66,7 +67,7 @@ public class Navigation extends PausableTimerListener
 	
 	
 	/**
-	 * Required functons for TimerListener
+	 * Required function for TimerListener
 	 */
 	public void timedOut(){
 		travelTo(waypointX, waypointY);
@@ -130,7 +131,9 @@ public class Navigation extends PausableTimerListener
 			minAng = (Math.atan2(y - odometer.getY(), x - odometer.getX())) * (180.0 / Math.PI);
 			if (minAng < 0)
 				minAng += 360.0;
-			this.turnTo(minAng, false);
+			if (Math.abs(odometer.getAng() - minAng) > ANG_ERR || Math.abs(odometer.getAng() - minAng) + ANG_ERR > 360.0){
+				this.turnTo(minAng, true);
+			}
 			this.setSpeeds(FAST, FAST);
 		}
 		this.setSpeeds(0, 0);

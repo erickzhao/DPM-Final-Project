@@ -1,5 +1,6 @@
 package team6.finalproject;
 
+import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 
 
@@ -11,19 +12,17 @@ import lejos.hardware.motor.EV3MediumRegulatedMotor;
  * @version 0.1 
  */
 public class ObjectAvoidance {
-	private double waypointX, waypointY;
 	private Odometer odo;
 	private Navigation nav;
 	private EV3MediumRegulatedMotor usMotor;
 	
 	private static final int MAX_FILTER = 5; // Must be an odd number for performance reason
 	private static final int MAX_US_DISTANCE = 255;
-	private static final float DANGER_DIST = 8;
-	private static final float DEADBAND = 2;
+	private static final float DANGER_DIST = 18;
+	private static final float DEADBAND = 3;
 	private static final double END_ANGLE_CORRECTION = 155;
-	private static final int BANGBANG_SENSOR_ANGLE = 80;
+	private static final int BANGBANG_SENSOR_ANGLE = 100;
 	
-	private int filterCount = 0;
 	private boolean navigating;
 	private float[] archivedValues = new float[MAX_FILTER];
 	private int archivedCount = 0;
@@ -33,14 +32,13 @@ public class ObjectAvoidance {
 	 * @param waypointY The y-value of the destination -- <code>double</code>
 	 */
 	public ObjectAvoidance(double waypointX, double waypointY, Odometer odo, EV3MediumRegulatedMotor usMotor){
-		this.waypointX = waypointX;
-		this.waypointY = waypointY;
 		this.odo = odo;
 		this.nav = new Navigation(odo, waypointX, waypointY);	
 		this.usMotor = usMotor;
+		for (int i = 0; i < MAX_FILTER; i++){
+			archivedValues[i] = MAX_US_DISTANCE;
+		}
 	}
-	
-	
 	
 	
 	/**
@@ -82,7 +80,7 @@ public class ObjectAvoidance {
 	 */
 	public int customIncrement(int thisNum, int limitNum){
 		int res;
-		if (thisNum < limitNum){
+		if (thisNum < limitNum - 1){
 			res = thisNum + 1;
 		} else {
 			res = 0;
@@ -101,7 +99,7 @@ public class ObjectAvoidance {
 				nav.stop();
 				nav.turnTo(odo.getAng() - 90, true);
 				double endAng = wrapAng(odo.getAng() + END_ANGLE_CORRECTION);
-				usMotor.rotateTo(BANGBANG_SENSOR_ANGLE);
+				usMotor.rotate(BANGBANG_SENSOR_ANGLE);
 				bangbang(endAng);
 				usMotor.rotateTo(0);
 				nav.start();
@@ -116,14 +114,13 @@ public class ObjectAvoidance {
 	 * Bangbang controller for object avoidance
 	 */
 	public void bangbang(double angle){
+		float errorDistance = getFilteredData() - DANGER_DIST;
 		if (odo.getAng() < angle){
 			while (odo.getAng() < angle){
-				float errorDistance = getFilteredData() - DANGER_DIST;
 				bangbangLogic(errorDistance);
 			}
 		} else {
 			while (odo.getAng() < angle || odo.getAng() >= 360 - END_ANGLE_CORRECTION){
-				float errorDistance = getFilteredData() - DANGER_DIST;
 				bangbangLogic(errorDistance);
 			}
 		}
