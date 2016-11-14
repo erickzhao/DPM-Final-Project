@@ -20,6 +20,7 @@ public class ObjectSearch {
 	private UltrasonicPoller lowerpoll;
 	private List<Float> obstacles = new ArrayList<Float>();
 	private double THRESHOLD = 60;
+	private double initX,initY;
 	private double sweepAng=90;
 	private boolean sameObject=false; //Determines if the robot is looking at the same object
 	/**
@@ -36,24 +37,31 @@ public class ObjectSearch {
 	 * keeping track of if objects are detected in the neighborhood
 	 */
 	public void sweep(){
+		initX=odo.getX();
+		initY=odo.getY();
+		double currAng = odo.getAng();
 		//Start sweeping counter-clockwise (I think it increases the angle)
 		nav.setSpeeds(-speed,speed);
-		while(odo.getAng()<sweepAng || odo.getAng()>(sweepAng+180)){
+		while(currAng<sweepAng || currAng>(sweepAng+180)){
 			//An object is seen
 			if(lowerpoll.getDistance()<=THRESHOLD){
 				Sound.beep();
 				//Add to object list
-				obstacles.add(new Float(odo.getAng()));
+				obstacles.add(new Float(currAng));
+				//Inspect object
+				inspectBlock();
+				nav.setSpeeds(-speed,speed);
 				//Continue turning as long as it sees the same object
 				while(lowerpoll.getDistance()<=THRESHOLD){
 					continue;
 				}
 				//Stop, to show that the object isn't seen anymore
 				nav.setSpeeds(0,0);
-				try{Thread.sleep(500);}catch(Exception e){};
+				try{Thread.sleep(1000);}catch(Exception e){};
 				//Continue turning
 				nav.setSpeeds(-speed, speed);
 			}
+			currAng=odo.getAng();
 		}
 		nav.setSpeeds(0, 0);
 	}
@@ -61,25 +69,27 @@ public class ObjectSearch {
 	/**
 	 * Uses light sensor to determine if block is wooden or if block is blue styrofoam
 	 */
-	private void inspectBlock(double heading) {
-		
-		nav.turnTo(heading,true);
+	private void inspectBlock(/*double heading*/) {
+		//The commented out code is to alternate between...
+		//... either inspecting blocks directly, or after having stored them
+		//nav.turnTo(heading,true);
 		
 		nav.goForward();
 		
 		while (!ColorPoller.isObject()) {
-			
+			continue;
 		}
 		nav.setSpeeds(0,0);
 		
 		if (ColorPoller.isBlock()) {
+			Sound.beep();
 			pickUpBlock();
 			nav.travelTo(90,90);
 		} else {
 			saveObstacleToMap(odo.getX(), odo.getY());
 			nav.goBackward();
-			while (Math.abs(odo.getX())>0.04 && Math.abs(odo.getY())>0.04){
-				
+			while(Math.hypot(Math.abs(initX-odo.getX()), Math.abs(initY-odo.getY()))>0.5){
+				continue;
 			}
 			nav.setSpeeds(0,0);
 		}

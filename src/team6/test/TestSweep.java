@@ -8,6 +8,7 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
+import team6.finalproject.ColorPoller;
 import team6.finalproject.LCDInfo;
 import team6.finalproject.LightPoller;
 import team6.finalproject.Navigation;
@@ -21,16 +22,17 @@ public class TestSweep {
 
 	/*
 	 * Resources :
+	 * 
 	 * Motors
-	 * > Port A:	Right
-	 * > Port B:	Light
-	 * > Port C:	Arm
-	 * > Port D:	Left
+	 * > Port A:	Right Wheel
+	 * > Port B:	Claw
+	 * > Port C:	Ultrasonic sensors
+	 * > Port D:	Left Wheel
 	 * Sensors
-	 * > Port S1:	UltraSonic
-	 * > Port S2:	None
-	 * > Port S3:	None
-	 * > Port S4:	Color
+	 * > Port S1:	Light (RedMode)
+	 * > Port S2:	Ultrasonic (Top)
+	 * > Port S3:	Color (RGB)
+	 * > Port S4:	Ultrasonic (Bottom)
 	 */
 	
 	 private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
@@ -38,8 +40,10 @@ public class TestSweep {
 	 //private static final EV3LargeRegulatedMotor armMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	 private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	 public static UltrasonicPoller uspoll;
+	 
 	 private static final Port usPort = LocalEV3.get().getPort("S4");  
-
+	 private static final Port colorPort = LocalEV3.get().getPort("S3"); 
+		
 	 //constants
 	 public static final double WHEEL_RADIUS = 2.15; //needs to be changed for robots physical configs
 	 public static final double TRACK = 15.6; //needs to be changed for robots physical configs
@@ -53,6 +57,12 @@ public class TestSweep {
 		SampleProvider usValue = usSensor.getMode("Distance");
 		float[] usData = new float[usValue.sampleSize()];
 		
+		@SuppressWarnings("resource")
+		SensorModes colorSensor = new EV3ColorSensor(colorPort);
+		SampleProvider colorValue = colorSensor.getMode("RGB");
+		float[] colorData = new float[colorValue.sampleSize()];
+		ColorPoller colorPoll = new ColorPoller(colorValue,colorData);
+		
 		uspoll = new UltrasonicPoller(usValue, usData);
 		
 		LCDInfo lcd = new LCDInfo(odo,uspoll); 
@@ -61,6 +71,7 @@ public class TestSweep {
 		
 		odo.start();
 		uspoll.start();
+		colorPoll.start();
 		lcd.start();
 		
 		ObjectSearch search = new ObjectSearch(odo, nav, uspoll);
