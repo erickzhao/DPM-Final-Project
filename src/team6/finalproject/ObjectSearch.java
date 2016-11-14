@@ -61,13 +61,56 @@ public class ObjectSearch {
 	/**
 	 * Uses light sensor to determine if block is wooden or if block is blue styrofoam
 	 */
-	public void inspectBlock(){}
+	private void inspectBlock(double heading) {
+		
+		nav.turnTo(heading,true);
+		
+		nav.goForward();
+		
+		while (!ColorPoller.isObject()) {
+			
+		}
+		nav.setSpeeds(0,0);
+		
+		if (ColorPoller.isBlock()) {
+			pickUpBlock();
+			nav.travelTo(90,90);
+		} else {
+			saveObstacleToMap(odo.getX(), odo.getY());
+			nav.goBackward();
+			while (Math.abs(odo.getX())>0.04 && Math.abs(odo.getY())>0.04){
+				
+			}
+			nav.setSpeeds(0,0);
+		}
+	}
 	
 	/**
 	 * Moves the robot to the starting point for the next neighborhood to scan
 	 * @param wayPoint	the <code>int</code> coordinate for start of next neighborhood to scan
 	 */
-	public void travelToWaypoint(int wayPoint){
+	public void travelToWaypoint(int wayPoint) {
+	
+	}
+	
+	/**
+	 * Grasps a styrofoam block with the claw.
+	 */
+	private void pickUpBlock() {
 		
+	}
+	
+	/**
+	 * 
+	 * @param x	the x coordinate currently read by the odometer
+	 * @param y	the y coordinate currently read by the odometer
+	 */
+	private void saveObstacleToMap(double x, double y) {
+		boolean grid[][] = new boolean[12][12];
+		
+		int gridX = (x>=0) ? ((int) x/30+1):0;
+		int gridY = (y>=0) ? ((int) y/30+1):0;
+		
+		grid[gridX][gridY] = true;
 	}
 }
