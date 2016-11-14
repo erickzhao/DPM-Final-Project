@@ -1,4 +1,4 @@
-package lightVariant;
+package team6.colorTest;
 
 import java.io.*;
 import lejos.hardware.Sound;

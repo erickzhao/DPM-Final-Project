@@ -1,4 +1,4 @@
-package lightVariant;
+package team6.colorTet;
 
 
 

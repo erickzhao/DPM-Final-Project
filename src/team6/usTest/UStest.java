@@ -1,4 +1,4 @@
-package usTest;
+package team6.usTest;
 
 
 import lejos.hardware.Button;

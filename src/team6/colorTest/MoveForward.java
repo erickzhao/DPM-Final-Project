@@ -1,4 +1,4 @@
-package lightVariant;
+package team6.colorTest;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
