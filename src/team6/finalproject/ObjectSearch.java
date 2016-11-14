@@ -22,6 +22,7 @@ public class ObjectSearch {
 	private double THRESHOLD = 60;
 	private double initX,initY;
 	private double sweepAng=90;
+	private double distToObject; //Distance that the robot travels to inspect object
 	private boolean sameObject=false; //Determines if the robot is looking at the same object
 	/**
 	 * Constructor for Object Search.
@@ -53,7 +54,13 @@ public class ObjectSearch {
 				nav.setSpeeds(-speed,speed);
 				//Continue turning as long as it sees the same object
 				while(lowerpoll.getDistance()<=THRESHOLD){
-					continue;
+					//If it turned for too big of an angle, check that it still sees the same object
+					if((odo.getAng()-currAng)>Math.atan(22.5/distToObject)){
+						//Next time the loop runs, it'll check if the object is the same
+						break;
+					} else {
+						continue;
+					}
 				}
 				//Stop, to show that the object isn't seen anymore
 				nav.setSpeeds(0,0);
@@ -91,6 +98,7 @@ public class ObjectSearch {
 			while(Math.hypot(Math.abs(initX-odo.getX()), Math.abs(initY-odo.getY()))>0.5){
 				continue;
 			}
+			distToObject = Math.hypot(Math.abs(initX-odo.getX()),Math.abs(initY-odo.getY()));
 			nav.setSpeeds(0,0);
 		}
 	}
