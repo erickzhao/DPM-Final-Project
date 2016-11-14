@@ -136,6 +136,10 @@ public class Navigation extends PausableTimerListener
 		this.navigating = false;
 	}
 	
+	/**
+	 * return whether the robot is navigating
+	 * @return
+	 */
 	public boolean navigating(){
 		return this.navigating;
 	}
