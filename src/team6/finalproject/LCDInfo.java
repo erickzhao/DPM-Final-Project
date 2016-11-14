@@ -19,8 +19,7 @@ public class LCDInfo extends PausableTimerListener{
 	private double lightReading;
 	
 	/**
-	 * Constructor for the LCDInfo class.
-	 * 
+	 * Constructor for LCDInfo.
 	 * @param odo	the <code>Odometer</code> object whose readings are displayed on the screen
 	 */
 	public LCDInfo(Odometer odo) {
@@ -31,7 +30,7 @@ public class LCDInfo extends PausableTimerListener{
 	}
 	
 	/**
-	 * Refreshes the sensor and odometer data on every Timer loop.
+	 * Refreshes the sensor and odometer data on every <code>Timer</code> loop.
 	 */
 	
 	public void timedOut() {

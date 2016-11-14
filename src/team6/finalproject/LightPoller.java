@@ -6,12 +6,12 @@ import lejos.robotics.SampleProvider;
 /**
  * Class that periodically polls a color sensor's <code>SampleProvider</code> to fetch brightness
  * values.
- * <p>
+ * <o>
  * Uses the color sensor's <code>RedMode</code> readings to determine the
  * brightness of a surface. These readings are normalized from 0 to 1, where 0 is black and 1 is white.
  * The class multiplies these readings by 100 to get more readable <code>int</code> values.
  * Can also interpret sudden drops in light readings as passing over a black line in the grid.
- * @author Myriam Ayad
+ * @author Myriam Ayad, Andrei Ungur
  * @version 0.1
  */
 public class LightPoller extends PausableTimerListener{
@@ -24,16 +24,18 @@ public class LightPoller extends PausableTimerListener{
 	private static double significantPercentThreshold = 20;
 	
 	/**
-	 * 
-	 * @param light		the <code>SampleProvider</code> that fetches the readings
-	 * @param lightData	the <code>float</code> array in which the <code>SampleProvider</code> stores its data
+	 * Constructor for Light Poller.
+	 * @param light			the <code>SampleProvider</code> that fetches the readings
+	 * @param lightData		the <code>float</code> array in which the <code>SampleProvider</code> stores its data
 	 */
 	public LightPoller(SampleProvider light, float[] lightData) {
 		this.light = light;
 		this.lightData = lightData;
 	}
 	
-	// start the timer
+	/**
+	 * Refreshes the light sensor data every <code>Timer</code> loop.
+	 */
 	public void timedOut() {
 		light.fetchSample(lightData,0);						// acquire data
 		lightValue=lightData[0]*100;						// extract from buffer, cast to int
@@ -41,9 +43,10 @@ public class LightPoller extends PausableTimerListener{
 	
 	/**
 	 * Returns a <code>boolean</code> indicating if we are currently crossing a black line by comparing
-	 * the previous light sensor reading to the current one. If there is a very significant drop in
+	 * the previous light sensor reading to the current one. 
+	 * If there is a very significant drop in
 	 * the readings, then we know we have passed over a black line.
-	 * @return	whether or not we are crossing a black grid line or not
+	 * @return		a <code>boolean</code> indicating if the robot has crossed a black grid line or not.
 	 */
 	public static boolean blackLine(){
 		currentLight=lightValue;	
@@ -59,7 +62,7 @@ public class LightPoller extends PausableTimerListener{
 	
 	/**
 	 * Fetches the current light sensor reading.
-	 * @return		a <code>float</code> representing
+	 * @return		a <code>float</code> representing the light sensor reading.
 	 */
 	public static float getReading(){
 		return lightValue;

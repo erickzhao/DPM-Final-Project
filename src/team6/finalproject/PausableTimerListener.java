@@ -5,7 +5,7 @@ import lejos.utility.Timer;
 
 /**
  * Abstraction of a pausable leJos {@link TimerListener} interface.
- * <p>
+ * <o>
  * Allows for any <code>TimerListener</code> to be instantiated and paused using the <code>start()</code>
  * and <code>stop()</code> methods within this class. Also instantiates every timer at a refresh rate of
  * 50 milliseconds.
@@ -23,8 +23,8 @@ public abstract class PausableTimerListener implements TimerListener {
 	private static final int REFRESH_RATE = 50;
 	
 	/**
-	 * Constructor for the pausable timer listener.
-	 * <p>
+	 * Constructor for Pausable timer listener.
+	 * <o>
 	 * Instantiates a new <code>Timer</code> with a refresh rate of 50 ms, but does not
 	 * start it until the user decides to do so.
 	 */

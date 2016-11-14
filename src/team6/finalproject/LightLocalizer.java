@@ -2,12 +2,12 @@ package team6.finalproject;
 import lejos.hardware.Sound;
 
 /**
- * Light Localizer class
- * Localizes the robot to (0,0) by using the light sensor to detect black lines 
+ * Class that localizes the robot to (0,0) by using the light sensor to detect black lines 
+ * <o>
  * and performing calculation on the angles at which the lines were detected to determine 
  * the robot's true position on the coordinate plane, updating the odometer, and then travelling to true (0,0)
  * 
- * @author Myriam
+ * @author Andrei Ungur
  * @version 0.1
  */
 public class LightLocalizer 
@@ -20,12 +20,12 @@ public class LightLocalizer
 	private double [] saveThetas;
 	private double xDist;
 	private double yDist;
-	private float speed=175;
+	private float speed=250;
 
 	/**
 	 * Constructor for the Light Localizer
 	 * @param odo		the <code>Odometer</code> object that will be used to determine the robot's position
-	 * @param LStoWB	the distance from the light sensor to the wheel base 
+	 * @param LStoWB	the <code>double</code> distance from the light sensor to the wheel base 
 	 */
 	public LightLocalizer(Odometer odo, double LStoWB) 
 	{
@@ -67,7 +67,7 @@ public class LightLocalizer
 		lineCrossed = false;
 		//Advance the robot by the LStoWB distance
 		//This adds precision since our light sensor has less chances of being on (0,0)
-		navigate.goForward(LStoWB);
+		navigate.goForward(-LStoWB);
 		
 		//Get the angle readings of the four lines on which the robot is positioned
 		navigate.setSpeeds(-speed, speed);
@@ -91,16 +91,21 @@ public class LightLocalizer
 		}
 		
 		//Robot got all four angles; stop its movement while the X and Y offset values are computed
+		/* Theta x: [Tester] 		 | [Real]
+		 * Theta 0: Top 	 		 | Bottom
+		 * Theta 1: Horizontal, left | right
+		 * Theta 2: Bottom 			 | Top
+		 * Theta 3: Horizontal, right| left
+		 * 
+		 */
 		navigate.setSpeeds(0, 0);
-		xDist = -this.LStoWB * Math.cos(Math.toRadians(Math.abs(saveThetas[3] - saveThetas[1]) / 2));
-		yDist = -this.LStoWB * Math.cos(Math.toRadians(Math.abs(saveThetas[2] - saveThetas[0]) / 2));
+		xDist = -this.LStoWB * Math.cos(Math.toRadians(Math.abs(saveThetas[1] - saveThetas[3]) / 2));
+		yDist = -this.LStoWB * Math.cos(Math.toRadians(Math.abs(saveThetas[0] - saveThetas[2]) / 2));
 		
-		//Wait
-		try{Thread.sleep(2000);}catch(Exception e){};
 		
 		// Now we need to correct the heading
 		double angleCorrection;
-		angleCorrection = 90 - Math.abs((saveThetas[1]-saveThetas[3])/2) - saveThetas[3];
+		angleCorrection = Math.abs((saveThetas[3]-saveThetas[1])/2) - saveThetas[1]+115;
 				
 		odo.setPosition(new double[]{xDist,yDist,odo.getAng()+angleCorrection},new boolean[]{true,true,true});
 		
@@ -108,5 +113,6 @@ public class LightLocalizer
 		navigate.travelTo(0, 0);
 		navigate.setSpeeds(0,0);
 		navigate.turnTo(0, true);
+		navigate.goForward(LStoWB-6.4);
 	}
 }

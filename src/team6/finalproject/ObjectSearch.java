@@ -1,8 +1,7 @@
 package team6.finalproject;
 
 /**
- * Object Search class
- * Scans the field for objects and determines if objects are to be avoided or if they are to be collected 
+ * Class that scans the field for objects and determines if objects are to be avoided or if they are to be collected.
  * 
  * @author Myriam Ayad
  * @version 0.1
@@ -11,7 +10,7 @@ package team6.finalproject;
 public class ObjectSearch {
 	
 	/**
-	 * Constructor for the ObjectSearch
+	 * Constructor for Object Search.
 	 */
 	public ObjectSearch(){}
 	
@@ -28,7 +27,7 @@ public class ObjectSearch {
 	
 	/**
 	 * Moves the robot to the starting point for the next neighborhood to scan
-	 * @param wayPoint	coordinate for start of next neighborhood to scan
+	 * @param wayPoint	the <code>int</code> coordinate for start of next neighborhood to scan
 	 */
 	public void travelToWaypoint(int wayPoint){}
 }

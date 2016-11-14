@@ -5,9 +5,8 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 
 /**
- * Navigation Class
- * <p>
- * Uses the {@link #odometer} class to create and travel along a coordinate plane.
+ * Class that uses the {@link #odometer} class to create and travel along a coordinate plane.
+ * <o>
  * Creates a (0,0) with localization and uses hardcoded measurements to travel along the competition surface
  * 
  * @author Andrei Ungur, Kael Du 
@@ -16,7 +15,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
 public class Navigation extends PausableTimerListener
 
 {
-	final static int FAST = 200, SLOW = 100, ACCELERATION = 2000; 
+	final static int FAST = 300, SLOW = 200, ACCELERATION = 4000; 
 	final static double DEG_ERR = 3.0, CM_ERR = 1.0;
 	private Odometer odometer;
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
@@ -24,8 +23,8 @@ public class Navigation extends PausableTimerListener
 	private boolean navigating = true;
 
 	/**
-	 * Constructor for navigation. 
-	 * @param odo The odometer object used to keep track of the robot's location
+	 * Constructor for Navigation. 
+	 * @param odo 		The <code>Odometer</code> object used to keep track of the robot's location
 	 */
 	public Navigation(Odometer odo) 
 	{
@@ -74,8 +73,8 @@ public class Navigation extends PausableTimerListener
 
 	/**
 	 * Sets both of the motor speeds jointly
-	 * @param lSpd Left motor speed -- <code>float</code>
-	 * @param rSpd Right motor speed -- <code>float</code>
+	 * @param lSpd 		a <code>float</code> representing left motor speed 
+	 * @param rSpd 		a <code>float</code> representing right motor speed
 	 */
 	public void setSpeeds(float lSpd, float rSpd) {
 		this.leftMotor.setSpeed(lSpd);
@@ -92,8 +91,8 @@ public class Navigation extends PausableTimerListener
 
 	/**
 	 * Sets both of the motor speeds jointly
-	 * @param lSpd Left motor speed -- <code>int</code>
-	 * @param rSpd Right motor speed -- <code>int</code>
+	 * @param lSpd 		an <code>int</code> representing left motor speed
+	 * @param rSpd 		an <code>int</code> representing right motor speed
 	 */
 	public void setSpeeds(int lSpd, int rSpd) {
 		this.leftMotor.setSpeed(lSpd);
@@ -119,9 +118,9 @@ public class Navigation extends PausableTimerListener
 	}
 
 	/** 
-	 * Takes as arguments the x and y position in cm. Will travel to designated position, while constantly updating it's heading
-	 * @param x X coordinate of destination
-	 * @param y Y coordinate of destination
+	 * Takes as arguments the x and y position in cm. Will travel to designated position, while constantly updating its heading.
+	 * @param x 	<code>double</code> X coordinate value of destination.
+	 * @param y 	<code>double</code> Y coordinate value of destination.
 	 */
 	public void travelTo(double x, double y) {
 		double minAng;
@@ -143,8 +142,8 @@ public class Navigation extends PausableTimerListener
 
 	/** 
 	 * Takes as arguments an angle in degrees and a boolean. Turns the robot to a given heading, used in conjunciton with {@link #travelTo(double, double)}
-	 * @param angle The angle (in degrees) to which the robot should turn
-	 * @param stop A <code>boolean</code> dictating whether or not the motors should stop upon completion of the turn
+	 * @param angle 	The angle (in degrees) to which the robot should turn
+	 * @param stop 		A <code>boolean</code> dictating whether or not the motors should stop upon completion of the turn
 	 */
 	public void turnTo(double angle, boolean stop) {
 
@@ -171,25 +170,31 @@ public class Navigation extends PausableTimerListener
 	}
 
 	/**
-	 * Makes the robot go forward a set distance in cm
-	 * @param distance The distance in cm to go forward
+	 * Makes the robot go forward a set distance in cm.
+	 * @param distance 		The <code>double</code> distance in cm to go forward
 	 */
 	public void goForward(double distance) 
 	{
 		//Robot rotates forward until distance to object is below a threshold
-		this.leftMotor.rotate(convertDistance(2.1, distance), false);
-		this.rightMotor.rotate(convertDistance(2.1, distance), false);
+		/*this.leftMotor.rotate(convertDistance(2.1, distance), false);
+		this.rightMotor.rotate(convertDistance(2.1, distance), false);*/
 		double x = odometer.getX();
 		double y = odometer.getY();
-		while(Math.hypot(odometer.getX()-x,odometer.getY()-y) < distance)
+		while(Math.hypot(odometer.getX()-x,odometer.getY()-y) < Math.abs(distance))
 		{
-			this.setSpeeds(50,50);
+			if (distance>0){
+				this.setSpeeds(SLOW,SLOW);
+			} else {
+				this.setSpeeds(-SLOW,-SLOW);
+			}
+			
 		}
+		
 		this.setSpeeds(0,0);
 	}
 	
 	/**
-	 * makes the robot travel forward until stopped/interrupted
+	 * Makes the robot travel forward indefinitely until stopped/interrupted.
 	 */
 	public void goForward(){
 		this.leftMotor.forward();
@@ -197,10 +202,10 @@ public class Navigation extends PausableTimerListener
 	}
 	
 	/**
-	 * used with {@link #goForward(double)} to convert distance to scale
-	 * @param radius radius of the wheel
-	 * @param distance distance parameter passed by the odometer
-	 * @return the converted distance value for travelling purposes 
+	 * Used with {@link #goForward(double)} to convert distance to scale.
+	 * @param radius 		the <code>double</code> radius of the wheel
+	 * @param distance 		the <code>double</code> distance parameter passed by the odometer
+	 * @return 				the converted <code>int</code> distance value for traveling purposes 
 	 */
 	private static int convertDistance(double radius, double distance){
 		return (int) ((180.0*distance) / (Math.PI*radius));
