@@ -155,8 +155,13 @@ public class Navigation
 	 * Makes the robot travel forward indefinitely until stopped/interrupted.
 	 */
 	public void goForward(){
-		this.leftMotor.forward();
-		this.rightMotor.forward();	
+		this.setSpeeds(FAST,FAST);
+	}
+	/**
+	 * Makes the robot travel backward indefinitely until stopped/interrupted.
+	 */
+	public void goBackward() {
+		this.setSpeeds(-FAST,-FAST);
 	}
 	
 	/**
