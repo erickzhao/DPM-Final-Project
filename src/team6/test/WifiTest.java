@@ -42,6 +42,7 @@ public class WifiTest {
 	 * 2. TEAM_NUMBER: your project team number
 	 * */
 
+	private static final String SERVER_IP = "192.168.2.35"; //this IP address is specific to a certain laptop. change accordingly
 	private static final int TEAM_NUMBER = 6;
 
 	private static TextLCD LCD = LocalEV3.get().getTextLCD();
