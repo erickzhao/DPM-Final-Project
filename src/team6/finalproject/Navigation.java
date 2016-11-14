@@ -20,7 +20,8 @@ public class Navigation extends PausableTimerListener
 	private Odometer odometer;
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
 	private double waypointX, waypointY;
-	private boolean navigating = true;
+	private boolean navigating = false;
+	private boolean turning = false;
 
 	/**
 	 * Constructor for Navigation. 
@@ -152,7 +153,7 @@ public class Navigation extends PausableTimerListener
 	public void turnTo(double angle, boolean stop) {
 
 		double error = angle - this.odometer.getAng();
-
+		this.turning = true;
 		while (Math.abs(error) > DEG_ERR) {
 
 			error = angle - this.odometer.getAng();
@@ -170,7 +171,16 @@ public class Navigation extends PausableTimerListener
 
 		if (stop) {
 			this.setSpeeds(0, 0);
+			this.turning = false;
 		}
+	}
+	
+	/**
+	 * return whether the robot is turning
+	 * @return
+	 */
+	public boolean turing(){
+		return this.turning;
 	}
 
 	/**
