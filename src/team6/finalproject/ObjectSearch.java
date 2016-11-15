@@ -8,7 +8,7 @@ import lejos.hardware.Sound;
 /**
  * Class that scans the field for objects and determines if objects are to be avoided or if they are to be collected.
  * 
- * @author Myriam Ayad
+ * @author Andrei Ungur, Erick Zhao
  * @version 0.1
  */
 
@@ -20,7 +20,7 @@ public class ObjectSearch {
 	private UltrasonicPoller lowerpoll;
 	private List<Float> obstacles = new ArrayList<Float>();
 	private double THRESHOLD = 60;
-	private double initX,initY;
+	private double initX,initY,initTheta,endzoneX,endzoneY; //We take info for the endzone through wi-fi
 	private double sweepAng=90;
 	private double distToObject; //Distance that the robot travels to inspect object
 	private boolean sameObject=false; //Determines if the robot is looking at the same object
@@ -31,6 +31,39 @@ public class ObjectSearch {
 		this.odo = odo;
 		this.nav = nav;
 		this.lowerpoll = uspoll;
+	}
+	/**
+	 * Implements all the elements of the search into an algorithm.
+	 */
+	public void doSearch(){
+		//The amount of time for which the search runs is five minutes.
+		//After five minutes, this infinite loop would be interrupted and the robot
+		//will return to (0,0).
+		endzoneX = 60.96;
+		endzoneY = 60.96;
+		while(true){
+			int wp=0;
+			//Scan the next neighbourhood
+			sweep();
+			travelToWaypoint(wp);
+			wp++;
+		}
+	}
+	
+	/**
+	 * Brings the robot to the end zone and back to the neighborhood it left from.
+	 * It takes as input the end zones coordinates.
+	 */
+	public void bringToEndzone(double x, double y){
+		initX=odo.getX();
+		initY=odo.getY();
+		initTheta=odo.getAng();
+		//Bring block to endzone
+		nav.travelTo(x, y);
+		handleBlock(false);
+		//Bring robot back to last neighborhood
+		nav.travelTo(initX, initY);
+		nav.turnTo(initTheta, true);
 	}
 	
 	/**
@@ -90,8 +123,8 @@ public class ObjectSearch {
 		
 		if (ColorPoller.isBlock()) {
 			Sound.beep();
-			pickUpBlock();
-			nav.travelTo(90,90);
+			handleBlock(true);
+			bringToEndzone(endzoneX,endzoneY);
 		} else {
 			saveObstacleToMap(odo.getX(), odo.getY());
 			nav.goBackward();
@@ -108,13 +141,36 @@ public class ObjectSearch {
 	 * @param wayPoint	the <code>int</code> coordinate for start of next neighborhood to scan
 	 */
 	public void travelToWaypoint(int wayPoint) {
-	
+		switch (wayPoint){
+		case 1:
+		case 2:
+			nav.travelTo(odo.getX()+4*30.48, odo.getY());
+			break;
+		case 3:
+		case 6:
+			nav.travelTo(odo.getX(), odo.getY()+30.48);
+			break;
+		case 4: 
+		case 5:
+			nav.travelTo(odo.getX()-4*30.48,odo.getY());
+			break;
+		case 7: 
+		case 8:
+			nav.travelTo(odo.getX()+4*30.48,odo.getY());
+			break;
+		case 9:
+			nav.travelTo(0, 0);
+			nav.turnTo(0,true);
+			break;
+		}
+			
 	}
 	
 	/**
-	 * Grasps a styrofoam block with the claw.
+	 * Grasps a styrofoam block with the claw if "pickUp" is true.
+	 * Releasses styrofoam block if "pickUp" is false.
 	 */
-	private void pickUpBlock() {
+	private void handleBlock(boolean pickUp) {
 		
 	}
 	
