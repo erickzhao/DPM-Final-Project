@@ -14,8 +14,11 @@ public class UStest {
 
 	static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
-	private static final Port usPort = LocalEV3.get().getPort("S3");
-	
+	private static final Port usPort = LocalEV3.get().getPort("S4");
+	private static final Port usPort2 = LocalEV3.get().getPort("S2");
+	private static final String portName1 = "_Lower_SimpleOneMeter";			
+	private static final String portName2 = "_Upper_SimpleOneMeter";
+			
 	private static final int WHEEL_SPEED = 150;
 	
 	
@@ -30,7 +33,13 @@ public class UStest {
 		SampleProvider usValue = usSensor.getMode("Distance");
 		float[] usData = new float[usValue.sampleSize()];
 		
-		DataLogger dl = new DataLogger(usValue, usData);
+		@SuppressWarnings("resource")    
+		SensorModes usSensor2 = new EV3UltrasonicSensor(usPort2);
+		SampleProvider usValue2 = usSensor2.getMode("Distance");
+		float[] usData2 = new float[usValue2.sampleSize()];
+		
+		DataLogger dl1 = new DataLogger(usValue, usData, portName1);
+		DataLogger dl2 = new DataLogger(usValue2, usData2, portName2);
 		Turn720 ttt = new Turn720(WHEEL_SPEED, leftMotor, rightMotor);
 		
 		do {
@@ -51,7 +60,8 @@ public class UStest {
 			t.drawString("Running!", 0, 0);
 			
 			ttt.start();
-			dl.start();
+			dl1.start();
+			dl2.start();
 			
 			
 			
@@ -61,7 +71,8 @@ public class UStest {
 			t.clear();
 			t.drawString("Running!", 0, 0);
 			
-			dl.start();
+			dl1.start();
+			dl2.start();
 			
 			while(Button.waitForAnyPress() != Button.ID_ESCAPE);
 			System.exit(0);

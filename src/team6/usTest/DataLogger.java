@@ -13,24 +13,25 @@ public class DataLogger extends Thread{
 	
 	private SampleProvider usSensor;
 	private float[] usData;
+	private String name;
 	
 	
-	
-	DataLogger (SampleProvider usSensor, float[] usData){
+	DataLogger (SampleProvider usSensor, float[] usData, String name){
 		this.usSensor = usSensor;
 		this.usData = usData;
+		this.name = name;
 	}
 	
 	
 	float distance;
     String theWord="";
     int count = 0;
-    float MAX_DISTANCE = 255;
+    float MAX_DISTANCE = 100;
 	
 	@Override
 	public void run(){
 		try{
-		    PrintWriter writer = new PrintWriter("Interference404.txt", "UTF-8");
+		    PrintWriter writer = new PrintWriter("Interference"+name+".txt", "UTF-8");
 		    
 		    
 			while (count<=6000) {
