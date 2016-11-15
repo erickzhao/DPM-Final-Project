@@ -57,7 +57,7 @@ public class Final {
 		
 		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData);
 		LightPoller lightpoll = new LightPoller(lightValue,lightData);
-		LCDInfo lcd = new LCDInfo(odo); 
+		LCDInfo lcd = new LCDInfo(odo,uspoll); 
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);	

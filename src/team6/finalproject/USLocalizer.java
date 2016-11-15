@@ -1,5 +1,6 @@
 package team6.finalproject;
 
+import team6.test.TestLocalize;
 import lejos.hardware.Sound;
 
 /**
@@ -13,6 +14,7 @@ public class USLocalizer {
 	public static double ROTATION_SPEED = 30;
 
 	private Odometer odo;
+	private UltrasonicPoller uspoll;
 	private Navigation navigator;
 	private double THRESHOLD = 30.0;
 	private float speed = 350;
@@ -21,8 +23,9 @@ public class USLocalizer {
 	 * Constructor for the UltraSonic Localizer
 	 * @param odo		the <code>Odometer</code> object that will be used to determine the robot's position
 	 */
-	public USLocalizer(Odometer odo) {
+	public USLocalizer(Odometer odo,UltrasonicPoller uspoll) {
 		this.odo = odo;
+		this.uspoll=uspoll;
 	}
 
 	/**
@@ -124,12 +127,12 @@ public class USLocalizer {
 		int filter=0;
 
 		//Fetch data
-		float distance = UltrasonicPoller.getDistance();			
+		float distance = uspoll.getDistance();			
 		
 		//Check five times if the data is accurate
 		while (filter<5 && distance==255){
 			filter++;
-			distance=UltrasonicPoller.getDistance();
+			distance=uspoll.getDistance();
 		}
 		filter=0;
 		

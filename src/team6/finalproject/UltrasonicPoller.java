@@ -40,7 +40,7 @@ public class UltrasonicPoller extends PausableTimerListener {
 	 * Gets the distance value fetched by the <code>SampleProvider</code>.
 	 * @return		the <code>float</code> value of the distance read by the ultrasonic sensor
 	 */
-	public static float getDistance(){
+	public float getDistance(){
 		return distance;
 	}
 }
