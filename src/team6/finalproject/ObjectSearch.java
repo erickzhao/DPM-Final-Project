@@ -20,6 +20,11 @@ public class ObjectSearch {
 	private UltrasonicPoller lowerpoll;
 	private List<Float> obstacles = new ArrayList<Float>();
 	private double THRESHOLD = 60;
+	//If boardsize is 1 : It moves down one square at a time
+	//If boardsize is 2 : It moves down 2 squares at a time (etc.)
+	//For the final, since we're splitting 12 blocks in 3, boardsize = 4.
+	//For the beta demo, we can split 8 blocks in 3 with boardsize = 8/3.
+	private double BOARDSIZE = 1;
 	private double initX,initY,initTheta,endzoneX,endzoneY; //We take info for the endzone through wi-fi
 	private double sweepAng=90;
 	private double distToObject; //Distance that the robot travels to inspect object
@@ -41,11 +46,13 @@ public class ObjectSearch {
 		//will return to (0,0).
 		endzoneX = 60.96;
 		endzoneY = 60.96;
+		int wp=1;
 		while(true){
-			int wp=0;
 			//Scan the next neighbourhood
 			sweep();
+			Sound.beep();
 			travelToWaypoint(wp);
+			nav.turnTo(0, true);
 			wp++;
 		}
 	}
@@ -97,7 +104,7 @@ public class ObjectSearch {
 				}
 				//Stop, to show that the object isn't seen anymore
 				nav.setSpeeds(0,0);
-				try{Thread.sleep(1000);}catch(Exception e){};
+				try{Thread.sleep(100);}catch(Exception e){};
 				//Continue turning
 				nav.setSpeeds(-speed, speed);
 			}
@@ -144,7 +151,7 @@ public class ObjectSearch {
 		switch (wayPoint){
 		case 1:
 		case 2:
-			nav.travelTo(odo.getX()+4*30.48, odo.getY());
+			nav.travelTo(odo.getX()+BOARDSIZE*30.48, odo.getY());
 			break;
 		case 3:
 		case 6:
@@ -152,11 +159,11 @@ public class ObjectSearch {
 			break;
 		case 4: 
 		case 5:
-			nav.travelTo(odo.getX()-4*30.48,odo.getY());
+			nav.travelTo(odo.getX()-BOARDSIZE*30.48,odo.getY());
 			break;
 		case 7: 
 		case 8:
-			nav.travelTo(odo.getX()+4*30.48,odo.getY());
+			nav.travelTo(odo.getX()+BOARDSIZE*30.48,odo.getY());
 			break;
 		case 9:
 			nav.travelTo(0, 0);
