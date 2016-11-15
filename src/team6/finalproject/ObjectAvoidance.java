@@ -45,8 +45,6 @@ public class ObjectAvoidance {
 	 * Travel to the set destination (x,y) while avoiding obstacles
 	 */
 	public void travel(){
-		navigating = true;
-		nav.start();
 		avoiding();
 	}
 	
@@ -93,10 +91,13 @@ public class ObjectAvoidance {
 	 */
 	public void avoiding(){
 		float distance;
+		navigating = true;
+		nav.start();
 		while (navigating){
 			distance = getFilteredData();
 			if (distance <= DANGER_DIST){
 				nav.stop();
+				nav.setSpeeds(0, 0);
 				nav.turnTo(odo.getAng() - 90, true);
 				double endAng = wrapAng(odo.getAng() + END_ANGLE_CORRECTION);
 				usMotor.rotate(BANGBANG_SENSOR_ANGLE);

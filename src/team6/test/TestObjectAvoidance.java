@@ -68,7 +68,7 @@ public class TestObjectAvoidance {
 		uspoll.start();
 		lcd.start();
 		
-		ObjectAvoidance oa = new ObjectAvoidance(150,150, odo, usMotor);
+		ObjectAvoidance oa = new ObjectAvoidance(90,90, odo, usMotor);
 		oa.travel();
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
