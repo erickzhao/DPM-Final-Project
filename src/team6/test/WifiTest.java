@@ -131,7 +131,7 @@ public class WifiTest {
 				lrzX = t.get("LRZx");
 				lrzY = t.get("LRZy");
 				urzX = t.get("URZx");
-				urzY = t.get("LRZy");
+				urzY = t.get("URZy");
 				lgzX = t.get("LGZx");
 				lgzY = t.get("LGZy");
 				ugzX = t.get("UGZx");
@@ -144,7 +144,7 @@ public class WifiTest {
 				System.out.println("Lower Red X: " + lrzX);
 				System.out.println("Lower Red Y: " + lrzY);
 				System.out.println("Upper Red X: " + urzX);
-				System.out.println("Upper Red X: " + urzY);
+				System.out.println("Upper Red Y: " + urzY);
 				System.out.println("Lower Green X: " + lgzX);
 				System.out.println("Lower Green Y: " + lgzY);
 				System.out.println("Upper Green X: " + ugzX);
