@@ -51,7 +51,7 @@ public class WifiTest {
 	 * 2. TEAM_NUMBER: your project team number
 	 * */
 
-	private static final String SERVER_IP = "192.168.2.35"; //this IP address is specific to a certain laptop. change accordingly
+	private static final String SERVER_IP = "192.168.2.6"; //this IP address is specific to a certain laptop. change accordingly
 	private static final int TEAM_NUMBER = 6;
 
 	public static int buldingTeamNumber;
@@ -151,10 +151,20 @@ public class WifiTest {
 				System.out.println("Upper Green Y: " + ugzY);
 				
 				Button.waitForAnyPress();
-				LCD.clear();
+				
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				System.out.println();
+				System.out.println();
 				
 				Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
 				Navigation navig = new Navigation(odo);
+				
+				LCD.clear();
 				
 				LCDInfo lcd = new LCDInfo(odo);
 				lcd.start();
