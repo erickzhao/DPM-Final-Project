@@ -29,6 +29,31 @@ public class TestParameterPassing {
 		
 		Wifi.getParameters();
 		
+		System.out.println("Building Team: " + Wifi.buldingTeamNumber);
+		System.out.println("Building Corner: " + Wifi.buildingStartingCorner);
+		System.out.println("Collecting Team: " + Wifi.collectorTeamNumber);
+		System.out.println("Collecting Corner: " + Wifi.collectingStartingCorner);
+		System.out.println("Lower Red X: " + Wifi.lrzX);
+		System.out.println("Lower Red Y: " + Wifi.lrzY);
+		System.out.println("Upper Red X: " + Wifi.urzX);
+		System.out.println("Upper Red Y: " + Wifi.urzY);
+		System.out.println("Lower Green X: " + Wifi.lgzX);
+		System.out.println("Lower Green Y: " + Wifi.lgzY);
+		System.out.println("Upper Green X: " + Wifi.ugzX);
+		System.out.println("Upper Green Y: " + Wifi.ugzY);
+		
+		Button.waitForAnyPress();
+		
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		System.out.println();
+		
+		
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
 		Navigation navig = new Navigation(odo);
 		
@@ -60,3 +85,4 @@ public class TestParameterPassing {
 	}
 
 }
+
