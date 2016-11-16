@@ -8,7 +8,7 @@ import lejos.hardware.lcd.TextLCD;
 
 public class Wifi {
 	
-	private static final String SERVER_IP = "192.168.2.35"; //this IP address is specific to a certain laptop. change accordingly
+	private static final String SERVER_IP = "192.168.2.6"; //this IP address is specific to a certain laptop. change accordingly
 	private static final int TEAM_NUMBER = 6;
 
 	public static int buldingTeamNumber;
@@ -60,26 +60,12 @@ public class Wifi {
 				lrzX = t.get("LRZx");
 				lrzY = t.get("LRZy");
 				urzX = t.get("URZx");
-				urzY = t.get("LRZy");
+				urzY = t.get("URZy");
 				lgzX = t.get("LGZx");
 				lgzY = t.get("LGZy");
 				ugzX = t.get("UGZx");
 				ugzY = t.get("UGZy");
 				
-				/*
-				System.out.println("Building Team: " + buldingTeamNumber);
-				System.out.println("Building Corner: " + buildingStartingCorner);
-				System.out.println("Collecting Team: " + collectorTeamNumber);
-				System.out.println("Collecting Corner: " + collectingStartingCorner);
-				System.out.println("Lower Red X: " + lrzX);
-				System.out.println("Lower Red Y: " + lrzY);
-				System.out.println("Upper Red X: " + urzX);
-				System.out.println("Upper Red X: " + urzY);
-				System.out.println("Lower Green X: " + lgzX);
-				System.out.println("Lower Green Y: " + lgzY);
-				System.out.println("Upper Green X: " + ugzX);
-				System.out.println("Upper Green Y: " + ugzY);
-				*/
 			}
 		}
 	}
