@@ -62,13 +62,13 @@ public class TestObjectAvoidance {
 		
 		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData);
 		LightPoller lightpoll = new LightPoller(lightValue,lightData);
-		LCDInfo lcd = new LCDInfo(odo); 
+		LCDInfo lcd = new LCDInfo(odo, uspoll); 
 		
 		odo.start();
 		uspoll.start();
 		lcd.start();
 		
-		ObjectAvoidance oa = new ObjectAvoidance(90,90, odo, usMotor);
+		ObjectAvoidance oa = new ObjectAvoidance(90,90, odo, usMotor, uspoll);
 		oa.travel();
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);

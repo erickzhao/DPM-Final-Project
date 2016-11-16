@@ -12,7 +12,7 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  * @author Andrei Ungur, Kael Du 
  * @version 0.1 
  */
-public class Navigation extends PausableTimerListener
+public class Navigation extends Thread
 
 {
 	final static int FAST = 300, SLOW = 200, ACCELERATION = 4000; 
@@ -21,8 +21,9 @@ public class Navigation extends PausableTimerListener
 	private Odometer odometer;
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
 	private double waypointX, waypointY;
-	private boolean navigating = false;
+	private boolean navigating = true;
 	private boolean turning = false;
+	public boolean cancelled = false;
 
 	/**
 	 * Constructor for Navigation. 
@@ -69,8 +70,27 @@ public class Navigation extends PausableTimerListener
 	/**
 	 * Required function for TimerListener
 	 */
-	public void timedOut(){
-		travelTo(waypointX, waypointY);
+	@Override
+	public void run(){
+		double minAng;
+		while (navigating){
+			while ((Math.abs(waypointX - odometer.getX()) > CM_ERR || Math.abs(waypointY - odometer.getY()) > CM_ERR)
+					&& !cancelled) {
+				minAng = (Math.atan2(waypointY - odometer.getY(), waypointX - odometer.getX())) * (180.0 / Math.PI);
+				if (minAng < 0)
+					minAng += 360.0;
+				if (Math.abs(odometer.getAng() - minAng) > ANG_ERR || Math.abs(odometer.getAng() - minAng) + ANG_ERR > 360.0){
+					this.turnTo(minAng, true);
+				}
+				this.setSpeeds(FAST, FAST);
+			
+				}
+		if(Math.abs(waypointX - odometer.getX()) < CM_ERR && Math.abs(waypointY - odometer.getY()) < CM_ERR){
+			this.setSpeeds(0, 0);
+			this.navigating = false;
+			}
+		}
+	
 	}
 
 	/**
@@ -126,8 +146,7 @@ public class Navigation extends PausableTimerListener
 	 */
 	public void travelTo(double x, double y) {
 		double minAng;
-		this.navigating = true;
-		while (Math.abs(x - odometer.getX()) > CM_ERR || Math.abs(y - odometer.getY()) > CM_ERR) {
+		while ((Math.abs(x - odometer.getX()) > CM_ERR || Math.abs(y - odometer.getY()) > CM_ERR)) {
 			minAng = (Math.atan2(y - odometer.getY(), x - odometer.getX())) * (180.0 / Math.PI);
 			if (minAng < 0)
 				minAng += 360.0;
@@ -178,6 +197,32 @@ public class Navigation extends PausableTimerListener
 		}
 	}
 	
+	/** 
+	 * Takes as arguments an angle in degrees and a boolean. Turns the robot to a given heading, used in conjunciton with {@link #travelTo(double, double)}
+	 * @param angle 	The angle (in degrees) to which the robot should turn
+	 * @param stop 		A <code>boolean</code> dictating whether or not the motors should stop upon completion of the turn
+	 */
+	public void revisedTurnTo(double angle, boolean stop) {
+
+		double error = angle - this.odometer.getAng();
+		this.turning = true;
+		this.cancelled = true;
+
+		error = angle - this.odometer.getAng();
+		
+		if (error > 180){
+			leftMotor.rotate(convertDistance(odometer.getWheelRadius(), odometer.getTrack(), 360 - error),true);
+			rightMotor.rotate(-convertDistance(odometer.getWheelRadius(), odometer.getTrack(), 360 - error),false);
+		} else {
+			leftMotor.rotate(-convertDistance(odometer.getWheelRadius(), odometer.getTrack(), error),true);
+			rightMotor.rotate(convertDistance(odometer.getWheelRadius(), odometer.getTrack(), error),false);
+			
+		}
+
+		
+		this.turning = false;
+	}
+	
 	/**
 	 * return whether the robot is turning
 	 * @return
@@ -222,10 +267,12 @@ public class Navigation extends PausableTimerListener
 	 * Used with {@link #goForward(double)} to convert distance to scale.
 	 * @param radius 		the <code>double</code> radius of the wheel
 	 * @param distance 		the <code>double</code> distance parameter passed by the odometer
+	 * @param angle			the <code>double</code> angle to turn 
 	 * @return 				the converted <code>int</code> distance value for traveling purposes 
 	 */
-	private static int convertDistance(double radius, double distance){
-		return (int) ((180.0*distance) / (Math.PI*radius));
+	private static int convertDistance(double radius, double width, double angle){
+		return (int) ( width * angle / 2 / radius);
 	}
+
 
 }
