@@ -189,6 +189,15 @@ public class Odometer extends PausableTimerListener {
 	public EV3LargeRegulatedMotor getRightMotor() {
 		return this.rightMotor;
 	}
+	
+	public double getWheelRadius(){
+		return this.leftRadius;
+	}
+	
+	public double getTrack(){
+		return this.width;
+	}
+	
 	// static 'helper' methods
 	/** 
 	 * Helper method to convert angle into a usable, positive value

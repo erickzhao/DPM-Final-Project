@@ -1,4 +1,4 @@
-package team6.finalproject;
+package team6.test;
 
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
@@ -9,8 +9,13 @@ import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
+import team6.finalproject.LCDInfo;
+import team6.finalproject.LightPoller;
+import team6.finalproject.ObjectAvoidance;
+import team6.finalproject.Odometer;
+import team6.finalproject.UltrasonicPoller;
 
-public class Final {
+public class TestObjectAvoidance {
 
 	/*
 	 * Resources :
@@ -57,7 +62,14 @@ public class Final {
 		
 		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData);
 		LightPoller lightpoll = new LightPoller(lightValue,lightData);
-		LCDInfo lcd = new LCDInfo(odo,uspoll); 
+		LCDInfo lcd = new LCDInfo(odo, uspoll); 
+		
+		odo.start();
+		uspoll.start();
+		lcd.start();
+		
+		ObjectAvoidance oa = new ObjectAvoidance(90,90, odo, usMotor, uspoll);
+		oa.travel();
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);	

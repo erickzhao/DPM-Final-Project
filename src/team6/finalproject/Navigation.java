@@ -1,22 +1,29 @@
 package team6.finalproject;
 
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+
+
+
 /**
  * Class that uses the {@link #odometer} class to create and travel along a coordinate plane.
  * <o>
  * Creates a (0,0) with localization and uses hardcoded measurements to travel along the competition surface
  * 
- * @author Andrei Ungur 
+ * @author Andrei Ungur, Kael Du 
  * @version 0.1 
  */
-public class Navigation 
+public class Navigation extends Thread
+
 {
 	final static int FAST = 300, SLOW = 200, ACCELERATION = 4000; 
 	final static double DEG_ERR = 3.0, CM_ERR = 1.0;
+	final static double ANG_ERR = 10;
 	private Odometer odometer;
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
-	//Determines side which head faces
-	public static int headSide;
+	private double waypointX, waypointY;
+	private boolean navigating = true;
+	private boolean turning = false;
+	public boolean cancelled = false;
 
 	/**
 	 * Constructor for Navigation. 
@@ -33,6 +40,57 @@ public class Navigation
 		// set acceleration
 		this.leftMotor.setAcceleration(ACCELERATION);
 		this.rightMotor.setAcceleration(ACCELERATION);
+		
+		// set default destination
+		waypointX = 0;
+		waypointY = 0;
+	}
+	
+	/**
+	 * Constructor designed for multithreading operation.
+	 * @param odo The odometer object used to keep track of the robot's location
+	 * @param x The x-value of the destination -- <code>double</code>
+	 * @param x The y-value of the destination -- <code>double</code>
+	 */
+	public Navigation(Odometer odo, double x, double y){
+		this.odometer = odo;
+		this.waypointX = x;
+		this.waypointY = y;
+		
+		EV3LargeRegulatedMotor[] motors = this.odometer.getMotors();
+		this.leftMotor = motors[0];
+		this.rightMotor = motors[1];
+		
+		// set acceleration
+		this.leftMotor.setAcceleration(ACCELERATION);
+		this.rightMotor.setAcceleration(ACCELERATION);
+	}
+	
+	
+	/**
+	 * Required function for TimerListener
+	 */
+	@Override
+	public void run(){
+		double minAng;
+		while (navigating){
+			while ((Math.abs(waypointX - odometer.getX()) > CM_ERR || Math.abs(waypointY - odometer.getY()) > CM_ERR)
+					&& !cancelled) {
+				minAng = (Math.atan2(waypointY - odometer.getY(), waypointX - odometer.getX())) * (180.0 / Math.PI);
+				if (minAng < 0)
+					minAng += 360.0;
+				if (Math.abs(odometer.getAng() - minAng) > ANG_ERR || Math.abs(odometer.getAng() - minAng) + ANG_ERR > 360.0){
+					this.turnTo(minAng, true);
+				}
+				this.setSpeeds(FAST, FAST);
+			
+				}
+		if(Math.abs(waypointX - odometer.getX()) < CM_ERR && Math.abs(waypointY - odometer.getY()) < CM_ERR){
+			this.setSpeeds(0, 0);
+			this.navigating = false;
+			}
+		}
+	
 	}
 
 	/**
@@ -88,14 +146,25 @@ public class Navigation
 	 */
 	public void travelTo(double x, double y) {
 		double minAng;
-		while (Math.abs(x - odometer.getX()) > CM_ERR || Math.abs(y - odometer.getY()) > CM_ERR) {
+		while ((Math.abs(x - odometer.getX()) > CM_ERR || Math.abs(y - odometer.getY()) > CM_ERR)) {
 			minAng = (Math.atan2(y - odometer.getY(), x - odometer.getX())) * (180.0 / Math.PI);
 			if (minAng < 0)
 				minAng += 360.0;
-			this.turnTo(minAng, false);
+			if (Math.abs(odometer.getAng() - minAng) > ANG_ERR || Math.abs(odometer.getAng() - minAng) + ANG_ERR > 360.0){
+				this.turnTo(minAng, true);
+			}
 			this.setSpeeds(FAST, FAST);
 		}
 		this.setSpeeds(0, 0);
+		this.navigating = false;
+	}
+	
+	/**
+	 * return whether the robot is navigating
+	 * @return
+	 */
+	public boolean navigating(){
+		return this.navigating;
 	}
 
 	/** 
@@ -106,7 +175,7 @@ public class Navigation
 	public void turnTo(double angle, boolean stop) {
 
 		double error = angle - this.odometer.getAng();
-
+		this.turning = true;
 		while (Math.abs(error) > DEG_ERR) {
 
 			error = angle - this.odometer.getAng();
@@ -124,7 +193,42 @@ public class Navigation
 
 		if (stop) {
 			this.setSpeeds(0, 0);
+			this.turning = false;
 		}
+	}
+	
+	/** 
+	 * Takes as arguments an angle in degrees and a boolean. Turns the robot to a given heading, used in conjunciton with {@link #travelTo(double, double)}
+	 * @param angle 	The angle (in degrees) to which the robot should turn
+	 * @param stop 		A <code>boolean</code> dictating whether or not the motors should stop upon completion of the turn
+	 */
+	public void revisedTurnTo(double angle, boolean stop) {
+
+		double error = angle - this.odometer.getAng();
+		this.turning = true;
+		this.cancelled = true;
+
+		error = angle - this.odometer.getAng();
+		
+		if (error > 180){
+			leftMotor.rotate(convertDistance(odometer.getWheelRadius(), odometer.getTrack(), 360 - error),true);
+			rightMotor.rotate(-convertDistance(odometer.getWheelRadius(), odometer.getTrack(), 360 - error),false);
+		} else {
+			leftMotor.rotate(-convertDistance(odometer.getWheelRadius(), odometer.getTrack(), error),true);
+			rightMotor.rotate(convertDistance(odometer.getWheelRadius(), odometer.getTrack(), error),false);
+			
+		}
+
+		
+		this.turning = false;
+	}
+	
+	/**
+	 * return whether the robot is turning
+	 * @return
+	 */
+	public boolean turing(){
+		return this.turning;
 	}
 
 	/**
@@ -163,9 +267,12 @@ public class Navigation
 	 * Used with {@link #goForward(double)} to convert distance to scale.
 	 * @param radius 		the <code>double</code> radius of the wheel
 	 * @param distance 		the <code>double</code> distance parameter passed by the odometer
+	 * @param angle			the <code>double</code> angle to turn 
 	 * @return 				the converted <code>int</code> distance value for traveling purposes 
 	 */
-	private static int convertDistance(double radius, double distance){
-		return (int) ((180.0*distance) / (Math.PI*radius));
+	private static int convertDistance(double radius, double width, double angle){
+		return (int) ( width * angle / 2 / radius);
 	}
+
+
 }
