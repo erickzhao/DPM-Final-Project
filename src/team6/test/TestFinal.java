@@ -45,7 +45,7 @@ public class TestFinal {
 	 //constants
 	 public static final double WHEEL_RADIUS = 2.15; //needs to be changed for robots physical configs
 	 public static final double TRACK = 15.6; //needs to be changed for robots physical configs
-	 private static final double LStoWB = 9.8; //Light Sensor to Wheel Base value
+	 private static final double LStoWB = 7.5; //Light Sensor to Wheel Base value
 	 
 	public static void main(String[] args) {
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
@@ -90,8 +90,8 @@ public class TestFinal {
 		
 		//Initialize Obstacle Avoidance
 		ObjectAvoidance oa = new ObjectAvoidance(odo, usMotor, topus);
-		
-		/* Start the following threads:
+		// ----------------------------------------------------------------
+		/* BASIC SETUP : Start the following threads:
 		 *  1. Odometer + Odometry correction;
 		 *  2. TOP and BOTTOM US Pollers
 		 *  3. LIGHT and COLOR Pollers
@@ -108,7 +108,7 @@ public class TestFinal {
 		colorpoll.start();
 		
 		lcd.start();
-		// Basic set-up starts here 
+		// Basic set-up ends here 
 		// ----------------------------------------------------------------
 		//We don't yet have the claw implemented, so we force it to stay at 0.
 		clawMotor.rotate(0);

@@ -33,6 +33,7 @@ public class ObjectSearch {
 	private double distToObject; //Distance that the robot travels to inspect object
 	private boolean sameObject=false; //Determines if the robot is looking at the same object
 	private ObjectAvoidance oa;
+	
 	/**
 	 * Constructor for Object Search.
 	 */

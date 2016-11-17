@@ -113,6 +113,6 @@ public class LightLocalizer
 		navigate.travelTo(0, 0);
 		navigate.setSpeeds(0,0);
 		navigate.turnTo(0, true);
-		navigate.goForward(LStoWB-6.4);
+		//navigate.goForward(LStoWB-6.4);
 	}
 }
