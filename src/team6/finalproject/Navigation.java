@@ -46,25 +46,7 @@ public class Navigation extends Thread
 		waypointY = 0;
 	}
 	
-	/**
-	 * Constructor designed for multithreading operation.
-	 * @param odo The odometer object used to keep track of the robot's location
-	 * @param x The x-value of the destination -- <code>double</code>
-	 * @param x The y-value of the destination -- <code>double</code>
-	 */
-	public Navigation(Odometer odo, double x, double y){
-		this.odometer = odo;
-		this.waypointX = x;
-		this.waypointY = y;
-		
-		EV3LargeRegulatedMotor[] motors = this.odometer.getMotors();
-		this.leftMotor = motors[0];
-		this.rightMotor = motors[1];
-		
-		// set acceleration
-		this.leftMotor.setAcceleration(ACCELERATION);
-		this.rightMotor.setAcceleration(ACCELERATION);
-	}
+
 	
 	
 	/**
@@ -272,6 +254,16 @@ public class Navigation extends Thread
 	 */
 	private static int convertDistance(double radius, double width, double angle){
 		return (int) ( width * angle / 2 / radius);
+	}
+	
+	/**
+	 * Set the destionation waypoints
+	 * @param x
+	 * @param y
+	 */
+	public void setWaypoints(double x, double y){
+		this.waypointX = x;
+		this.waypointY = y;
 	}
 
 

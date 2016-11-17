@@ -23,6 +23,9 @@ public class ObjectAvoidance {
 	private static final float DEADBAND = 2;
 	private static final double END_ANGLE_CORRECTION = 155;
 	private static final int BANGBANG_SENSOR_ANGLE = -135;
+	private static final int BANGBANG_TRAVEL_SPEED = 190;
+	private static final int BANGBANG_SLOW_WHEEL_SPEED = 75;
+	private static final int BANGBANG_FAST_WHEEL_SPEED = 250;
 	
 	private boolean navigating;
 	private float[] archivedValues = new float[MAX_FILTER];
@@ -32,10 +35,10 @@ public class ObjectAvoidance {
 	 * @param waypointX The x-value of the destination -- <code>double</code>
 	 * @param waypointY The y-value of the destination -- <code>double</code>
 	 */
-	public ObjectAvoidance(double waypointX, double waypointY, Odometer odo, EV3MediumRegulatedMotor usMotor,
+	public ObjectAvoidance(Odometer odo, EV3MediumRegulatedMotor usMotor,
 			UltrasonicPoller usPoller){
 		this.odo = odo;
-		this.nav = new Navigation(odo, waypointX, waypointY);	
+		this.nav = new Navigation(odo);	
 		this.usMotor = usMotor;
 		this.usPoller = usPoller;
 		for (int i = 0; i < MAX_FILTER; i++){
@@ -47,7 +50,8 @@ public class ObjectAvoidance {
 	/**
 	 * Travel to the set destination (x,y) while avoiding obstacles
 	 */
-	public void travel(){
+	public void travel(double x, double y){
+		nav.setWaypoints(x, y);
 		nav.start();
 		avoiding();
 	}
@@ -144,11 +148,11 @@ public class ObjectAvoidance {
 	 */
 	private void bangbangLogic(float errorDistance){
 		if (Math.abs(errorDistance) <= DEADBAND){ //moving in straight line
-			nav.setSpeeds(150, 150);
+			nav.setSpeeds(BANGBANG_TRAVEL_SPEED, BANGBANG_TRAVEL_SPEED);
 		} else if (errorDistance > 0){ //too close to wall
-			nav.setSpeeds(100, 250);
+			nav.setSpeeds(BANGBANG_SLOW_WHEEL_SPEED, BANGBANG_FAST_WHEEL_SPEED);
 		} else if (errorDistance < 0){ // getting too far from the wall
-			nav.setSpeeds(250, 100);
+			nav.setSpeeds(BANGBANG_FAST_WHEEL_SPEED, BANGBANG_SLOW_WHEEL_SPEED);
 		}
 	}
 	
