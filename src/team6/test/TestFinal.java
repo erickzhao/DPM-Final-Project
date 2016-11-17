@@ -83,8 +83,8 @@ public class TestFinal {
 		ColorPoller colorpoll = new ColorPoller(colorValue,colorData);
 		
 		//Initialize LCD Display, US & LIGHT Localizers and ODO Correction
-		LCDInfo lcd = new LCDInfo(odo,uspoll); 
-		USLocalizer usloc = new USLocalizer(odo,uspoll);
+		LCDInfo lcd = new LCDInfo(odo,topus); 
+		USLocalizer usloc = new USLocalizer(odo,topus);
 		LightLocalizer lightloc = new LightLocalizer(odo,LStoWB);
 		OdometryCorrection odoCorrection = new OdometryCorrection(odo); 
 		
@@ -92,7 +92,7 @@ public class TestFinal {
 		ObjectAvoidance oa = new ObjectAvoidance(odo, usMotor, topus);
 		
 		/* Start the following threads:
-		 *  1.Odometer + Odometry correction;
+		 *  1. Odometer + Odometry correction;
 		 *  2. TOP and BOTTOM US Pollers
 		 *  3. LIGHT and COLOR Pollers
 		 *  4. LCD Display
@@ -110,6 +110,8 @@ public class TestFinal {
 		lcd.start();
 		// Basic set-up starts here 
 		// ----------------------------------------------------------------
+		//We don't yet have the claw implemented, so we force it to stay at 0.
+		clawMotor.rotate(0);
 		
 		//Do US Localization
 		usloc.doLocalization();

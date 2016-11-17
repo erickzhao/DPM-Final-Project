@@ -58,8 +58,6 @@ public class Final {
 		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData);
 		LightPoller lightpoll = new LightPoller(lightValue,lightData);
 		LCDInfo lcd = new LCDInfo(odo,uspoll); 
-		ObjectAvoidance oa = new ObjectAvoidance(odo, usMotor, uspoll);
-		// To use the object avoidance, call "oa.travel(x,y)"
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);	
