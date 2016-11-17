@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lejos.hardware.Sound;
+import lejos.hardware.ev3.LocalEV3;
+import lejos.hardware.motor.EV3LargeRegulatedMotor;
 
 /**
  * Class that scans the field for objects and determines if objects are to be avoided or if they are to be collected.
@@ -15,6 +17,7 @@ import lejos.hardware.Sound;
 public class ObjectSearch {
 	
 	private Odometer odo;
+	private final EV3LargeRegulatedMotor clawMotor;
 	private Navigation nav;
 	private float speed = 150;
 	private UltrasonicPoller lowerpoll;
@@ -33,11 +36,12 @@ public class ObjectSearch {
 	/**
 	 * Constructor for Object Search.
 	 */
-	public ObjectSearch(Odometer odo, Navigation nav,UltrasonicPoller uspoll, ObjectAvoidance oa) {
+	public ObjectSearch(Odometer odo, Navigation nav,UltrasonicPoller uspoll, ObjectAvoidance oa,EV3LargeRegulatedMotor claw) {
 		this.odo = odo;
 		this.nav = nav;
 		this.lowerpoll = uspoll;
 		this.oa = oa;
+		this.clawMotor = claw;
 	}
 	/**
 	 * Implements all the elements of the search into an algorithm.
@@ -180,7 +184,11 @@ public class ObjectSearch {
 	 * Releasses styrofoam block if "pickUp" is false.
 	 */
 	private void handleBlock(boolean pickUp) {
+		if (pickUp){
 		
+		} else {
+			
+		}
 	}
 	
 	/**

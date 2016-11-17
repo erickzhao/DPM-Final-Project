@@ -78,7 +78,7 @@ public class TestFinal {
 		// BEGIN ALGORITHM
 		Navigation nav = new Navigation(odo);
 		
-		ObjectSearch search = new ObjectSearch(odo, nav, uspoll,oa);
+		ObjectSearch search = new ObjectSearch(odo, nav, uspoll,oa,clawMotor);
 		search.doSearch();
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);

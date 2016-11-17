@@ -42,6 +42,7 @@ public class TestAlgorithm {
 	 //private static final EV3LargeRegulatedMotor armMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	 private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	 private static final EV3MediumRegulatedMotor usMotor = new EV3MediumRegulatedMotor(LocalEV3.get().getPort("C"));
+	 private static final EV3LargeRegulatedMotor clawMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
 	 public static UltrasonicPoller uspoll;
 	 
 	 private static final Port usPort = LocalEV3.get().getPort("S4");  
@@ -78,7 +79,7 @@ public class TestAlgorithm {
 		colorPoll.start();
 		lcd.start();
 		
-		ObjectSearch search = new ObjectSearch(odo, nav, uspoll,oa);
+		ObjectSearch search = new ObjectSearch(odo, nav, uspoll,oa,clawMotor);
 		nav.turnTo(0,true);
 		search.doSearch();
 		
