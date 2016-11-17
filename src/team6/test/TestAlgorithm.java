@@ -18,7 +18,7 @@ import team6.finalproject.USLocalizer;
 import team6.finalproject.LightLocalizer;
 import team6.finalproject.UltrasonicPoller;
 
-public class TestSweep {
+public class TestAlgorithm {
 
 	/*
 	 * Resources :
@@ -76,10 +76,8 @@ public class TestSweep {
 		
 		ObjectSearch search = new ObjectSearch(odo, nav, uspoll);
 		nav.turnTo(0,true);
-		search.sweep();
+		search.doSearch();
 		
-		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
-		System.exit(0);	
 	}
 
 }
