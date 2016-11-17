@@ -8,10 +8,12 @@ import lejos.hardware.lcd.TextLCD;
 
 public class Wifi {
 	
-	private static final String SERVER_IP = "192.168.2.6"; //this IP address is specific to a certain laptop. change accordingly
+	private static final String SERVER_IP = "192.168.2.8"; //this IP address is specific to a certain laptop. change accordingly
 	private static final int TEAM_NUMBER = 6;
+	
+	//Raw data
 
-	public static int buldingTeamNumber;
+	public static int buildingTeamNumber;
 	public static int collectorTeamNumber;
 	public static int buildingStartingCorner;
 	public static int collectingStartingCorner;
@@ -23,6 +25,16 @@ public class Wifi {
 	public static int lgzY;
 	public static int ugzX;
 	public static int ugzY;
+	
+	//Edited data
+	
+	public static int ourStartingCorner; //Our actual starting corner after determining role
+	public static double ourEndZoneX; //Middle of zone
+	public static double ourEndZoneY; //Middle of zone
+	public static double ourBadZoneX; //Middle of avoiding zone
+	public static double ourBadZoneY; //Middle of avoiding zone
+	
+	
 	
 	private static TextLCD LCD = LocalEV3.get().getTextLCD();
 	
@@ -44,11 +56,11 @@ public class Wifi {
 			if (t == null) {
 				System.out.println("Failed to read transmission");
 			} else {
-				System.out.println("Transmission read:\n" + t.toString());
+				System.out.println("Transmission read");//:\n" + t.toString());
 				
 				if(t.get("BTN").equals(TEAM_NUMBER)) 
 				{//We're a Builder
-					buldingTeamNumber = t.get("BTN");;
+					buildingTeamNumber = t.get("BTN");;
 					buildingStartingCorner = t.get("BSC");
 				}
 				else if (t.get("CTN").equals(TEAM_NUMBER)) 
@@ -65,6 +77,27 @@ public class Wifi {
 				lgzY = t.get("LGZy");
 				ugzX = t.get("UGZx");
 				ugzY = t.get("UGZy");
+				
+				//Convert coordinates to proper distances
+				
+				if (buildingTeamNumber == 6)
+				{
+					ourStartingCorner = buildingStartingCorner;
+					ourEndZoneX = ((lgzX+ugzX)/2)*30.48; //Middle with tile size
+					ourEndZoneY = ((lgzY+ugzY)/2)*30.48; //Middle with tile size
+					ourBadZoneX = ((lrzX+urzX)/2)*30.48; //Middle bad with tile size
+					ourBadZoneY = ((lrzY+urzY)/2)*30.48; //Middle bad with tile size	
+				}
+				
+				if (collectorTeamNumber == 6)
+				{
+					ourStartingCorner = collectingStartingCorner;
+					ourEndZoneX = ((lrzX+urzX)/2)*30.48; //Middle with tile size
+					ourEndZoneY = ((lrzY+urzY)/2)*30.48; //Middle with tile size
+					ourBadZoneX = ((lgzX+ugzX)/2)*30.48; //Middle bad with tile size
+					ourBadZoneY = ((lgzY+ugzY)/2)*30.48; //Middle bad with tile size	
+				}
+					
 				
 			}
 		}
