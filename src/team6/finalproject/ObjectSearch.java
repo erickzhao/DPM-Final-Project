@@ -50,8 +50,8 @@ public class ObjectSearch {
 		//The amount of time for which the search runs is five minutes.
 		//After five minutes, this infinite loop would be interrupted and the robot
 		//will return to (0,0).
-		endzoneX = 60.96;
-		endzoneY = 60.96;
+		endzoneX = Wifi.ourEndZoneX;
+		endzoneY = Wifi.ourEndZoneY;
 		int wp=1;
 		while(true){
 			//Scan the next neighbourhood
