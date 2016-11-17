@@ -1,18 +1,11 @@
 package team6.test;
 //Author : Andrei Ungur
 //NOTE: This hasn't yet been tested and doesn't implement obstacle avoidance.
-import team6.finalproject.LCDInfo;
-import team6.finalproject.LightLocalizer;
-import team6.finalproject.LightPoller;
-import team6.finalproject.Navigation;
-import team6.finalproject.ObjectSearch;
-import team6.finalproject.Odometer;
-import team6.finalproject.OdometryCorrection;
-import team6.finalproject.USLocalizer;
-import team6.finalproject.UltrasonicPoller;
+import team6.finalproject.*;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
@@ -38,7 +31,7 @@ public class TestFinal {
 	
 	 private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
 	 private static final EV3LargeRegulatedMotor clawMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
-	 private static final EV3LargeRegulatedMotor usMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
+	 private static final EV3MediumRegulatedMotor usMotor = new EV3MediumRegulatedMotor(LocalEV3.get().getPort("C"));
 	 private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	
 	 private static final Port lightPort = LocalEV3.get().getPort("S1");
@@ -70,6 +63,8 @@ public class TestFinal {
 		USLocalizer usloc = new USLocalizer(odo,uspoll);
 		OdometryCorrection odoCorrection = new OdometryCorrection(odo); 
 		
+		ObjectAvoidance oa = new ObjectAvoidance(odo, usMotor, uspoll);
+		
 		odo.start();
 		odoCorrection.start();
 		uspoll.start();
@@ -83,7 +78,7 @@ public class TestFinal {
 		// BEGIN ALGORITHM
 		Navigation nav = new Navigation(odo);
 		
-		ObjectSearch search = new ObjectSearch(odo, nav, uspoll);
+		ObjectSearch search = new ObjectSearch(odo, nav, uspoll,oa);
 		search.doSearch();
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);

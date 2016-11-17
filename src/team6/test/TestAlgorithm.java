@@ -3,6 +3,7 @@ package team6.test;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
+import lejos.hardware.motor.EV3MediumRegulatedMotor;
 import lejos.hardware.port.Port;
 import lejos.hardware.sensor.EV3ColorSensor;
 import lejos.hardware.sensor.EV3UltrasonicSensor;
@@ -12,6 +13,7 @@ import team6.finalproject.ColorPoller;
 import team6.finalproject.LCDInfo;
 import team6.finalproject.LightPoller;
 import team6.finalproject.Navigation;
+import team6.finalproject.ObjectAvoidance;
 import team6.finalproject.ObjectSearch;
 import team6.finalproject.Odometer;
 import team6.finalproject.USLocalizer;
@@ -39,6 +41,7 @@ public class TestAlgorithm {
 	 //private static final EV3LargeRegulatedMotor lightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("B"));
 	 //private static final EV3LargeRegulatedMotor armMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("C"));
 	 private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+	 private static final EV3MediumRegulatedMotor usMotor = new EV3MediumRegulatedMotor(LocalEV3.get().getPort("C"));
 	 public static UltrasonicPoller uspoll;
 	 
 	 private static final Port usPort = LocalEV3.get().getPort("S4");  
@@ -68,13 +71,14 @@ public class TestAlgorithm {
 		LCDInfo lcd = new LCDInfo(odo,uspoll); 
 		USLocalizer usloc = new USLocalizer(odo,uspoll);
 		Navigation nav = new Navigation(odo);
+		ObjectAvoidance oa = new ObjectAvoidance(odo, usMotor, uspoll);
 		
 		odo.start();
 		uspoll.start();
 		colorPoll.start();
 		lcd.start();
 		
-		ObjectSearch search = new ObjectSearch(odo, nav, uspoll);
+		ObjectSearch search = new ObjectSearch(odo, nav, uspoll,oa);
 		nav.turnTo(0,true);
 		search.doSearch();
 		

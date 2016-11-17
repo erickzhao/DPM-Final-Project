@@ -29,13 +29,15 @@ public class ObjectSearch {
 	private double sweepAng=90;
 	private double distToObject; //Distance that the robot travels to inspect object
 	private boolean sameObject=false; //Determines if the robot is looking at the same object
+	private ObjectAvoidance oa;
 	/**
 	 * Constructor for Object Search.
 	 */
-	public ObjectSearch(Odometer odo, Navigation nav,UltrasonicPoller uspoll) {
+	public ObjectSearch(Odometer odo, Navigation nav,UltrasonicPoller uspoll, ObjectAvoidance oa) {
 		this.odo = odo;
 		this.nav = nav;
 		this.lowerpoll = uspoll;
+		this.oa = oa;
 	}
 	/**
 	 * Implements all the elements of the search into an algorithm.
@@ -66,10 +68,10 @@ public class ObjectSearch {
 		initY=odo.getY();
 		initTheta=odo.getAng();
 		//Bring block to endzone
-		nav.travelTo(x, y);
+		oa.travel(endzoneX, endzoneY);
 		handleBlock(false);
 		//Bring robot back to last neighborhood
-		nav.travelTo(initX, initY);
+		oa.travel(endzoneX, endzoneY);
 		nav.turnTo(initTheta, true);
 	}
 	
@@ -151,22 +153,22 @@ public class ObjectSearch {
 		switch (wayPoint){
 		case 1:
 		case 2:
-			nav.travelTo(odo.getX()+BOARDSIZE*30.48, odo.getY());
+			oa.travel(odo.getX()+BOARDSIZE*30.48, odo.getY());
 			break;
 		case 3:
 		case 6:
-			nav.travelTo(odo.getX(), odo.getY()+30.48);
+			oa.travel(odo.getX(), odo.getY()+30.48);
 			break;
 		case 4: 
 		case 5:
-			nav.travelTo(odo.getX()-BOARDSIZE*30.48,odo.getY());
+			oa.travel(odo.getX()-BOARDSIZE*30.48,odo.getY());
 			break;
 		case 7: 
 		case 8:
-			nav.travelTo(odo.getX()+BOARDSIZE*30.48,odo.getY());
+			oa.travel(odo.getX()+BOARDSIZE*30.48,odo.getY());
 			break;
 		case 9:
-			nav.travelTo(0, 0);
+			oa.travel(0, 0);
 			nav.turnTo(0,true);
 			break;
 		}
