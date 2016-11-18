@@ -55,7 +55,7 @@ public class TestFinal {
 	 
 	public static void main(String[] args) {
 		
-		  Wifi.getParameters();
+		Wifi.getParameters();
 		if (!(Wifi.ourStartingCorner==1 || Wifi.ourStartingCorner==2 || Wifi.ourStartingCorner==3 || Wifi.ourStartingCorner==4)){
 			System.exit(0);
 		}

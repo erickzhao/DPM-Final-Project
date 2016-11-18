@@ -13,7 +13,7 @@ import lejos.hardware.lcd.TextLCD;
 
 public class Wifi {
 	
-	private static final String SERVER_IP = "192.168.2.16"; //this IP address is specific to a certain laptop. change accordingly
+	private static final String SERVER_IP = "192.168.2.20"; //this IP address is specific to a certain laptop. change accordingly
 	private static final int TEAM_NUMBER = 6;
 	public static final int GRID_SIZE = 10;
 	
