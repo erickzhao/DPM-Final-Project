@@ -19,12 +19,13 @@ public class ObjectAvoidance {
 	
 	private static final int MAX_FILTER = 3; // Must be an odd number for performance reason
 	private static final int MAX_US_DISTANCE = 255;
-	private static final float DANGER_DIST = 20;
+	private static final float DANGER_DIST = 18;
 	private static final float DEADBAND = 2;
 	private static final double END_ANGLE_CORRECTION = 155;
-	private static final int BANGBANG_SENSOR_ANGLE = -135;
+	private static final int BANGBANG_SENSOR_ANGLE = -130;
 	private static final int BANGBANG_TRAVEL_SPEED = 190;
-	private static final int BANGBANG_SLOW_WHEEL_SPEED = 75;
+	private static final int BANGBANG_ULTRASLOW_WHEEL_SPEED = 35;
+	private static final int BANGBANG_SLOW_WHEEL_SPEED = 65;
 	private static final int BANGBANG_FAST_WHEEL_SPEED = 250;
 	
 	private boolean navigating;
@@ -154,7 +155,7 @@ public class ObjectAvoidance {
 		if (Math.abs(errorDistance) <= DEADBAND){ //moving in straight line
 			nav.setSpeeds(BANGBANG_TRAVEL_SPEED, BANGBANG_TRAVEL_SPEED);
 		} else if (errorDistance > 0){ //too close to wall
-			nav.setSpeeds(BANGBANG_SLOW_WHEEL_SPEED, BANGBANG_FAST_WHEEL_SPEED);
+			nav.setSpeeds(BANGBANG_ULTRASLOW_WHEEL_SPEED, BANGBANG_FAST_WHEEL_SPEED);
 		} else if (errorDistance < 0){ // getting too far from the wall
 			nav.setSpeeds(BANGBANG_FAST_WHEEL_SPEED, BANGBANG_SLOW_WHEEL_SPEED);
 		}
