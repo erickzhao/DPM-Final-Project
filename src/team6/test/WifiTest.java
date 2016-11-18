@@ -164,11 +164,7 @@ public class WifiTest {
 				Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
 				Navigation navig = new Navigation(odo);
 				
-				LCD.clear();
 				
-				LCDInfo lcd = new LCDInfo(odo);
-				lcd.start();
-
 				@SuppressWarnings("resource")
 				SensorModes lightSensor = new EV3ColorSensor(lightPort);
 				SampleProvider lightValue = lightSensor.getMode("Red");
