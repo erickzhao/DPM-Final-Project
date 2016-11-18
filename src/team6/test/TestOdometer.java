@@ -27,7 +27,7 @@ public class TestOdometer {
 
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
 		
-		LCDInfo lcd = new LCDInfo(odo,null);
+		LCDInfo lcd = new LCDInfo(odo,null,null);
 		lcd.start();
 
 		@SuppressWarnings("resource")
