@@ -19,7 +19,7 @@ public class ObjectAvoidance {
 	
 	private static final int MAX_FILTER = 3; // Must be an odd number for performance reason
 	private static final int MAX_US_DISTANCE = 255;
-	private static final float DANGER_DIST = 10;
+	private static final float DANGER_DIST = 20;
 	private static final float DEADBAND = 2;
 	private static final double END_ANGLE_CORRECTION = 155;
 	private static final int BANGBANG_SENSOR_ANGLE = -135;
@@ -46,13 +46,17 @@ public class ObjectAvoidance {
 		}
 	}
 	
+	public void initiate(){
+		nav.start();
+	}
 	
 	/**
 	 * Travel to the set destination (x,y) while avoiding obstacles
 	 */
 	public void travel(double x, double y){
 		nav.setWaypoints(x, y);
-		nav.start();
+		nav.setNavigating(true);
+		nav.cancelled = false;
 		avoiding();
 	}
 	

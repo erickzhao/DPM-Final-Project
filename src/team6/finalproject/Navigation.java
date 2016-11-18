@@ -21,9 +21,9 @@ public class Navigation extends Thread
 	private Odometer odometer;
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
 	private double waypointX, waypointY;
-	private boolean navigating = true;
+	private boolean navigating = false;
 	private boolean turning = false;
-	public boolean cancelled = false;
+	public boolean cancelled = true;
 
 	/**
 	 * Constructor for Navigation. 
@@ -55,21 +55,23 @@ public class Navigation extends Thread
 	@Override
 	public void run(){
 		double minAng;
-		while (navigating){
-			while ((Math.abs(waypointX - odometer.getX()) > CM_ERR || Math.abs(waypointY - odometer.getY()) > CM_ERR)
-					&& !cancelled) {
-				minAng = (Math.atan2(waypointY - odometer.getY(), waypointX - odometer.getX())) * (180.0 / Math.PI);
-				if (minAng < 0)
-					minAng += 360.0;
-				if (Math.abs(odometer.getAng() - minAng) > ANG_ERR || Math.abs(odometer.getAng() - minAng) + ANG_ERR > 360.0){
-					this.turnTo(minAng, true);
-				}
-				this.setSpeeds(FAST, FAST);
+		while (true){
+			while (navigating){
+				while ((Math.abs(waypointX - odometer.getX()) > CM_ERR || Math.abs(waypointY - odometer.getY()) > CM_ERR)
+						&& !cancelled) {
+					minAng = (Math.atan2(waypointY - odometer.getY(), waypointX - odometer.getX())) * (180.0 / Math.PI);
+					if (minAng < 0)
+						minAng += 360.0;
+					if (Math.abs(odometer.getAng() - minAng) > ANG_ERR || Math.abs(odometer.getAng() - minAng) + ANG_ERR > 360.0){
+						this.turnTo(minAng, true);
+					}
+					this.setSpeeds(FAST, FAST);
 			
+					}
+			if(Math.abs(waypointX - odometer.getX()) < CM_ERR && Math.abs(waypointY - odometer.getY()) < CM_ERR){
+				this.setSpeeds(0, 0);
+				this.navigating = false;
 				}
-		if(Math.abs(waypointX - odometer.getX()) < CM_ERR && Math.abs(waypointY - odometer.getY()) < CM_ERR){
-			this.setSpeeds(0, 0);
-			this.navigating = false;
 			}
 		}
 	
@@ -147,6 +149,10 @@ public class Navigation extends Thread
 	 */
 	public boolean navigating(){
 		return this.navigating;
+	}
+	
+	public void setNavigating(boolean navigate){
+		this.navigating = navigate;
 	}
 
 	/** 

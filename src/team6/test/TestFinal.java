@@ -90,6 +90,7 @@ public class TestFinal {
 		
 		//Initialize Obstacle Avoidance
 		ObjectAvoidance oa = new ObjectAvoidance(odo, usMotor, topus);
+		
 		// ----------------------------------------------------------------
 		/* BASIC SETUP : Start the following threads:
 		 *  1. Odometer + Odometry correction;
@@ -99,15 +100,17 @@ public class TestFinal {
 		 */
 		
 		odo.start();
-		odoCorrection.start();
+		// odoCorrection.start();
 		
 		uspoll.start();
 		topus.start();
 		
 		lightpoll.start();
 		colorpoll.start();
-		
+				
 		lcd.start();
+		
+		oa.initiate();
 		// Basic set-up ends here 
 		// ----------------------------------------------------------------
 		//We don't yet have the claw implemented, so we force it to stay at 0.
