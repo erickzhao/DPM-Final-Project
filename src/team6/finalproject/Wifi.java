@@ -8,8 +8,9 @@ import lejos.hardware.lcd.TextLCD;
 
 public class Wifi {
 	
-	private static final String SERVER_IP = "192.168.2.8"; //this IP address is specific to a certain laptop. change accordingly
+	private static final String SERVER_IP = "192.168.2.6"; //this IP address is specific to a certain laptop. change accordingly
 	private static final int TEAM_NUMBER = 6;
+	public static final int GRID_SIZE = 10;
 	
 	//Raw data
 
@@ -62,44 +63,106 @@ public class Wifi {
 				{//We're a Builder
 					buildingTeamNumber = t.get("BTN");;
 					buildingStartingCorner = t.get("BSC");
+					ourStartingCorner = buildingStartingCorner;
 				}
 				else if (t.get("CTN").equals(TEAM_NUMBER)) 
 				{//We're a collector
 					collectorTeamNumber = t.get("CTN");;
 					collectingStartingCorner = t.get("CSC");
+					ourStartingCorner = collectingStartingCorner;
 				}
 				
-				lrzX = t.get("LRZx");
-				lrzY = t.get("LRZy");
-				urzX = t.get("URZx");
-				urzY = t.get("URZy");
-				lgzX = t.get("LGZx");
-				lgzY = t.get("LGZy");
-				ugzX = t.get("UGZx");
-				ugzY = t.get("UGZy");
+				lrzX = changeOrientationX(ourStartingCorner, t.get("LRZx"), t.get("LRZy"));
+				lrzY = changeOrientationY(ourStartingCorner, t.get("LRZx"), t.get("LRZy"));
+				urzX = changeOrientationX(ourStartingCorner, t.get("URZx"), t.get("URZy"));
+				urzY = changeOrientationY(ourStartingCorner, t.get("URZx"), t.get("URZy"));
+				lgzX = changeOrientationX(ourStartingCorner, t.get("LGZx"), t.get("LGZy"));
+				lgzY = changeOrientationY(ourStartingCorner, t.get("LGZx"), t.get("LGZy"));
+				ugzX = changeOrientationX(ourStartingCorner, t.get("UGZx"), t.get("UGZy"));
+				ugzY = changeOrientationY(ourStartingCorner, t.get("UGZx"), t.get("UGZy"));
 				
 				//Convert coordinates to proper distances
 				
 				if (buildingTeamNumber == 6)
-				{
-					ourStartingCorner = buildingStartingCorner;
-					ourEndZoneX = ((lgzX+ugzX)/2)*30.48; //Middle with tile size
-					ourEndZoneY = ((lgzY+ugzY)/2)*30.48; //Middle with tile size
-					ourBadZoneX = ((lrzX+urzX)/2)*30.48; //Middle bad with tile size
-					ourBadZoneY = ((lrzY+urzY)/2)*30.48; //Middle bad with tile size	
+				{					
+					
+					ourEndZoneX = ((lgzX+ugzX)/2.0); //*30.48; //Middle with tile size
+					ourEndZoneY = ((lgzY+ugzY)/2.0); //*30.48; //Middle with tile size
+					ourBadZoneX = ((lrzX+urzX)/2.0); //*30.48; //Middle bad with tile size
+					ourBadZoneY = ((lrzY+urzY)/2.0); //*30.48; //Middle bad with tile size	
 				}
 				
 				if (collectorTeamNumber == 6)
 				{
-					ourStartingCorner = collectingStartingCorner;
-					ourEndZoneX = ((lrzX+urzX)/2)*30.48; //Middle with tile size
-					ourEndZoneY = ((lrzY+urzY)/2)*30.48; //Middle with tile size
-					ourBadZoneX = ((lgzX+ugzX)/2)*30.48; //Middle bad with tile size
-					ourBadZoneY = ((lgzY+ugzY)/2)*30.48; //Middle bad with tile size	
+					
+					ourEndZoneX = ((lrzX+urzX)/2.0); //*30.48; //Middle with tile size
+					ourEndZoneY = ((lrzY+urzY)/2.0); //*30.48; //Middle with tile size
+					ourBadZoneX = ((lgzX+ugzX)/2.0); //*30.48; //Middle bad with tile size
+					ourBadZoneY = ((lgzY+ugzY)/2.0); //*30.48; //Middle bad with tile size	
 				}
 					
 				
 			}
 		}
 	}
-}
+	
+	//Method to flip for different starting points
+	
+	public static int changeOrientationX(int startPos, int x, int y) {
+		
+		int tmp;
+		
+      	if (startPos == 1) {
+				//We're good
+      		
+      	}
+      	else if (startPos == 2) {
+          		tmp = x;
+                x = y;
+          		y = GRID_SIZE - tmp;
+          		
+      	}
+      	else if (startPos == 3) {
+          		x = GRID_SIZE - x;
+          		y = GRID_SIZE - y;
+          		
+		}
+      	else if (startPos == 4) {
+          		tmp = y;
+          		y = x;
+          		x = GRID_SIZE - tmp;
+         		
+		}
+		return x;
+			
+		}
+public static int changeOrientationY(int startPos, int x, int y) {
+		
+		int tmp;
+		
+      	if (startPos == 1) {
+				//We're good
+      		
+      	}
+      	else if (startPos == 2) {
+          		tmp = x;
+                x = y;
+          		y = GRID_SIZE - tmp;
+          		
+      	}
+      	else if (startPos == 3) {
+          		x = GRID_SIZE - x;
+          		y = GRID_SIZE - y;
+          		
+		}
+      	else if (startPos == 4) {
+          		tmp = y;
+          		y = x;
+          		x = GRID_SIZE - tmp;
+         		
+		}
+		return y;
+			
+		}
+	}
+
