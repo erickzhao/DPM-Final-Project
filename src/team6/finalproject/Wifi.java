@@ -6,6 +6,11 @@ import wifi.WifiConnection;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 
+/**
+ * Class that allows the robot to receive coordinates via wifi. Displays transmitted coordinates
+ * @author Sean Lawlor, Myriam Ayad 
+ */
+
 public class Wifi {
 	
 	private static final String SERVER_IP = "192.168.2.6"; //this IP address is specific to a certain laptop. change accordingly
