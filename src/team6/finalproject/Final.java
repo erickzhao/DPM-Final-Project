@@ -55,9 +55,8 @@ public class Final {
 		SampleProvider lightValue = lightSensor.getMode("Red");
 		float[] lightData = new float[lightValue.sampleSize()];
 		
-		//UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData);
+		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData,null);
 		LightPoller lightpoll = new LightPoller(lightValue,lightData);
-		//LCDInfo lcd = new LCDInfo(odo,uspoll); 
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);	

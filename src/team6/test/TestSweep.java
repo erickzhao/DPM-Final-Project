@@ -71,7 +71,7 @@ public class TestSweep {
 		
 		uspoll = new UltrasonicPoller(usValue, usData,sensor);
 		
-		LCDInfo lcd = new LCDInfo(odo,uspoll); 
+		LCDInfo lcd = new LCDInfo(odo,uspoll,null); 
 		USLocalizer usloc = new USLocalizer(odo,uspoll);
 		Navigation nav = new Navigation(odo);
 		ObjectAvoidance oa = new ObjectAvoidance(odo, usMotor, uspoll);

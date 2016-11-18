@@ -63,7 +63,7 @@ public class TestObjectAvoidance {
 		
 		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData, sensor);
 		LightPoller lightpoll = new LightPoller(lightValue,lightData);
-		LCDInfo lcd = new LCDInfo(odo, uspoll); 
+		LCDInfo lcd = new LCDInfo(odo, uspoll,null); 
 		
 		odo.start();
 		uspoll.start();

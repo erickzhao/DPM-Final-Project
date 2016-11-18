@@ -96,7 +96,7 @@ public class TestFinal {
 		ColorPoller colorpoll = new ColorPoller(colorValue,colorData);
 		
 		//Initialize LCD Display, US & LIGHT Localizers and ODO Correction
-		LCDInfo lcd = new LCDInfo(odo,topus); 
+		LCDInfo lcd = new LCDInfo(odo,uspoll,topus); 
 		USLocalizer usloc = new USLocalizer(odo,topus);
 		LightLocalizer lightloc = new LightLocalizer(odo,LStoWB);
 		OdometryCorrection odoCorrection = new OdometryCorrection(odo); 
