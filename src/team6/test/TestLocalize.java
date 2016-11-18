@@ -47,7 +47,8 @@ public class TestLocalize {
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
 		
 		@SuppressWarnings("resource")
-		SensorModes usSensor = new EV3UltrasonicSensor(usPort);
+		EV3UltrasonicSensor sensor = new EV3UltrasonicSensor(usPort);
+		SensorModes usSensor = sensor;
 		SampleProvider usValue = usSensor.getMode("Distance");
 		float[] usData = new float[usValue.sampleSize()];
 		
@@ -56,7 +57,7 @@ public class TestLocalize {
 		SampleProvider lightValue = lightSensor.getMode("Red");
 		float[] lightData = new float[lightValue.sampleSize()];
 		
-		uspoll = new UltrasonicPoller(usValue, usData);
+		uspoll = new UltrasonicPoller(usValue, usData,sensor);
 		LightPoller lightpoll = new LightPoller(lightValue,lightData);
 		LCDInfo lcd = new LCDInfo(odo,uspoll); 
 		USLocalizer usloc = new USLocalizer(odo,uspoll);

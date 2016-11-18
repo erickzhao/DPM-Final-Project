@@ -63,13 +63,15 @@ public class TestFinal {
 		
 		//Bottom US : Object recognition and localization
 		@SuppressWarnings("resource")
-		SensorModes usSensor = new EV3UltrasonicSensor(usBottomPort);
+		EV3UltrasonicSensor bottomSensor = new EV3UltrasonicSensor(usBottomPort);
+		SensorModes usSensor = bottomSensor;
 		SampleProvider usValue = usSensor.getMode("Distance");
 		float[] usData = new float[usValue.sampleSize()];
 		
 		//Upper US : Obstacle avoidance
 		@SuppressWarnings("resource")
-		SensorModes usSensorTop = new EV3UltrasonicSensor(usTopPort);
+		EV3UltrasonicSensor topSensor = new EV3UltrasonicSensor(usTopPort);
+		SensorModes usSensorTop = topSensor;
 		SampleProvider usValueTop = usSensorTop.getMode("Distance");
 		float[] usDataTop = new float[usValueTop.sampleSize()];
 		
@@ -86,8 +88,8 @@ public class TestFinal {
 		float[] colorData = new float[colorValue.sampleSize()];
 		
 		//Initialize US Pollers
-		uspoll = new UltrasonicPoller(usValue, usData);
-		topus = new UltrasonicPoller(usValueTop, usDataTop);
+		uspoll = new UltrasonicPoller(usValue, usData,bottomSensor);
+		topus = new UltrasonicPoller(usValueTop, usDataTop,topSensor);
 		
 		//Initialize LIGHT Pollers
 		LightPoller lightpoll = new LightPoller(lightValue,lightData);

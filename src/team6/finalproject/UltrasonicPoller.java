@@ -1,5 +1,7 @@
 package team6.finalproject;
 
+import lejos.hardware.Sound;
+import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.robotics.SampleProvider;
 
 /**
@@ -16,13 +18,15 @@ public class UltrasonicPoller extends PausableTimerListener {
 	private SampleProvider us;
 	private float[] usData;
 	private static float distance;
+	private EV3UltrasonicSensor sensor;
 	
 	/**
 	 * Constructor for Ultrasonic Poller.
 	 * @param us		the <code>SampleProvider</code> that fetches the readings
 	 * @param usData	the <code>float</code> array in which the <code>SampleProvider</code> stores its data
 	 */
-	public UltrasonicPoller(SampleProvider us, float[] usData) {
+	public UltrasonicPoller(SampleProvider us, float[] usData,EV3UltrasonicSensor inputSensor) {
+		this.sensor = inputSensor;
 		this.us = us;
 		this.usData = usData;
 	}
@@ -42,5 +46,14 @@ public class UltrasonicPoller extends PausableTimerListener {
 	 */
 	public float getDistance(){
 		return distance;
+	}
+	public void enable(boolean on){
+		if (on && !sensor.isEnabled()){
+			Sound.beepSequenceUp();
+			sensor.enable();
+		} else if (!on && sensor.isEnabled()) {
+			Sound.beepSequence();
+			sensor.disable();
+		}
 	}
 }

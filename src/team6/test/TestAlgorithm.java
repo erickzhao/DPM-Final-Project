@@ -57,7 +57,8 @@ public class TestAlgorithm {
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
 		
 		@SuppressWarnings("resource")
-		SensorModes usSensor = new EV3UltrasonicSensor(usPort);
+		EV3UltrasonicSensor sensor = new EV3UltrasonicSensor(usPort);
+		SensorModes usSensor = sensor;
 		SampleProvider usValue = usSensor.getMode("Distance");
 		float[] usData = new float[usValue.sampleSize()];
 		
@@ -67,7 +68,7 @@ public class TestAlgorithm {
 		float[] colorData = new float[colorValue.sampleSize()];
 		ColorPoller colorPoll = new ColorPoller(colorValue,colorData);
 		
-		uspoll = new UltrasonicPoller(usValue, usData);
+		uspoll = new UltrasonicPoller(usValue, usData,sensor);
 		
 		LCDInfo lcd = new LCDInfo(odo,uspoll); 
 		USLocalizer usloc = new USLocalizer(odo,uspoll);

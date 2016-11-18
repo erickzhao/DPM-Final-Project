@@ -51,7 +51,8 @@ public class TestObjectAvoidance {
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
 		
 		@SuppressWarnings("resource")
-		SensorModes usSensor = new EV3UltrasonicSensor(usBottomPort);
+		EV3UltrasonicSensor sensor = new EV3UltrasonicSensor(usBottomPort);
+		SensorModes usSensor = sensor;
 		SampleProvider usValue = usSensor.getMode("Distance");
 		float[] usData = new float[usValue.sampleSize()];
 		
@@ -60,7 +61,7 @@ public class TestObjectAvoidance {
 		SampleProvider lightValue = lightSensor.getMode("Red");
 		float[] lightData = new float[lightValue.sampleSize()];
 		
-		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData);
+		UltrasonicPoller uspoll = new UltrasonicPoller(usValue, usData, sensor);
 		LightPoller lightpoll = new LightPoller(lightValue,lightData);
 		LCDInfo lcd = new LCDInfo(odo, uspoll); 
 		

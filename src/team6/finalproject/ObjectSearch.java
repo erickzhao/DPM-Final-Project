@@ -142,9 +142,11 @@ public class ObjectSearch {
 		nav.setSpeeds(0,0);
 		
 		if (ColorPoller.isBlock()) {
+			lowerpoll.enable(false);
 			Sound.beep();
 			handleBlock(true);
 			bringToEndzone(endzoneX,endzoneY);
+			lowerpoll.enable(true);
 		} else {
 			saveObstacleToMap(odo.getX(), odo.getY());
 			nav.goBackward();
