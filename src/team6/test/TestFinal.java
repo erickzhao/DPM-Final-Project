@@ -1,6 +1,5 @@
 package team6.test;
-//Author : Andrei Ungur
-//NOTE: This hasn't yet been tested and doesn't implement obstacle avoidance.
+
 import team6.finalproject.*;
 import lejos.hardware.Button;
 import lejos.hardware.ev3.LocalEV3;
