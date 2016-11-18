@@ -62,7 +62,7 @@ public class Navigation extends Thread
 					minAng = (Math.atan2(waypointY - odometer.getY(), waypointX - odometer.getX())) * (180.0 / Math.PI);
 					if (minAng < 0)
 						minAng += 360.0;
-					if (Math.abs(odometer.getAng() - minAng) > ANG_ERR || Math.abs(odometer.getAng() - minAng) + ANG_ERR > 360.0){
+					if (Math.abs(odometer.getAng() - minAng) > ANG_ERR && Math.abs(odometer.getAng() - minAng) + ANG_ERR < 360.0){
 						this.turnTo(minAng, true);
 					}
 					this.setSpeeds(FAST, FAST);
@@ -134,7 +134,7 @@ public class Navigation extends Thread
 			minAng = (Math.atan2(y - odometer.getY(), x - odometer.getX())) * (180.0 / Math.PI);
 			if (minAng < 0)
 				minAng += 360.0;
-			if (Math.abs(odometer.getAng() - minAng) > ANG_ERR || Math.abs(odometer.getAng() - minAng) + ANG_ERR > 360.0){
+			if (Math.abs(odometer.getAng() - minAng) > ANG_ERR && Math.abs(odometer.getAng() - minAng) + ANG_ERR < 360.0){
 				this.turnTo(minAng, true);
 			}
 			this.setSpeeds(FAST, FAST);
