@@ -133,7 +133,7 @@ public class ObjectSearch {
 		//The commented out code is to alternate between...
 		//... either inspecting blocks directly, or after having stored them
 		//nav.turnTo(heading,true);
-		
+		nav.turnTo(odo.getAng()+25,true);
 		nav.goForward();
 		
 		while (!ColorPoller.isObject()) {
