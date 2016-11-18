@@ -79,8 +79,8 @@ public class ObjectAvoidance {
 		if (archivedValues[archivedCount] > median){
 			archivedValues[archivedCount] = median;
 		}
-		//return archivedValues[archivedCount];
-		return distance;
+		return archivedValues[archivedCount];
+		// return distance;
 		
 	}
 	
