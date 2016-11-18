@@ -12,6 +12,12 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 
+/**
+ * Starting point of the program.
+ * <o> Initializes sensor and motor ports. Houses the <code>main</code> method for the system
+ * @author Andrei Ungur
+ * @version 2.0
+ */
 public class TestFinal {
 
 	/*
