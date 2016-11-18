@@ -16,54 +16,49 @@ import team6.finalproject.Wifi;
 
 public class TestParameterPassing {
 
-	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
-	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
+//	private static final EV3LargeRegulatedMotor rightMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("A"));
+//	private static final EV3LargeRegulatedMotor leftMotor = new EV3LargeRegulatedMotor(LocalEV3.get().getPort("D"));
 	 
-	private static final Port lightPort = LocalEV3.get().getPort("S4"); 
+//	private static final Port lightPort = LocalEV3.get().getPort("S4"); 
 	 
 	//constants
 	public static final double WHEEL_RADIUS = 2.15; //needs to be changed for robots physical configs
 	public static final double TRACK = 15.2; //needs to be changed for robots physical configs
 	private static final double GRID_SIZE= 30.48;
+	int ourCorner;
+	double goodX;
+	double badX;
+	double goodY;
+	double badY;
+	
 	public static void main(String[] args) {
 		
 		Wifi.getParameters();
+		if (Wifi.ourStartingCorner==1 || Wifi.ourStartingCorner==2 || Wifi.ourStartingCorner==3 || Wifi.ourStartingCorner==4){
+			
 		
-		System.out.println("Building Team: " + Wifi.buldingTeamNumber);
-		System.out.println("Building Corner: " + Wifi.buildingStartingCorner);
-		System.out.println("Collecting Team: " + Wifi.collectorTeamNumber);
-		System.out.println("Collecting Corner: " + Wifi.collectingStartingCorner);
-		System.out.println("Lower Red X: " + Wifi.lrzX);
-		System.out.println("Lower Red Y: " + Wifi.lrzY);
-		System.out.println("Upper Red X: " + Wifi.urzX);
-		System.out.println("Upper Red Y: " + Wifi.urzY);
-		System.out.println("Lower Green X: " + Wifi.lgzX);
-		System.out.println("Lower Green Y: " + Wifi.lgzY);
-		System.out.println("Upper Green X: " + Wifi.ugzX);
-		System.out.println("Upper Green Y: " + Wifi.ugzY);
+		System.out.println("Our actual corner is X" + Wifi.ourStartingCorner);
+		System.out.println("We want to be at " + Wifi.ourEndZoneX + "," + Wifi.ourEndZoneY);
+		System.out.println("We will avoid " + Wifi.ourBadZoneX + "," + Wifi.ourBadZoneY);
 		
 		Button.waitForAnyPress();
 		
 		System.out.println();
 		System.out.println();
 		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
-		System.out.println();
+	
+		}
 		
+		//Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
+		//Navigation navig = new Navigation(odo);
 		
-		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
-		Navigation navig = new Navigation(odo);
-		
-		LCDInfo lcd = new LCDInfo(odo);
-		lcd.start();
+		//LCDInfo lcd = new LCDInfo(odo);
+		//lcd.start();
 
-		@SuppressWarnings("resource")
-		SensorModes lightSensor = new EV3ColorSensor(lightPort);
-		SampleProvider lightValue = lightSensor.getMode("Red");
-		float[] lightData = new float[lightValue.sampleSize()];
+		//@SuppressWarnings("resource")
+		//SensorModes lightSensor = new EV3ColorSensor(lightPort);
+		//SampleProvider lightValue = lightSensor.getMode("Red");
+		/*float[] lightData = new float[lightValue.sampleSize()];
 
 		LightPoller lightPoller = new LightPoller(lightValue, lightData);
 		lightPoller.start();
@@ -73,7 +68,7 @@ public class TestParameterPassing {
 		odo.start();
 		odoCorrection.start();
 		
-		navig.travelTo(Wifi.lgzX*GRID_SIZE, Wifi.lgzY*GRID_SIZE);
+		navig.travelTo(Wifi.lgzX*GRID_SIZE, Wifi.lgzY*GRID_SIZE); */
 		
 		/*(new Thread(){
 			public void run(){
@@ -85,4 +80,3 @@ public class TestParameterPassing {
 	}
 
 }
-
