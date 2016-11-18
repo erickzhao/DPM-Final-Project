@@ -33,6 +33,8 @@ public class ObjectSearch {
 	private double distToObject; //Distance that the robot travels to inspect object
 	private boolean sameObject=false; //Determines if the robot is looking at the same object
 	private ObjectAvoidance oa;
+	private static final int CLAW_SPEED = 200;
+	private static final int CLAW_ACCELERATION = 3000;
 	/**
 	 * Constructor for Object Search.
 	 */
@@ -42,6 +44,8 @@ public class ObjectSearch {
 		this.lowerpoll = uspoll;
 		this.oa = oa;
 		this.clawMotor = claw;
+		this.clawMotor.setSpeed(CLAW_SPEED);
+		this.clawMotor.setAcceleration(CLAW_ACCELERATION);
 	}
 	/**
 	 * Implements all the elements of the search into an algorithm.
@@ -183,11 +187,11 @@ public class ObjectSearch {
 	 * Grasps a styrofoam block with the claw if "pickUp" is true.
 	 * Releasses styrofoam block if "pickUp" is false.
 	 */
-	private void handleBlock(boolean pickUp) {
+	public void handleBlock(boolean pickUp) {
 		if (pickUp){
-		
+			clawMotor.rotateTo(-180);
 		} else {
-			
+			clawMotor.rotateTo(0);
 		}
 	}
 	
