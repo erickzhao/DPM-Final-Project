@@ -147,6 +147,7 @@ public class ObjectSearch {
 			handleBlock(true);
 			bringToEndzone(endzoneX,endzoneY);
 			lowerpoll.enable(true);
+			System.exit(0);
 		} else {
 			saveObstacleToMap(odo.getX(), odo.getY());
 			nav.goBackward();

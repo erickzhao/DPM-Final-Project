@@ -2,6 +2,7 @@ package team6.test;
 
 import team6.finalproject.*;
 import lejos.hardware.Button;
+import lejos.hardware.Sound;
 import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.motor.EV3LargeRegulatedMotor;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
@@ -124,11 +125,15 @@ public class TestFinal {
 		lightpoll.start();
 		colorpoll.start();
 				
-		lcd.start();
+		//lcd.start();
 		
 		oa.initiate();
 		// Basic set-up ends here 
 		// ----------------------------------------------------------------
+		//Wait for a user to press a button
+		System.out.println("Press me");
+		while(Button.waitForAnyPress() == Button.ID_ENTER);
+		
 		//We don't yet have the claw implemented, so we force it to stay at 0.
 		clawMotor.rotate(0);
 		
@@ -138,6 +143,7 @@ public class TestFinal {
 		//Do LIGHT Localization
 		
 		lightloc.doLocalization();
+		Sound.beepSequenceUp();
 		// END LOCALIZATION
 		
 		// BEGIN ALGORITHM
