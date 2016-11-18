@@ -13,7 +13,7 @@ import lejos.hardware.lcd.TextLCD;
 
 public class Wifi {
 	
-	private static final String SERVER_IP = "192.168.2.6"; //this IP address is specific to a certain laptop. change accordingly
+	private static final String SERVER_IP = "192.168.2.5"; //this IP address is specific to a certain laptop. change accordingly
 	private static final int TEAM_NUMBER = 6;
 	public static final int GRID_SIZE = 10;
 	
@@ -91,19 +91,19 @@ public class Wifi {
 				if (buildingTeamNumber == 6)
 				{					
 					
-					ourEndZoneX = ((lgzX+ugzX)/2.0); //*30.48; //Middle with tile size
-					ourEndZoneY = ((lgzY+ugzY)/2.0); //*30.48; //Middle with tile size
-					ourBadZoneX = ((lrzX+urzX)/2.0); //*30.48; //Middle bad with tile size
-					ourBadZoneY = ((lrzY+urzY)/2.0); //*30.48; //Middle bad with tile size	
+					ourEndZoneX = ((lgzX+ugzX)/2.0)*30.48; //Middle with tile size
+					ourEndZoneY = ((lgzY+ugzY)/2.0)*30.48; //Middle with tile size
+					ourBadZoneX = ((lrzX+urzX)/2.0)*30.48; //Middle bad with tile size
+					ourBadZoneY = ((lrzY+urzY)/2.0)*30.48; //Middle bad with tile size	
 				}
 				
 				if (collectorTeamNumber == 6)
 				{
 					
-					ourEndZoneX = ((lrzX+urzX)/2.0); //*30.48; //Middle with tile size
-					ourEndZoneY = ((lrzY+urzY)/2.0); //*30.48; //Middle with tile size
-					ourBadZoneX = ((lgzX+ugzX)/2.0); //*30.48; //Middle bad with tile size
-					ourBadZoneY = ((lgzY+ugzY)/2.0); //*30.48; //Middle bad with tile size	
+					ourEndZoneX = ((lrzX+urzX)/2.0)*30.48; //Middle with tile size
+					ourEndZoneY = ((lrzY+urzY)/2.0)*30.48; //Middle with tile size
+					ourBadZoneX = ((lgzX+ugzX)/2.0)*30.48; //Middle bad with tile size
+					ourBadZoneY = ((lgzY+ugzY)/2.0)*30.48; //Middle bad with tile size	
 				}
 					
 				
@@ -170,4 +170,3 @@ public static int changeOrientationY(int startPos, int x, int y) {
 			
 		}
 	}
-
