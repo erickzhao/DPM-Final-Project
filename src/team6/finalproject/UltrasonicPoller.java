@@ -36,8 +36,10 @@ public class UltrasonicPoller extends PausableTimerListener {
 	 * Multiplies the ultrasonic sensor's readings by 100 to display more readable <code>int</code> values.
 	 */
 	public void timedOut() {
-		us.fetchSample(usData,0);
-		distance=usData[0]*100;
+		if (sensor.isEnabled()){
+			us.fetchSample(usData,0);
+			distance=usData[0]*100;
+		}
 	}
 	
 	/**
@@ -48,12 +50,12 @@ public class UltrasonicPoller extends PausableTimerListener {
 		return distance;
 	}
 	public void enable(boolean on){
-		if (on && !sensor.isEnabled()){
+		if (on && !this.sensor.isEnabled()){
 			Sound.beepSequenceUp();
-			sensor.enable();
-		} else if (!on && sensor.isEnabled()) {
+			this.sensor.enable();
+		} else if (!on && this.sensor.isEnabled()) {
 			Sound.beepSequence();
-			sensor.disable();
+			this.sensor.disable();
 		}
 	}
 }
