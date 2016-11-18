@@ -46,6 +46,10 @@ public class ObjectSearch {
 		this.clawMotor = claw;
 		this.clawMotor.setSpeed(CLAW_SPEED);
 		this.clawMotor.setAcceleration(CLAW_ACCELERATION);
+		/*this.endzoneX = Wifi.ourEndZoneX;
+		this.endzoneY = Wifi.ourEndZoneY;*/
+		this.endzoneX = 60.96;
+		this.endzoneY = 60.96;
 	}
 	/**
 	 * Implements all the elements of the search into an algorithm.

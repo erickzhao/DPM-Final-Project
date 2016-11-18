@@ -48,6 +48,12 @@ public class TestFinal {
 	 private static final double LStoWB = 7.5; //Light Sensor to Wheel Base value
 	 
 	public static void main(String[] args) {
+		/* UNCOMMENT IF WIFI IS USED
+		 * Wifi.getParameters();
+		if (!(Wifi.ourStartingCorner==1 || Wifi.ourStartingCorner==2 || Wifi.ourStartingCorner==3 || Wifi.ourStartingCorner==4)){
+			System.exit(0);
+		}*/
+		
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
 		
 		//Bottom US : Object recognition and localization
