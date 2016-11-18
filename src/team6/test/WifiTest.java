@@ -51,7 +51,7 @@ public class WifiTest {
 	 * 2. TEAM_NUMBER: your project team number
 	 * */
 
-	private static final String SERVER_IP = "192.168.2.6"; //this IP address is specific to a certain laptop. change accordingly
+	private static final String SERVER_IP = "192.168.2.3"; //this IP address is specific to a certain laptop. change accordingly
 	private static final int TEAM_NUMBER = 6;
 
 	public static int buldingTeamNumber;
