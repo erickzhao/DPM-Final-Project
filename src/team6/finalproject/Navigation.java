@@ -140,7 +140,6 @@ public class Navigation extends Thread
 			this.setSpeeds(FAST, FAST);
 		}
 		this.setSpeeds(0, 0);
-		this.navigating = false;
 	}
 	
 	/**
@@ -242,6 +241,8 @@ public class Navigation extends Thread
 		
 		this.setSpeeds(0,0);
 	}
+	
+
 	
 	/**
 	 * Makes the robot travel forward indefinitely until stopped/interrupted.

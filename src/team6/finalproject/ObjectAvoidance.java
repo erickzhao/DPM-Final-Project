@@ -19,14 +19,18 @@ public class ObjectAvoidance {
 	
 	private static final int MAX_FILTER = 3; // Must be an odd number for performance reason
 	private static final int MAX_US_DISTANCE = 255;
-	private static final float DANGER_DIST = 18;
+	private static final float DANGER_DIST = (float) 11.4;
 	private static final float DEADBAND = 2;
-	private static final double END_ANGLE_CORRECTION = 155;
+	private static final double SAFE_DISTANCE_AWAY = -3;
+	private static final double END_ANGLE_CORRECTION = 112;
 	private static final int BANGBANG_SENSOR_ANGLE = -130;
-	private static final int BANGBANG_TRAVEL_SPEED = 190;
-	private static final int BANGBANG_ULTRASLOW_WHEEL_SPEED = 35;
-	private static final int BANGBANG_SLOW_WHEEL_SPEED = 65;
-	private static final int BANGBANG_FAST_WHEEL_SPEED = 250;
+	private static final int BANGBANG_TRAVEL_SPEED = 195;
+	private static final int BANGBANG_ULTRASLOW_WHEEL_SPEED = 72;
+	private static final int BANGBANG_SLOW_WHEEL_SPEED = 144;
+	private static final int BANGBANG_FAST_WHEEL_SPEED = 275;
+	private static final int THRESHOLD_ANGLE = 15;
+	private static final int ROTATING_ANGLE = 63;
+	private static final int ROTATING_SPEED = 360;
 	
 	private boolean navigating;
 	private float[] archivedValues = new float[MAX_FILTER];
@@ -89,7 +93,7 @@ public class ObjectAvoidance {
 	 * A helper function that wrap the incrementing number
 	 * @param thisNum
 	 * @param limitNum
-	 * @return
+	 * @return increment the number that coul wrap around
 	 */
 	public int customIncrement(int thisNum, int limitNum){
 		int res;
@@ -107,22 +111,31 @@ public class ObjectAvoidance {
 	public void avoiding(){
 		float distance;
 		navigating = true;
+		usMotor.setSpeed(ROTATING_SPEED);
 		while (navigating){
+			if (!usMotor.isMoving() && usMotor.getTachoCount() <= THRESHOLD_ANGLE){
+				usMotor.rotateTo(ROTATING_ANGLE, true);
+			}
+			else if (!usMotor.isMoving() && usMotor.getTachoCount() > THRESHOLD_ANGLE){
+				usMotor.rotateTo(-ROTATING_ANGLE, true);
+			}
 			distance = getFilteredData();
 			if (distance <= DANGER_DIST){
 				nav.cancelled = true;
 				nav.setSpeeds(0, 0);
 				Sound.beepSequence();
+				nav.goForward(SAFE_DISTANCE_AWAY);
 				nav.turnTo(wrapAng(odo.getAng() - 90), true);
 				Sound.beepSequenceUp();
 				double endAng = wrapAng(odo.getAng() + END_ANGLE_CORRECTION);
-				usMotor.rotate(BANGBANG_SENSOR_ANGLE);
+				usMotor.rotateTo(BANGBANG_SENSOR_ANGLE);
 				bangbang(endAng);
 				usMotor.rotateTo(0);
 				nav.cancelled = false;
 			}
 			if (!nav.navigating()){
 				navigating = false;
+				usMotor.rotateTo(0, true);
 			}
 		}
 	}
@@ -152,19 +165,19 @@ public class ObjectAvoidance {
 	 * @param errorDistance
 	 */
 	private void bangbangLogic(float errorDistance){
-		if (Math.abs(errorDistance) <= DEADBAND){ //moving in straight line
+		if (Math.abs(errorDistance) <= DEADBAND){ 
 			nav.setSpeeds(BANGBANG_TRAVEL_SPEED, BANGBANG_TRAVEL_SPEED);
-		} else if (errorDistance > 0){ //too close to wall
-			nav.setSpeeds(BANGBANG_ULTRASLOW_WHEEL_SPEED, BANGBANG_FAST_WHEEL_SPEED);
-		} else if (errorDistance < 0){ // getting too far from the wall
-			nav.setSpeeds(BANGBANG_FAST_WHEEL_SPEED, BANGBANG_SLOW_WHEEL_SPEED);
+		} else if (errorDistance > 0){
+			nav.setSpeeds(BANGBANG_SLOW_WHEEL_SPEED, BANGBANG_FAST_WHEEL_SPEED);
+		} else if (errorDistance < 0){ 
+			nav.setSpeeds(BANGBANG_FAST_WHEEL_SPEED, BANGBANG_ULTRASLOW_WHEEL_SPEED);
 		}
 	}
 	
 	/**
 	 * wrap the angle if it is larger than 360 degrees
-	 * @param angle
-	 * @return
+	 * @param angle that is needed
+	 * @return return the wrapped angle
 	 */
 	public double wrapAng(double angle){
 		double res;
