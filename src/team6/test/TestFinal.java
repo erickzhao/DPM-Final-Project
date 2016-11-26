@@ -55,12 +55,12 @@ public class TestFinal {
 	 
 	public static void main(String[] args) {
 		
-		Wifi.getParameters();
+		/*Wifi.getParameters();
 		if (!(Wifi.ourStartingCorner==1 || Wifi.ourStartingCorner==2 || Wifi.ourStartingCorner==3 || Wifi.ourStartingCorner==4)){
 			System.exit(0);
-		}
+		}*/
 		
-		System.out.println("\n\n\n\n\n\n\n\n\n\n");
+		//System.out.println("\n\n\n\n\n\n\n\n\n\n");
 		
 		
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
@@ -130,11 +130,7 @@ public class TestFinal {
 		oa.initiate();
 		// Basic set-up ends here 
 		// ----------------------------------------------------------------
-		//Wait for a user to press a button
-		System.out.println("Press me");
-		while(Button.waitForAnyPress() == Button.ID_ENTER);
-		
-		//We don't yet have the claw implemented, so we force it to stay at 0.
+		//Ensures the claw starts at the position 0
 		clawMotor.rotate(0);
 		
 		//Do US Localization

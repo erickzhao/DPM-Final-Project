@@ -35,7 +35,7 @@ public class ObjectSearch {
 	private ObjectAvoidance oa;
 	private static final int CLAW_SPEED = 200;
 	private static final int CLAW_ACCELERATION = 3000;
-	private static final int ADJUSTMENT_ANGLE = 21;
+	private static int ADJUSTMENT_ANGLE = 21;
 	/**
 	 * Constructor for Object Search.
 	 */
@@ -47,10 +47,10 @@ public class ObjectSearch {
 		this.clawMotor = claw;
 		this.clawMotor.setSpeed(CLAW_SPEED);
 		this.clawMotor.setAcceleration(CLAW_ACCELERATION);
-		this.endzoneX = Wifi.ourEndZoneX;
-		this.endzoneY = Wifi.ourEndZoneY;
-//		this.endzoneX = 60.96;
-//		this.endzoneY = 60.96;
+//		this.endzoneX = Wifi.ourEndZoneX;
+//		this.endzoneY = Wifi.ourEndZoneY;
+		this.endzoneX = 60.96;
+		this.endzoneY = 60.96;
 	}
 	/**
 	 * Implements all the elements of the search into an algorithm.
@@ -100,6 +100,7 @@ public class ObjectSearch {
 		while(currAng<sweepAng || currAng>(sweepAng+180)){
 			//An object is seen
 			if(lowerpoll.getDistance()<=THRESHOLD){
+				ADJUSTMENT_ANGLE = (int) Math.atan2(10,lowerpoll.getDistance());
 				Sound.beep();
 				//Add to object list
 				obstacles.add(new Float(currAng));
