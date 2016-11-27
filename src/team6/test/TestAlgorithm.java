@@ -10,6 +10,7 @@ import lejos.hardware.sensor.EV3UltrasonicSensor;
 import lejos.hardware.sensor.SensorModes;
 import lejos.robotics.SampleProvider;
 import team6.finalproject.ColorPoller;
+import team6.finalproject.CountdownTimer;
 import team6.finalproject.LCDInfo;
 import team6.finalproject.LightPoller;
 import team6.finalproject.Navigation;
@@ -55,6 +56,7 @@ public class TestAlgorithm {
 	public static void main(String[] args) {
 		//******************Basic set-up of sensor and odometer***********************
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
+		CountdownTimer countdown = new CountdownTimer();
 		
 		@SuppressWarnings("resource")
 		EV3UltrasonicSensor sensor = new EV3UltrasonicSensor(usPort);
@@ -80,7 +82,7 @@ public class TestAlgorithm {
 		colorPoll.start();
 		lcd.start();
 		
-		ObjectSearch search = new ObjectSearch(odo, nav, uspoll,oa,clawMotor);
+		ObjectSearch search = new ObjectSearch(odo, nav, uspoll,oa,clawMotor,countdown);
 		nav.turnTo(0,true);
 		search.doSearch();
 		
