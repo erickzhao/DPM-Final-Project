@@ -63,7 +63,7 @@ public class ObjectSearch {
 		//will return to (0,0).
 		
 		int wp=1;
-		while(!countdown.isTimeUp()){
+		while(!countdown.isTimeUp() && wp<9){
 			//Scan the next neighbourhood
 			sweep();
 			Sound.beep();
