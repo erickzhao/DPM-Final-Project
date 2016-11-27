@@ -1,5 +1,8 @@
 package team6.finalproject;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.lang.Math;
 import lejos.hardware.Sound;
 import lejos.hardware.motor.EV3MediumRegulatedMotor;
 
@@ -31,10 +34,16 @@ public class ObjectAvoidance {
 	private static final int THRESHOLD_ANGLE = 15;
 	private static final int ROTATING_ANGLE = 63;
 	private static final int ROTATING_SPEED = 360;
+	private static final double ROBOT_HALF_WIDTH = 7.1;
 	
 	private boolean navigating;
 	private float[] archivedValues = new float[MAX_FILTER];
 	private int archivedCount = 0;
+	List<Double> redZoneXa = new ArrayList<Double>();
+	List<Double> redZoneYa = new ArrayList<Double>();
+	List<Double> redZoneXb = new ArrayList<Double>();
+	List<Double> redZoneYb = new ArrayList<Double>();
+		
 	/**
 	 * Constructor for ObjectAvoidance. 
 	 * @param waypointX The x-value of the destination -- <code>double</code>
@@ -59,6 +68,17 @@ public class ObjectAvoidance {
 	 * Travel to the set destination (x,y) while avoiding obstacles
 	 */
 	public void travel(double x, double y){
+		double[] waypoints = avoidRed(x, y);
+		if (waypoints[0]==x && waypoints[1]==y){
+			// Redundent for now, will inplement crossing red zone logic soon*
+			travelLogic(x, y);
+		} else{
+			travelLogic(waypoints[0],waypoints[1]);
+		}
+		
+	}
+	
+	private void travelLogic(double x, double y){
 		nav.setWaypoints(x, y);
 		nav.setNavigating(true);
 		nav.cancelled = false;
@@ -188,7 +208,92 @@ public class ObjectAvoidance {
 		}
 		return res;
 	}
-	 
+	
+	/**
+	 * Add a new red zone that the robot shall avoid 
+	 * @param x1 One of the x-coordinate of the redZone
+	 * @param y1 One of the y-coordinate of the redZone
+	 * @param x2 The other x-coordinate
+	 * @param y2 The other y-coordinate
+	 */
+	public void addRedZone(double x1, double y1, double x2, double y2){
+		double xa, xb, ya, yb;
+		
+		xa = Math.min(x1, x2) - ROBOT_HALF_WIDTH;
+		xb = Math.max(x1, x2) + ROBOT_HALF_WIDTH;
+		ya = Math.min(y1, y2) - ROBOT_HALF_WIDTH;
+		yb = Math.max(y1, y2) + ROBOT_HALF_WIDTH;
+		
+		redZoneXa.add(xa);
+		redZoneYa.add(ya);
+		redZoneXb.add(xb);
+		redZoneYb.add(yb);
+	}
+	
+	/**
+	 * Check if a point is in redzone
+	 * @param x
+	 * @param y
+	 * @return return the index of the redzone the point is in, if not in any redzone, return
+	 * the total number of redzones
+	 */
+	private int isInRed (double x, double y){
+		int redNumber = redZoneXa.size();
+		for (int i = 0; i < redNumber; i++){
+			if ( x > redZoneXa.get(i) && x < redZoneXb.get(i) && y > redZoneYa.get(i) 
+					&& y < redZoneYb.get(i)){
+				redNumber = i;
+			}
+		}
+		return redNumber;		
+	}
+	
+	/**
+	 * Check if the robot is crossing a red zone going towards the destination
+	 * @param xNaught
+	 * @param yNaught
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	private int crossingRed(double xNaught, double yNaught, double x, double y){
+		double BlockSize = 14.1;
+		int res = redZoneXa.size();
+		double angle = (Math.atan2(y - yNaught, x - xNaught ));
+		double currentX = xNaught;
+		double currentY = yNaught;
+		while (Math.abs(x - currentX) < BlockSize){
+			currentX = currentX + Math.cos(angle)*BlockSize;
+			currentY = currentY + Math.sin(angle)*BlockSize;
+			res = isInRed(currentX, currentY);
+			if (res < redZoneXa.size()){
+				break;
+			}
+		}
+		return res;
+		}
+	
+
+	private double[] avoidRed (double x, double y){
+		double adjustedX = x;
+		double adjustedY = y;
+		if (isInRed(x,y) < redZoneXa.size()){
+			int index = isInRed(x,y);
+			if (Math.abs( x - redZoneXa.get(index)) < Math.abs( x - redZoneXb.get(index))){
+				adjustedX = redZoneXa.get(index);
+			} else {
+				adjustedX = redZoneXb.get(index);
+			}
+			if (Math.abs( y - redZoneYa.get(index)) < Math.abs( y - redZoneYb.get(index))){
+				adjustedY = redZoneYa.get(index);
+			} else {
+				adjustedY = redZoneYb.get(index);
+			}
+		}
+		double[] res = {adjustedX, adjustedY};
+		return res;
+	}
+	
 	
 	
 }
