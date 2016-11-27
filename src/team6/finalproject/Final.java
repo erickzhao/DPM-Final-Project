@@ -59,6 +59,9 @@ public class Final {
 			System.exit(0);
 		}
 		
+		CountdownTimer countdown = new CountdownTimer();
+		countdown.start();
+		
 		System.out.println("\n\n\n\n\n\n\n\n\n\n");
 		
 		
@@ -148,7 +151,7 @@ public class Final {
 		// BEGIN ALGORITHM
 		Navigation nav = new Navigation(odo);
 		
-		ObjectSearch search = new ObjectSearch(odo, nav, uspoll,oa,clawMotor);
+		ObjectSearch search = new ObjectSearch(odo, nav, uspoll,oa,clawMotor,countdown);
 		//Do ALGORITHM
 		search.doSearch();
 		

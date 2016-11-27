@@ -19,6 +19,7 @@ public class ObjectSearch {
 	private Odometer odo;
 	private final EV3LargeRegulatedMotor clawMotor;
 	private Navigation nav;
+	private CountdownTimer countdown;
 	private float speed = 150;
 	private UltrasonicPoller lowerpoll;
 	private List<Float> obstacles = new ArrayList<Float>();
@@ -39,7 +40,8 @@ public class ObjectSearch {
 	/**
 	 * Constructor for Object Search.
 	 */
-	public ObjectSearch(Odometer odo, Navigation nav,UltrasonicPoller uspoll, ObjectAvoidance oa,EV3LargeRegulatedMotor claw) {
+	public ObjectSearch(Odometer odo, Navigation nav,UltrasonicPoller uspoll, ObjectAvoidance oa,EV3LargeRegulatedMotor claw, CountdownTimer countdown) {
+		this.countdown = countdown;
 		this.odo = odo;
 		this.nav = nav;
 		this.lowerpoll = uspoll;
@@ -56,12 +58,12 @@ public class ObjectSearch {
 	 * Implements all the elements of the search into an algorithm.
 	 */
 	public void doSearch(){
-		//The amount of time for which the search runs is five minutes.
+		//The amount of time for which the search runs is four minutes.
 		//After five minutes, this infinite loop would be interrupted and the robot
 		//will return to (0,0).
 		
 		int wp=1;
-		while(true){
+		while(!countdown.isTimeUp()){
 			//Scan the next neighbourhood
 			sweep();
 			Sound.beep();
@@ -69,6 +71,8 @@ public class ObjectSearch {
 			nav.turnTo(0, true);
 			wp++;
 		}
+		
+		oa.travel(0, 0);
 	}
 	
 	/**
