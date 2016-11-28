@@ -38,7 +38,7 @@ public class ObjectAvoidance {
 	private static final int WALL_CHECK_TIMES = 5;
 	private static final double DISTANCE_CHECK = 91;
 	private static final double BLOCK_THICKNESS = 10;
-	private static final double ERROR_MARGIN = 3.3;
+	private static final double ERROR_MARGIN = 6.3;
 	
 	
 	private boolean navigating;
@@ -284,7 +284,7 @@ public class ObjectAvoidance {
 	public int redZoneAhead(){
 		int res = redZoneXa.size();
 		double angle = odo.getAng()/180.0*Math.PI;
-		int index = isInRed(odo.getX()+Math.cos(angle)*BLOCK_THICKNESS/4, odo.getY()+Math.sin(angle)*BLOCK_THICKNESS/4);
+		int index = isInRed(odo.getX()+Math.cos(angle)*BLOCK_THICKNESS/2.5, odo.getY()+Math.sin(angle)*BLOCK_THICKNESS/2.5);
 		if (index < res && !nav.turning()){
 			res = index;
 		}
@@ -332,6 +332,8 @@ public class ObjectAvoidance {
 			travel(redZoneXb.get(index)-SAFE_DISTANCE_AWAY, redZoneYb.get(index)-SAFE_DISTANCE_AWAY);
 			obstacleMode = false;
 			travel(destinationX, destinationY);
+		} else {
+			nav.goForward(5*SAFE_DISTANCE_AWAY);
 		}
 		
 	}
