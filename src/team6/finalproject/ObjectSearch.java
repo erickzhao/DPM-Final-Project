@@ -29,7 +29,7 @@ public class ObjectSearch {
 	//If boardsize is 2 : It moves down 2 squares at a time (etc.)
 	//For the final, since we're splitting 12 blocks in 3, boardsize = 4.
 	//For the beta demo, we can split 8 blocks in 3 with boardsize = 8/3.
-	private double BOARDSIZE = 8/3;
+	private double BOARDSIZE = 4;
 	private double initX,initY,initTheta,endzoneX,endzoneY; //We take info for the endzone through wi-fi
 	private double sweepAng=90;
 	private double distToObject; //Distance that the robot travels to inspect object
@@ -50,10 +50,10 @@ public class ObjectSearch {
 		this.clawMotor = claw;
 		this.clawMotor.setSpeed(CLAW_SPEED);
 		this.clawMotor.setAcceleration(CLAW_ACCELERATION);
-//		this.endzoneX = Wifi.ourEndZoneX;
-//		this.endzoneY = Wifi.ourEndZoneY;
-		this.endzoneX = 60.96;
-		this.endzoneY = 60.96;
+		this.endzoneX = Wifi.ourEndZoneX;
+		this.endzoneY = Wifi.ourEndZoneY;
+//		this.endzoneX = 60.96;
+//		this.endzoneY = 60.96;
 	}
 	/**
 	 * Implements all the elements of the search into an algorithm.
@@ -106,7 +106,7 @@ public class ObjectSearch {
 		while(currAng<sweepAng || currAng>(sweepAng+180)){
 			//An object is seen
 			if(lowerpoll.getDistance()<=THRESHOLD){
-				ADJUSTMENT_ANGLE = (int) Math.atan2(10,lowerpoll.getDistance());
+				//ADJUSTMENT_ANGLE = (int) Math.atan2(10,lowerpoll.getDistance());
 				Sound.beep();
 				//Add to object list
 				obstacles.add(new Float(currAng));
@@ -164,7 +164,7 @@ public class ObjectSearch {
 			handleBlock(true);
 			bringToEndzone(endzoneX,endzoneY);
 			lowerpoll.enable(true);
-			System.exit(0);
+			nav.travelTo(initX,initY);
 		} else {
 			oa.saveObstacleToMap(odo.getX(), odo.getY(),odo.getAng());
 			nav.goBackward();
