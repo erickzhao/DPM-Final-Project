@@ -67,6 +67,14 @@ public class ObjectAvoidance {
 	}
 	
 	public void initiate(){
+		addRedZone(-30.48, -30.48, 0 - (ROBOT_HALF_WIDTH + ERROR_MARGIN), 0 - (ROBOT_HALF_WIDTH + ERROR_MARGIN));  // X1
+		addRedZone(Wifi.ourBadZoneX1, Wifi.ourBadZoneY1, 
+				Wifi.ourBadZoneX2, Wifi.ourBadZoneY2); // Pass the Redzone coordinates
+		addRedZone(10*30.48, -30.48, 11*30.48, 0);  // X2
+		addRedZone(10*30.48, 10*30.48, 11*30.48, 11*30.48); // X3
+		addRedZone(-30.48, 10*30.48, 0, 11*30.48); // X4
+		
+		
 		nav.start();
 	}
 	
@@ -385,5 +393,15 @@ public class ObjectAvoidance {
 	
 	private double distanceTravelled(double x, double y){
 		return Math.sqrt(Math.pow(odo.getX() - x, 2) + Math.pow(odo.getY() - y, 2));
+	}
+	
+	/**
+	 * remove X1 from the redzone before wishing to return to starting position
+	 */
+	public void removeX1(){
+		redZoneXa.remove(0);
+		redZoneXb.remove(0);
+		redZoneYa.remove(0);
+		redZoneYb.remove(0);
 	}
 }

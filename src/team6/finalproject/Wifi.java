@@ -37,8 +37,8 @@ public class Wifi {
 	public static int ourStartingCorner; //Our actual starting corner after determining role
 	public static double ourEndZoneX; //Middle of zone
 	public static double ourEndZoneY; //Middle of zone
-	public static double ourBadZoneX; //Middle of avoiding zone
-	public static double ourBadZoneY; //Middle of avoiding zone
+	public static double ourBadZoneX1, ourBadZoneX2; //X-coordinates of avoiding zone
+	public static double ourBadZoneY1, ourBadZoneY2; //Y-coordinates of avoiding zone
 	
 	
 	
@@ -93,8 +93,11 @@ public class Wifi {
 					
 					ourEndZoneX = ((lgzX+ugzX)/2.0)*30.48; //Middle with tile size
 					ourEndZoneY = ((lgzY+ugzY)/2.0)*30.48; //Middle with tile size
-					ourBadZoneX = ((lrzX+urzX)/2.0)*30.48; //Middle bad with tile size
-					ourBadZoneY = ((lrzY+urzY)/2.0)*30.48; //Middle bad with tile size	
+					// Badzone coordinates with tile size
+					ourBadZoneX1 = lrzX*30.48;
+					ourBadZoneX2 = urzX*30.48;
+					ourBadZoneY1 = lrzY*30.48;
+					ourBadZoneY2 = urzY*30.48; 
 				}
 				
 				if (collectorTeamNumber == 6)
@@ -102,8 +105,11 @@ public class Wifi {
 					
 					ourEndZoneX = ((lrzX+urzX)/2.0)*30.48; //Middle with tile size
 					ourEndZoneY = ((lrzY+urzY)/2.0)*30.48; //Middle with tile size
-					ourBadZoneX = ((lgzX+ugzX)/2.0)*30.48; //Middle bad with tile size
-					ourBadZoneY = ((lgzY+ugzY)/2.0)*30.48; //Middle bad with tile size	
+					// Badzone coordinates with tile size
+					ourBadZoneX1 = lgzX*30.48;
+					ourBadZoneX2 = ugzX*30.48;
+					ourBadZoneY1 = lgzY*30.48;
+					ourBadZoneY2 = ugzY*30.48;	
 				}
 					
 				
