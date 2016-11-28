@@ -36,6 +36,7 @@ public class ObjectAvoidance {
 	private static final int ROTATING_SPEED = 360;
 	private static final double ROBOT_HALF_WIDTH = 7.1;
 	private static final int WALL_CHECK_TIMES = 5;
+	private static final double DISTANCE_CHECK = 66;
 	
 	
 	private boolean navigating;
@@ -178,13 +179,16 @@ public class ObjectAvoidance {
 	 * Bangbang controller for object avoidance
 	 */
 	private void bangbang(double angle){
+		double x = odo.getX();
+		double y = odo.getY();
 		if (odo.getAng() < angle){
-			while (odo.getAng() < angle){
+			while ((odo.getAng() < angle) && (distanceTravelled(x,y) < DISTANCE_CHECK)){
 				float errorDistance = getFilteredData() - DANGER_DIST;
 				bangbangLogic(errorDistance);
 			}
 		} else {
-			while (odo.getAng() < angle || odo.getAng() >= 360 - END_ANGLE_CORRECTION){
+			while ((odo.getAng() < angle || odo.getAng() >= 360 - END_ANGLE_CORRECTION)
+					&& (distanceTravelled(x,y) < DISTANCE_CHECK)){
 				float errorDistance = getFilteredData() - DANGER_DIST;
 				bangbangLogic(errorDistance);
 			}
@@ -367,5 +371,9 @@ public class ObjectAvoidance {
 			res = true;
 		}
 		return res;
+	}
+	
+	private double distanceTravelled(double x, double y){
+		return Math.sqrt(Math.pow(odo.getX() - x, 2) + Math.pow(odo.getY() - y, 2));
 	}
 }
