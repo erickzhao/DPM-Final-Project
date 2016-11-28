@@ -22,7 +22,7 @@ public class ObjectAvoidance {
 	
 	private static final int MAX_FILTER = 3; // Must be an odd number for performance reason
 	private static final int MAX_US_DISTANCE = 255;
-	private static final float DANGER_DIST = (float) 11.4;
+	private static final float DANGER_DIST = (float) 14.4;
 	private static final float DEADBAND = 2;
 	private static final double SAFE_DISTANCE_AWAY = -3;
 	private static final double END_ANGLE_CORRECTION = 112;

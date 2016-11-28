@@ -24,6 +24,7 @@ public class ObjectSearch {
 	private UltrasonicPoller lowerpoll;
 	private List<Float> obstacles = new ArrayList<Float>();
 	private double THRESHOLD = 60;
+	private double TOLERANCE = 5;
 	//If boardsize is 1 : It moves down one square at a time
 	//If boardsize is 2 : It moves down 2 squares at a time (etc.)
 	//For the final, since we're splitting 12 blocks in 3, boardsize = 4.
@@ -72,6 +73,7 @@ public class ObjectSearch {
 			wp++;
 		}
 		
+		oa.removeX1();
 		oa.travel(0, 0);
 	}
 	
@@ -149,7 +151,7 @@ public class ObjectSearch {
 				break;
 			}
 			// Check if we are going too far
-			if(Math.sqrt(Math.pow(odo.getX()-orgX,2)+Math.pow(odo.getY()-orgY,2)) > THRESHOLD){
+			if(Math.sqrt(Math.pow(odo.getX()-orgX,2)+Math.pow(odo.getY()-orgY,2)) > THRESHOLD + TOLERANCE){
 				break;
 			}
 			continue;
