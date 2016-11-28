@@ -47,10 +47,10 @@ public class ObjectSearch {
 		this.clawMotor = claw;
 		this.clawMotor.setSpeed(CLAW_SPEED);
 		this.clawMotor.setAcceleration(CLAW_ACCELERATION);
-		this.endzoneX = Wifi.ourEndZoneX;
-		this.endzoneY = Wifi.ourEndZoneY;
-//		this.endzoneX = 60.96;
-//		this.endzoneY = 60.96;
+//		this.endzoneX = Wifi.ourEndZoneX;
+//		this.endzoneY = Wifi.ourEndZoneY;
+		this.endzoneX = 60.96;
+		this.endzoneY = 60.96;
 	}
 	/**
 	 * Implements all the elements of the search into an algorithm.
@@ -137,8 +137,17 @@ public class ObjectSearch {
 		//nav.turnTo(heading,true);
 		nav.turnTo(odo.getAng()+ADJUSTMENT_ANGLE,true);
 		nav.goForward();
-		
+		double orgX = odo.getX();
+		double orgY = odo.getY();
 		while (!ColorPoller.isObject()) {
+			// Check if we are approching a red zone
+			if(oa.redAhead()){
+				break;
+			}
+			// Check if we are going too far
+			if(Math.sqrt(Math.pow(odo.getX()-orgX,2)+Math.pow(odo.getY()-orgY,2)) > THRESHOLD){
+				break;
+			}
 			continue;
 		}
 		nav.setSpeeds(0,0);
@@ -208,7 +217,7 @@ public class ObjectSearch {
 	 * @param x	the x coordinate currently read by the odometer
 	 * @param y	the y coordinate currently read by the odometer
 	 */
-	private void saveObstacleToMap(double x, double y) {
+	private void saveObstacleToMap(double x, double y) { // Not used
 		boolean grid[][] = new boolean[12][12];
 		
 		int gridX = (x>=0) ? ((int) x/30+1):0;

@@ -273,6 +273,14 @@ public class ObjectAvoidance {
 	}
 	
 	/**
+	 * Check if there's a red zone ahead
+	 * @return return true if there's a red zone ahead
+	 */
+	public boolean redAhead(){
+		return redZoneAhead() < redZoneXa.size();
+	}
+	
+	/**
 	 * Go around the red zone knowing the index and the destination coordinates
 	 * @param destinationX
 	 * @param destinationY
