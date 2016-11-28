@@ -34,10 +34,11 @@ public class ObjectAvoidance {
 	private static final int THRESHOLD_ANGLE = 15;
 	private static final int ROTATING_ANGLE = 63;
 	private static final int ROTATING_SPEED = 360;
-	private static final double ROBOT_HALF_WIDTH = 7.1;
+	private static final double ROBOT_HALF_WIDTH = 6.7;
 	private static final int WALL_CHECK_TIMES = 5;
 	private static final double DISTANCE_CHECK = 91;
 	private static final double BLOCK_THICKNESS = 10;
+	private static final double ERROR_MARGIN = 3.3;
 	
 	
 	private boolean navigating;
@@ -172,7 +173,7 @@ public class ObjectAvoidance {
 				nav.cancelled = false;
 			}
 			int index = redZoneAhead();
-			if (index < redZoneXa.size() && !obstacleMode && !nav.turning()){
+			if (index < redZoneXa.size() && !obstacleMode){
 				goAroundRedZone(destX, destY, index);
 				break;
 			}
@@ -283,8 +284,8 @@ public class ObjectAvoidance {
 	public int redZoneAhead(){
 		int res = redZoneXa.size();
 		double angle = odo.getAng()/180.0*Math.PI;
-		int index = isInRed(odo.getX()+Math.cos(angle)*BLOCK_THICKNESS, odo.getY()+Math.sin(angle)*BLOCK_THICKNESS);
-		if (index < res){
+		int index = isInRed(odo.getX()+Math.cos(angle)*BLOCK_THICKNESS/4, odo.getY()+Math.sin(angle)*BLOCK_THICKNESS/4);
+		if (index < res && !nav.turning()){
 			res = index;
 		}
 		return res;
@@ -341,14 +342,14 @@ public class ObjectAvoidance {
 		double adjustedY = y;
 		
 		if (Math.abs( x - redZoneXa.get(index)) < Math.abs( x - redZoneXb.get(index))){
-			adjustedX = redZoneXa.get(index);
+			adjustedX = redZoneXa.get(index) - ERROR_MARGIN;
 		} else {
-			adjustedX = redZoneXb.get(index);
+			adjustedX = redZoneXb.get(index) + ERROR_MARGIN;
 		}
 		if (Math.abs( y - redZoneYa.get(index)) < Math.abs( y - redZoneYb.get(index))){
-			adjustedY = redZoneYa.get(index);
+			adjustedY = redZoneYa.get(index) - ERROR_MARGIN;
 		} else {
-			adjustedY = redZoneYb.get(index);
+			adjustedY = redZoneYb.get(index) + ERROR_MARGIN;
 		}
 		
 		double[] res = {adjustedX, adjustedY};

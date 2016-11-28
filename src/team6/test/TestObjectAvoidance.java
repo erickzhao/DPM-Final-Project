@@ -71,8 +71,13 @@ public class TestObjectAvoidance {
 		
 		ObjectAvoidance oa = new ObjectAvoidance(odo, usMotor, uspoll);
 		oa.initiate();
-		oa.addRedZone(30, 30, 60, 60);
+		
+		while (Button.waitForAnyPress() != Button.ID_ENTER);
+		
+		oa.addRedZone(30, 60, 120, 120);
 		oa.travel(70,70);
+		oa.travel(170, 170);
+		oa.travel(0, 0);
 		
 		while (Button.waitForAnyPress() != Button.ID_ESCAPE);
 		System.exit(0);	
