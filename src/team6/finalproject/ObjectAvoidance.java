@@ -35,6 +35,7 @@ public class ObjectAvoidance {
 	private static final int ROTATING_ANGLE = 63;
 	private static final int ROTATING_SPEED = 360;
 	private static final double ROBOT_HALF_WIDTH = 7.1;
+	private static final int WALL_CHECK_TIMES = 5;
 	
 	
 	private boolean navigating;
@@ -134,6 +135,7 @@ public class ObjectAvoidance {
 		float distance;
 		navigating = true;
 		usMotor.setSpeed(ROTATING_SPEED);
+		int programCount = 0;
 		while (navigating){
 			if (!usMotor.isMoving() && usMotor.getTachoCount() <= THRESHOLD_ANGLE){
 				usMotor.rotateTo(ROTATING_ANGLE, true);
@@ -143,6 +145,10 @@ public class ObjectAvoidance {
 			}
 			distance = getFilteredData();
 			if (distance <= DANGER_DIST){
+				if (wallAhead() && programCount < WALL_CHECK_TIMES){
+					programCount = programCount + 1;
+					continue;
+				}
 				nav.cancelled = true;
 				nav.setSpeeds(0, 0);
 				double rad = odo.getAng()/180.0*Math.PI;
@@ -153,6 +159,7 @@ public class ObjectAvoidance {
 				usMotor.rotateTo(BANGBANG_SENSOR_ANGLE);
 				bangbang(endAng);
 				usMotor.rotateTo(0);
+				programCount = 0;
 				nav.cancelled = false;
 			}
 			int index = redZoneAhead();
@@ -349,5 +356,16 @@ public class ObjectAvoidance {
 			addRedZone(x-5, y, x+5, y-10);
 		}
 		
+	}
+	
+	public boolean wallAhead(){
+		double radHeading = odo.getAng()/180.0*Math.PI;
+		boolean res = false;
+		double xReading = odo.getX() + Math.cos(radHeading)*DANGER_DIST;
+		double yReading = odo.getY() + Math.sin(radHeading)*DANGER_DIST;
+		if (xReading > 12*30.48 || xReading < -30.48 || yReading > 12*30.48 || yReading < -30.48){
+			res = true;
+		}
+		return res;
 	}
 }
