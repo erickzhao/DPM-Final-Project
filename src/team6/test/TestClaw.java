@@ -21,7 +21,7 @@ public class TestClaw {
 	public static void main(String args[]) {
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
 		Navigation nav = new Navigation(odo);
-		ObjectSearch clawHandle = new ObjectSearch(odo,nav,null,null,clawMotor);
+		ObjectSearch clawHandle = new ObjectSearch(odo,nav,null,null,clawMotor,null);
 
 		clawMotor.setSpeed(CLAW_SPEED);
 		clawMotor.setAcceleration(CLAW_ACCELERATION);

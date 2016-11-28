@@ -64,6 +64,7 @@ public class TestFinal {
 		
 		
 		Odometer odo = new Odometer(leftMotor, rightMotor, 30, true, WHEEL_RADIUS, TRACK);
+		CountdownTimer countdown = new CountdownTimer();
 		
 		//Bottom US : Object recognition and localization
 		@SuppressWarnings("resource")
@@ -145,7 +146,7 @@ public class TestFinal {
 		// BEGIN ALGORITHM
 		Navigation nav = new Navigation(odo);
 		
-		ObjectSearch search = new ObjectSearch(odo, nav, uspoll,oa,clawMotor);
+		ObjectSearch search = new ObjectSearch(odo, nav, uspoll,oa,clawMotor,countdown);
 		//Do ALGORITHM
 		search.doSearch();
 		
