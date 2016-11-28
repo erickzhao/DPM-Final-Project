@@ -127,6 +127,8 @@ public class Final {
 			System.exit(0);
 		}
 		
+		CountdownTimer countdown = new CountdownTimer();
+		countdown.start();
 		
 		//We don't yet have the claw implemented, so we force it to stay at 0.
 		clawMotor.rotate(0);
