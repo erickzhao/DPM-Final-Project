@@ -35,6 +35,8 @@ public class ObjectAvoidance {
 	private static final int ROTATING_ANGLE = 63;
 	private static final int ROTATING_SPEED = 360;
 	private static final double ROBOT_HALF_WIDTH = 7.1;
+	private static final int WALL_CHECK_TIMES = 5;
+	private static final double DISTANCE_CHECK = 66;
 	
 	
 	private boolean navigating;
@@ -134,6 +136,7 @@ public class ObjectAvoidance {
 		float distance;
 		navigating = true;
 		usMotor.setSpeed(ROTATING_SPEED);
+		int programCount = 0;
 		while (navigating){
 			if (!usMotor.isMoving() && usMotor.getTachoCount() <= THRESHOLD_ANGLE){
 				usMotor.rotateTo(ROTATING_ANGLE, true);
@@ -143,6 +146,10 @@ public class ObjectAvoidance {
 			}
 			distance = getFilteredData();
 			if (distance <= DANGER_DIST){
+				if (wallAhead() && programCount < WALL_CHECK_TIMES){
+					programCount = programCount + 1;
+					continue;
+				}
 				nav.cancelled = true;
 				nav.setSpeeds(0, 0);
 				double rad = odo.getAng()/180.0*Math.PI;
@@ -153,6 +160,7 @@ public class ObjectAvoidance {
 				usMotor.rotateTo(BANGBANG_SENSOR_ANGLE);
 				bangbang(endAng);
 				usMotor.rotateTo(0);
+				programCount = 0;
 				nav.cancelled = false;
 			}
 			int index = redZoneAhead();
@@ -171,13 +179,16 @@ public class ObjectAvoidance {
 	 * Bangbang controller for object avoidance
 	 */
 	private void bangbang(double angle){
+		double x = odo.getX();
+		double y = odo.getY();
 		if (odo.getAng() < angle){
-			while (odo.getAng() < angle){
+			while ((odo.getAng() < angle) && (distanceTravelled(x,y) < DISTANCE_CHECK)){
 				float errorDistance = getFilteredData() - DANGER_DIST;
 				bangbangLogic(errorDistance);
 			}
 		} else {
-			while (odo.getAng() < angle || odo.getAng() >= 360 - END_ANGLE_CORRECTION){
+			while ((odo.getAng() < angle || odo.getAng() >= 360 - END_ANGLE_CORRECTION)
+					&& (distanceTravelled(x,y) < DISTANCE_CHECK)){
 				float errorDistance = getFilteredData() - DANGER_DIST;
 				bangbangLogic(errorDistance);
 			}
@@ -273,6 +284,14 @@ public class ObjectAvoidance {
 	}
 	
 	/**
+	 * Check if there's a red zone ahead
+	 * @return return true if there's a red zone ahead
+	 */
+	public boolean redAhead(){
+		return redZoneAhead() < redZoneXa.size();
+	}
+	
+	/**
 	 * Go around the red zone knowing the index and the destination coordinates
 	 * @param destinationX
 	 * @param destinationY
@@ -341,5 +360,20 @@ public class ObjectAvoidance {
 			addRedZone(x-5, y, x+5, y-10);
 		}
 		
+	}
+	
+	public boolean wallAhead(){
+		double radHeading = odo.getAng()/180.0*Math.PI;
+		boolean res = false;
+		double xReading = odo.getX() + Math.cos(radHeading)*DANGER_DIST;
+		double yReading = odo.getY() + Math.sin(radHeading)*DANGER_DIST;
+		if (xReading > 12*30.48 || xReading < -30.48 || yReading > 12*30.48 || yReading < -30.48){
+			res = true;
+		}
+		return res;
+	}
+	
+	private double distanceTravelled(double x, double y){
+		return Math.sqrt(Math.pow(odo.getX() - x, 2) + Math.pow(odo.getY() - y, 2));
 	}
 }
