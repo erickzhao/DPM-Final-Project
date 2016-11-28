@@ -36,13 +36,15 @@ public class ObjectAvoidance {
 	private static final int ROTATING_SPEED = 360;
 	private static final double ROBOT_HALF_WIDTH = 7.1;
 	
+	
 	private boolean navigating;
 	private float[] archivedValues = new float[MAX_FILTER];
 	private int archivedCount = 0;
-	List<Double> redZoneXa = new ArrayList<Double>();
-	List<Double> redZoneYa = new ArrayList<Double>();
-	List<Double> redZoneXb = new ArrayList<Double>();
-	List<Double> redZoneYb = new ArrayList<Double>();
+	private static List<Double> redZoneXa = new ArrayList<Double>();
+	private static List<Double> redZoneYa = new ArrayList<Double>();
+	private static List<Double> redZoneXb = new ArrayList<Double>();
+	private static List<Double> redZoneYb = new ArrayList<Double>();
+	private boolean obstacleMode = false;
 		
 	/**
 	 * Constructor for ObjectAvoidance. 
@@ -68,13 +70,13 @@ public class ObjectAvoidance {
 	 * Travel to the set destination (x,y) while avoiding obstacles
 	 */
 	public void travel(double x, double y){
-		double[] waypoints = avoidRed(x, y);
-		if (waypoints[0]==x && waypoints[1]==y){
-			// Redundent for now, will inplement crossing red zone logic soon*
-			travelLogic(x, y);
-		} else{
-			travelLogic(waypoints[0],waypoints[1]);
+		int index = isInRed (x, y);
+		double[] waypoints = {x,y};
+		if (index < redZoneXa.size()){ // if the point is inside a pre-determined red zone
+			waypoints = avoidRed(odo.getX(), odo.getY(), index);
 		}
+		travelLogic(waypoints[0],waypoints[1]);
+		
 		
 	}
 	
@@ -82,7 +84,7 @@ public class ObjectAvoidance {
 		nav.setWaypoints(x, y);
 		nav.setNavigating(true);
 		nav.cancelled = false;
-		avoiding();
+		avoiding(x, y);
 	}
 	
 	/**
@@ -128,7 +130,7 @@ public class ObjectAvoidance {
 	/**
 	 * Avoid the obstacles with bangbang controller
 	 */
-	public void avoiding(){
+	private void avoiding(double destX, double destY){
 		float distance;
 		navigating = true;
 		usMotor.setSpeed(ROTATING_SPEED);
@@ -143,15 +145,20 @@ public class ObjectAvoidance {
 			if (distance <= DANGER_DIST){
 				nav.cancelled = true;
 				nav.setSpeeds(0, 0);
-				Sound.beepSequence();
+				double rad = odo.getAng()/180.0*Math.PI;
+				saveObstacleToMap(odo.getX()+Math.cos(rad)*DANGER_DIST,odo.getY()+Math.sin(rad)*DANGER_DIST,odo.getAng());
 				nav.goForward(SAFE_DISTANCE_AWAY);
 				nav.turnTo(wrapAng(odo.getAng() - 90), true);
-				Sound.beepSequenceUp();
 				double endAng = wrapAng(odo.getAng() + END_ANGLE_CORRECTION);
 				usMotor.rotateTo(BANGBANG_SENSOR_ANGLE);
 				bangbang(endAng);
 				usMotor.rotateTo(0);
 				nav.cancelled = false;
+			}
+			int index = redZoneAhead();
+			if (index < redZoneXa.size() && !obstacleMode){
+				goAroundRedZone(destX, destY, index);
+				break;
 			}
 			if (!nav.navigating()){
 				navigating = false;
@@ -163,7 +170,7 @@ public class ObjectAvoidance {
 	/**
 	 * Bangbang controller for object avoidance
 	 */
-	public void bangbang(double angle){
+	private void bangbang(double angle){
 		if (odo.getAng() < angle){
 			while (odo.getAng() < angle){
 				float errorDistance = getFilteredData() - DANGER_DIST;
@@ -243,57 +250,96 @@ public class ObjectAvoidance {
 			if ( x > redZoneXa.get(i) && x < redZoneXb.get(i) && y > redZoneYa.get(i) 
 					&& y < redZoneYb.get(i)){
 				redNumber = i;
+				break;
 			}
 		}
 		return redNumber;		
 	}
 	
+
 	/**
-	 * Check if the robot is crossing a red zone going towards the destination
-	 * @param xNaught
-	 * @param yNaught
-	 * @param x
-	 * @param y
-	 * @return
+	 * check if one-block-distance ahead is in the redzone
+	 * @return return the index of the redzone
 	 */
-	private int crossingRed(double xNaught, double yNaught, double x, double y){
-		double BlockSize = 14.1;
+	public int redZoneAhead(){
+		double BlockSize = 6.8;
 		int res = redZoneXa.size();
-		double angle = (Math.atan2(y - yNaught, x - xNaught ));
-		double currentX = xNaught;
-		double currentY = yNaught;
-		while (Math.abs(x - currentX) < BlockSize){
-			currentX = currentX + Math.cos(angle)*BlockSize;
-			currentY = currentY + Math.sin(angle)*BlockSize;
-			res = isInRed(currentX, currentY);
-			if (res < redZoneXa.size()){
-				break;
-			}
+		double angle = odo.getAng()/180.0*Math.PI;
+		int index = isInRed(odo.getX()+Math.cos(angle)*BlockSize, odo.getY()+Math.sin(angle)*BlockSize);
+		if (index < res){
+			res = index;
 		}
 		return res;
+	}
+	
+	/**
+	 * Go around the red zone knowing the index and the destination coordinates
+	 * @param destinationX
+	 * @param destinationY
+	 * @param index
+	 */
+	public void goAroundRedZone(double destinationX, double destinationY, int index){
+		double x = odo.getX();
+		double y = odo.getY();
+		obstacleMode = true;
+		if (x >= redZoneXb.get(index) && y >= redZoneYa.get(index)){
+			travel(redZoneXb.get(index)-SAFE_DISTANCE_AWAY, redZoneYb.get(index)-SAFE_DISTANCE_AWAY);
+			travel(redZoneXa.get(index)+SAFE_DISTANCE_AWAY, redZoneYb.get(index)-SAFE_DISTANCE_AWAY);
+			obstacleMode = false;
+			travel(destinationX, destinationY);
 		}
+		else if (x <= redZoneXb.get(index) && y >= redZoneYb.get(index)){
+			travel(redZoneXa.get(index)+SAFE_DISTANCE_AWAY, redZoneYb.get(index)-SAFE_DISTANCE_AWAY);
+			travel(redZoneXa.get(index)+SAFE_DISTANCE_AWAY, redZoneYa.get(index)+SAFE_DISTANCE_AWAY);
+			obstacleMode = false;
+			travel(destinationX, destinationY);
+		}
+		else if (x <= redZoneXa.get(index) && y <= redZoneYb.get(index)){
+			travel(redZoneXa.get(index)+SAFE_DISTANCE_AWAY, redZoneYa.get(index)+SAFE_DISTANCE_AWAY);
+			travel(redZoneXb.get(index)-SAFE_DISTANCE_AWAY, redZoneYa.get(index)+SAFE_DISTANCE_AWAY);
+			obstacleMode = false;
+			travel(destinationX, destinationY);
+		}
+		else if (x >= redZoneXa.get(index) && y <= redZoneYa.get(index)){
+			travel(redZoneXb.get(index)-SAFE_DISTANCE_AWAY, redZoneYa.get(index)+SAFE_DISTANCE_AWAY);
+			travel(redZoneXb.get(index)-SAFE_DISTANCE_AWAY, redZoneYb.get(index)-SAFE_DISTANCE_AWAY);
+			obstacleMode = false;
+			travel(destinationX, destinationY);
+		}
+		
+	}
 	
 
-	private double[] avoidRed (double x, double y){
+	private double[] avoidRed (double x, double y, int index){
 		double adjustedX = x;
 		double adjustedY = y;
-		if (isInRed(x,y) < redZoneXa.size()){
-			int index = isInRed(x,y);
-			if (Math.abs( x - redZoneXa.get(index)) < Math.abs( x - redZoneXb.get(index))){
-				adjustedX = redZoneXa.get(index);
-			} else {
-				adjustedX = redZoneXb.get(index);
-			}
-			if (Math.abs( y - redZoneYa.get(index)) < Math.abs( y - redZoneYb.get(index))){
-				adjustedY = redZoneYa.get(index);
-			} else {
-				adjustedY = redZoneYb.get(index);
-			}
+		
+		if (Math.abs( x - redZoneXa.get(index)) < Math.abs( x - redZoneXb.get(index))){
+			adjustedX = redZoneXa.get(index);
+		} else {
+			adjustedX = redZoneXb.get(index);
 		}
+		if (Math.abs( y - redZoneYa.get(index)) < Math.abs( y - redZoneYb.get(index))){
+			adjustedY = redZoneYa.get(index);
+		} else {
+			adjustedY = redZoneYb.get(index);
+		}
+		
 		double[] res = {adjustedX, adjustedY};
 		return res;
 	}
 	
 	
-	
+	public void saveObstacleToMap(double x, double y, double angle) {
+		if (angle<=45 || angle>=315){
+			addRedZone(x, y-5, x+10, y+5);
+		} else if (angle>=45 && angle<=135){
+			addRedZone(x-5, y, x+5, y+10);
+		} else if (angle>=135 && angle <=225){
+			addRedZone(x, y-5, x-10, y+5);
+		} else {
+			addRedZone(x-5, y, x+5, y-10);
+		}
+		
+	}
 }
