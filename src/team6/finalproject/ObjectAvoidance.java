@@ -36,7 +36,8 @@ public class ObjectAvoidance {
 	private static final int ROTATING_SPEED = 360;
 	private static final double ROBOT_HALF_WIDTH = 7.1;
 	private static final int WALL_CHECK_TIMES = 5;
-	private static final double DISTANCE_CHECK = 66;
+	private static final double DISTANCE_CHECK = 91;
+	private static final double BLOCK_THICKNESS = 10;
 	
 	
 	private boolean navigating;
@@ -152,8 +153,9 @@ public class ObjectAvoidance {
 				}
 				nav.cancelled = true;
 				nav.setSpeeds(0, 0);
-				double rad = odo.getAng()/180.0*Math.PI;
-				saveObstacleToMap(odo.getX()+Math.cos(rad)*DANGER_DIST,odo.getY()+Math.sin(rad)*DANGER_DIST,odo.getAng());
+				double ang = odo.getAng();
+				double theX = odo.getX();
+				double theY = odo.getY();
 				nav.goForward(SAFE_DISTANCE_AWAY);
 				nav.turnTo(wrapAng(odo.getAng() - 90), true);
 				double endAng = wrapAng(odo.getAng() + END_ANGLE_CORRECTION);
@@ -161,10 +163,16 @@ public class ObjectAvoidance {
 				bangbang(endAng);
 				usMotor.rotateTo(0);
 				programCount = 0;
+				if (distanceTravelled(theX, theY) < 2*BLOCK_THICKNESS){
+					theX = theX - Math.cos(ang/180.0*Math.PI)*BLOCK_THICKNESS;
+					theY = theY - Math.sin(ang/180.0*Math.PI)*BLOCK_THICKNESS;
+				}
+				saveObstacleToMap(theX+Math.cos(ang/180.0*Math.PI)*DANGER_DIST,
+						theY+Math.sin(ang/180.0*Math.PI)*DANGER_DIST,ang);
 				nav.cancelled = false;
 			}
 			int index = redZoneAhead();
-			if (index < redZoneXa.size() && !obstacleMode){
+			if (index < redZoneXa.size() && !obstacleMode && !nav.turning()){
 				goAroundRedZone(destX, destY, index);
 				break;
 			}
@@ -273,10 +281,9 @@ public class ObjectAvoidance {
 	 * @return return the index of the redzone
 	 */
 	public int redZoneAhead(){
-		double BlockSize = 6.8;
 		int res = redZoneXa.size();
 		double angle = odo.getAng()/180.0*Math.PI;
-		int index = isInRed(odo.getX()+Math.cos(angle)*BlockSize, odo.getY()+Math.sin(angle)*BlockSize);
+		int index = isInRed(odo.getX()+Math.cos(angle)*BLOCK_THICKNESS, odo.getY()+Math.sin(angle)*BLOCK_THICKNESS);
 		if (index < res){
 			res = index;
 		}

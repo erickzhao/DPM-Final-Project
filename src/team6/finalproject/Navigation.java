@@ -214,7 +214,7 @@ public class Navigation extends Thread
 	 * return whether the robot is turning
 	 * @return
 	 */
-	public boolean turing(){
+	public boolean turning(){
 		return this.turning;
 	}
 
