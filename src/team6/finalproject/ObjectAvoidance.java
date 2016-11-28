@@ -20,6 +20,7 @@ public class ObjectAvoidance {
 	private EV3MediumRegulatedMotor usMotor;
 	private UltrasonicPoller usPoller;
 	
+	private static final double GRID_LENGTH = 30.48;
 	private static final int MAX_FILTER = 3; // Must be an odd number for performance reason
 	private static final int MAX_US_DISTANCE = 255;
 	private static final float DANGER_DIST = (float) 14.4;
@@ -67,14 +68,14 @@ public class ObjectAvoidance {
 	}
 	
 	public void initiate(){
-		addRedZone(-30.48, -30.48, 0 - (ROBOT_HALF_WIDTH + ERROR_MARGIN), 0 - (ROBOT_HALF_WIDTH + ERROR_MARGIN));  // X1
+		addRedZone(-GRID_LENGTH, -GRID_LENGTH, 0 - (ROBOT_HALF_WIDTH + ERROR_MARGIN), 
+				0 - (ROBOT_HALF_WIDTH + ERROR_MARGIN));  // X1
 		addRedZone(Wifi.ourBadZoneX1, Wifi.ourBadZoneY1, 
 				Wifi.ourBadZoneX2, Wifi.ourBadZoneY2); // Pass the Redzone coordinates
-		addRedZone(10*30.48, -30.48, 11*30.48, 0);  // X2
-		addRedZone(10*30.48, 10*30.48, 11*30.48, 11*30.48); // X3
-		addRedZone(-30.48, 10*30.48, 0, 11*30.48); // X4
-		
-		
+		addRedZone(10*GRID_LENGTH, -GRID_LENGTH, 11*GRID_LENGTH, 0);  // X2
+		addRedZone(10*GRID_LENGTH, 10*GRID_LENGTH, 11*GRID_LENGTH, 11*GRID_LENGTH); // X3
+		addRedZone(-GRID_LENGTH, 10*GRID_LENGTH, 0, 11*GRID_LENGTH); // X4
+				
 		nav.start();
 	}
 	
@@ -385,7 +386,7 @@ public class ObjectAvoidance {
 		boolean res = false;
 		double xReading = odo.getX() + Math.cos(radHeading)*DANGER_DIST;
 		double yReading = odo.getY() + Math.sin(radHeading)*DANGER_DIST;
-		if (xReading > 12*30.48 || xReading < -30.48 || yReading > 12*30.48 || yReading < -30.48){
+		if (xReading > 11*GRID_LENGTH || xReading < -GRID_LENGTH || yReading > 11*GRID_LENGTH || yReading < -GRID_LENGTH){
 			res = true;
 		}
 		return res;
