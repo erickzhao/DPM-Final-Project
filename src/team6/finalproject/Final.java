@@ -59,9 +59,6 @@ public class Final {
 			System.exit(0);
 		}
 		
-		CountdownTimer countdown = new CountdownTimer();
-		countdown.start();
-		
 		System.out.println("\n\n\n\n\n\n\n\n\n\n");
 		
 		
