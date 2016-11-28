@@ -151,7 +151,7 @@ public class ObjectSearch {
 			lowerpoll.enable(true);
 			System.exit(0);
 		} else {
-			saveObstacleToMap(odo.getX(), odo.getY());
+			oa.saveObstacleToMap(odo.getX(), odo.getY(),odo.getAng());
 			nav.goBackward();
 			while(Math.hypot(Math.abs(initX-odo.getX()), Math.abs(initY-odo.getY()))>0.5){
 				continue;
