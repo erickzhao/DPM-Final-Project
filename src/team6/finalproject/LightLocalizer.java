@@ -58,7 +58,6 @@ public class LightLocalizer
 			if(LightPoller.blackLine())
 			{
 				lineCrossed = true;
-				Sound.beep();
 				navigate.setSpeeds(0, 0);
 				try{Thread.sleep(500);}catch(Exception e){};
 			}
@@ -76,7 +75,6 @@ public class LightLocalizer
 			if(LightPoller.blackLine())
 			{
 				lineCrossed = true;
-				Sound.beep();
 				saveThetas[lineCount] = odo.getAng();
 				lineCount++;
 			}
@@ -113,6 +111,7 @@ public class LightLocalizer
 		navigate.travelTo(0, 0);
 		navigate.setSpeeds(0,0);
 		navigate.turnTo(0, true);
+		Sound.beep();
 		//navigate.goForward(LStoWB-6.4);
 	}
 }

@@ -1,8 +1,5 @@
 package team6.finalproject;
 
-import team6.test.TestLocalize;
-import lejos.hardware.Sound;
-
 /**
  * Class that localizes the robot to the 0 degree angle heading using falling edge localization
  * and updates the Odometer heading accordingly
@@ -47,13 +44,11 @@ public class USLocalizer {
 			navigator.setSpeeds(-speed, speed);
 		}
 		
-		Sound.beep();
 		//Robot saw a wall
 		
 		//Stop movement, set starting position to the position when it faces the wall
 		navigator.setSpeeds(0,0);
 		odo.setPosition(new double [] {0.0, 0.0,90.0}, new boolean [] {true, true, true});
-		Sound.beep();
 		//Robot sees a wall : Rotate until it doesn't
 		while (seeWall()){
 			navigator.setSpeeds(speed, -speed);
@@ -63,7 +58,6 @@ public class USLocalizer {
 		navigator.setSpeeds(0,0);
 		navigator.setSpeeds(speed,-speed);
 		try{Thread.sleep(200);}catch (Exception e){};
-		Sound.beep();
 		//Keep rotating until the robot sees a wall again, then latch the angle
 		while (!seeWall()){
 			navigator.setSpeeds(speed,-speed);
@@ -76,13 +70,11 @@ public class USLocalizer {
 		//Get AngleA
 		angleA=odo.getAng();
 		navigator.setSpeeds(-speed,speed);
-		Sound.beep();
 		
 		//Switch direction and wait until it sees no wall
 		while (seeWall()){
 			navigator.setSpeeds(-speed, speed);
 		}
-		Sound.beep();
 		
 		//Stop and wait to show this part ended
 		navigator.setSpeeds(0,0);
@@ -115,7 +107,6 @@ public class USLocalizer {
 		navigator.setSpeeds(0,0);
 		try{Thread.sleep(100);}catch (Exception e){};
 		odo.setPosition(new double [] {0.0, 0.0,0.0}, new boolean [] {true, true, true});
-		Sound.beepSequenceUp();
 	}
 	
 	/**

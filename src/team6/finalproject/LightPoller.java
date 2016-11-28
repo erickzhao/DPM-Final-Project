@@ -1,6 +1,5 @@
 package team6.finalproject;
 
-import lejos.hardware.Sound;
 import lejos.robotics.SampleProvider;
 
 /**
@@ -52,7 +51,6 @@ public class LightPoller extends PausableTimerListener{
 		currentLight=lightValue;	
 		if(100*Math.abs(currentLight - previousLight)/previousLight > significantPercentThreshold){
 			if (currentLight < previousLight){
-				Sound.beep();
 				return true;
 			}
 		}
