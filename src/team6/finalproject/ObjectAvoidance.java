@@ -341,9 +341,7 @@ public class ObjectAvoidance {
 			travel(redZoneXb.get(index)-SAFE_DISTANCE_AWAY, redZoneYb.get(index)-SAFE_DISTANCE_AWAY);
 			obstacleMode = false;
 			travel(destinationX, destinationY);
-		} else {
-			nav.goForward(5*SAFE_DISTANCE_AWAY);
-		}
+		} 
 		
 	}
 	

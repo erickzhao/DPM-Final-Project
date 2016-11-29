@@ -118,7 +118,7 @@ public class Final {
 				
 		//lcd.start();
 		
-		oa.initiate();
+		
 		// Basic set-up ends here 
 		// ----------------------------------------------------------------
 		//Get Wi-Fi data
@@ -141,7 +141,7 @@ public class Final {
 		lightloc.doLocalization();
 		Sound.beepSequenceUp();
 		// END LOCALIZATION
-		
+		oa.initiate();
 		// BEGIN ALGORITHM
 		Navigation nav = new Navigation(odo);
 		
