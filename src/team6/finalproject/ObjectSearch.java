@@ -164,13 +164,15 @@ public class ObjectSearch {
 			handleBlock(true);
 			bringToEndzone(endzoneX,endzoneY);
 			lowerpoll.enable(true);
-			nav.travelTo(initX,initY);
+			oa.travel(initX,initY);
 		} else {
-			oa.saveObstacleToMap(odo.getX(), odo.getY(),odo.getAng());
+			double theX = odo.getX();
+			double theY = odo.getY();
 			nav.goBackward();
 			while(Math.hypot(Math.abs(initX-odo.getX()), Math.abs(initY-odo.getY()))>0.5){
 				continue;
 			}
+			oa.saveObstacleToMap(theX, theY,odo.getAng());
 			distToObject = Math.hypot(Math.abs(initX-odo.getX()),Math.abs(initY-odo.getY()));
 			nav.setSpeeds(0,0);
 		}
