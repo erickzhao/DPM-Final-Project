@@ -22,7 +22,7 @@ public class Navigation extends Thread
 	private EV3LargeRegulatedMotor leftMotor, rightMotor;
 	private double waypointX, waypointY;
 	private boolean navigating = false;
-	private boolean turning = false;
+	private static boolean turning = false;
 	public boolean cancelled = true;
 
 	/**
