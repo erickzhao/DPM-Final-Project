@@ -68,8 +68,8 @@ public class ObjectAvoidance {
 	}
 	
 	public void initiate(){
-		addRedZone(-GRID_LENGTH, -GRID_LENGTH, 0 - (ROBOT_HALF_WIDTH + ERROR_MARGIN), 
-				0 - (ROBOT_HALF_WIDTH + ERROR_MARGIN));  // X1
+		addRedZone(-GRID_LENGTH, -GRID_LENGTH, 0 - (ROBOT_HALF_WIDTH + 2.5*ERROR_MARGIN), 
+				0 - (ROBOT_HALF_WIDTH + 2.5*ERROR_MARGIN));  // X1
 		addRedZone(Wifi.ourBadZoneX1, Wifi.ourBadZoneY1, 
 				Wifi.ourBadZoneX2, Wifi.ourBadZoneY2); // Pass the Redzone coordinates
 		addRedZone(10*GRID_LENGTH, -GRID_LENGTH, 11*GRID_LENGTH, 0);  // X2
@@ -163,9 +163,6 @@ public class ObjectAvoidance {
 				}
 				nav.cancelled = true;
 				nav.setSpeeds(0, 0);
-				double ang = odo.getAng();
-				double theX = odo.getX();
-				double theY = odo.getY();
 				nav.goForward(SAFE_DISTANCE_AWAY);
 				nav.turnTo(wrapAng(odo.getAng() - 90), true);
 				double endAng = wrapAng(odo.getAng() + END_ANGLE_CORRECTION);
@@ -173,12 +170,6 @@ public class ObjectAvoidance {
 				bangbang(endAng);
 				usMotor.rotateTo(0);
 				programCount = 0;
-				if (distanceTravelled(theX, theY) < 2*BLOCK_THICKNESS){
-					theX = theX - Math.cos(ang/180.0*Math.PI)*BLOCK_THICKNESS;
-					theY = theY - Math.sin(ang/180.0*Math.PI)*BLOCK_THICKNESS;
-				}
-				saveObstacleToMap(theX+Math.cos(ang/180.0*Math.PI)*DANGER_DIST,
-						theY+Math.sin(ang/180.0*Math.PI)*DANGER_DIST,ang);
 				nav.cancelled = false;
 			}
 			int index = redZoneAhead();
@@ -186,6 +177,7 @@ public class ObjectAvoidance {
 				goAroundRedZone(destX, destY, index);
 				break;
 			}
+			
 			if (!nav.navigating()){
 				navigating = false;
 				usMotor.rotateTo(0, true);
@@ -203,12 +195,20 @@ public class ObjectAvoidance {
 			while ((odo.getAng() < angle) && (distanceTravelled(x,y) < DISTANCE_CHECK)){
 				float errorDistance = getFilteredData() - DANGER_DIST;
 				bangbangLogic(errorDistance);
+				if(nearWall()){
+					evade();
+					break;
+				}
 			}
 		} else {
 			while ((odo.getAng() < angle || odo.getAng() >= 360 - END_ANGLE_CORRECTION)
 					&& (distanceTravelled(x,y) < DISTANCE_CHECK)){
 				float errorDistance = getFilteredData() - DANGER_DIST;
 				bangbangLogic(errorDistance);
+				if(nearWall()){
+					evade();
+					break;
+				}
 			}
 		}
 	
@@ -402,5 +402,22 @@ public class ObjectAvoidance {
 		redZoneXb.remove(0);
 		redZoneYa.remove(0);
 		redZoneYb.remove(0);
+	}
+	
+	private boolean nearWall(){
+		double x = odo.getX();
+		double y = odo.getY();
+		if ( x < -20 || x > 11*30.48+20 || y<-20 || y>11*30.48+20){
+			return true;
+		}
+		return false;
+	}
+	
+	private void evade(){
+		double minAng;
+		minAng = (Math.atan2(181 - odo.getY(), 181 - odo.getX())) * (180.0 / Math.PI);
+		if (minAng < 0)
+			minAng += 360.0;
+		nav.turnTo(minAng, true);
 	}
 }
