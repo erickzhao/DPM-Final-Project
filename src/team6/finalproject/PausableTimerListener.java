@@ -11,7 +11,7 @@ import lejos.utility.Timer;
  * 50 milliseconds.
  * 
  * @author	Erick Zhao
- * @version 0.1
+ * @version 1.0
  * @see		TimerListener
  * @see		Timer
  *

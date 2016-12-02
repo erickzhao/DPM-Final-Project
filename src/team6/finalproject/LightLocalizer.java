@@ -8,7 +8,7 @@ import lejos.hardware.Sound;
  * the robot's true position on the coordinate plane, updating the odometer, and then travelling to true (0,0)
  * 
  * @author Andrei Ungur
- * @version 0.1
+ * @version 1.0
  */
 public class LightLocalizer 
 {

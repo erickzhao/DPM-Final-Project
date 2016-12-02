@@ -11,7 +11,7 @@ import lejos.robotics.SampleProvider;
  * The class multiplies these readings by 100 to get more readable <code>int</code> values.
  * Can also interpret sudden drops in light readings as passing over a black line in the grid.
  * @author Myriam Ayad, Andrei Ungur
- * @version 0.1
+ * @version 1.1
  */
 public class LightPoller extends PausableTimerListener{
 	

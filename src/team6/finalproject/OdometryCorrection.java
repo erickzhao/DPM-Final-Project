@@ -8,7 +8,7 @@ import lejos.hardware.Sound;
  * Works by snapping the odometer's position to a grid line's X or Y position when passing over it.
  * 
  * @author Erick Zhao
- * @version 0.1
+ * @version 2.0
  * @see Odometer
  */
 

@@ -5,7 +5,7 @@ package team6.finalproject;
  * and updates the Odometer heading accordingly
  * 
  * @author Andrei Ungur
- * @version 0.1
+ * @version 2.0
  */
 public class USLocalizer {
 	public static double ROTATION_SPEED = 30;

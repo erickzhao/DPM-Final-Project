@@ -10,7 +10,7 @@ import lejos.robotics.SampleProvider;
  * Gets a reading from 0 to 2.55 metres from an ultrasonic sensor and returns the
  * reading as centimetres.
  * @author Andrei Ungur
- * @version 0.1
+ * @version 1.0
  */
 
 public class UltrasonicPoller extends PausableTimerListener {

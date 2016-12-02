@@ -7,7 +7,7 @@ import lejos.hardware.lcd.TextLCD;
 /**
  * Class that manages the LCD display for the leJOS EV3 Brick. Displays odometer and sensor readings.
  * @author Andrei Ungur
- * @version 0.11
+ * @version 2.0
  */
 
 public class LCDInfo extends PausableTimerListener{

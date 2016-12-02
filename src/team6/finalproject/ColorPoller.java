@@ -11,7 +11,7 @@ import lejos.robotics.SampleProvider;
  * the Red, Green, and Blue intensities, respectively. These values are normalized from 0 to 1,
  * where 0 is no color detected and 1 is the maximum color value.
  * @author Erick Zhao
- * @version 0.11
+ * @version 1.0
  */
 public class ColorPoller extends PausableTimerListener {
 	private SampleProvider colorSensor;

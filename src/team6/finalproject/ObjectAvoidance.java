@@ -12,7 +12,7 @@ import lejos.hardware.motor.EV3MediumRegulatedMotor;
  * <p>
  * Travel to the destination while avoiding any obstacles
  * @author Kael Du 
- * @version 0.2
+ * @version 3.0
  */
 public class ObjectAvoidance {
 	private Odometer odo;
