@@ -9,8 +9,8 @@ import lejos.hardware.motor.EV3LargeRegulatedMotor;
  * <o>
  * Creates a (0,0) with localization and uses hardcoded measurements to travel along the competition surface
  * 
- * @author Andrei Ungur, Kael Du 
- * @version 0.1 
+ * @author  Kael Du, Andrei Ungur
+ * @version 1.0
  */
 public class Navigation extends Thread
 
@@ -50,7 +50,8 @@ public class Navigation extends Thread
 	
 	
 	/**
-	 * Required function for TimerListener
+	 * Required function for TimerListener.
+	 * Loops every 50 milliseconds.
 	 */
 	@Override
 	public void run(){
@@ -124,9 +125,9 @@ public class Navigation extends Thread
 	}
 
 	/** 
-	 * Takes as arguments the x and y position in cm. Will travel to designated position, while constantly updating its heading.
-	 * @param x 	<code>double</code> X coordinate value of destination.
-	 * @param y 	<code>double</code> Y coordinate value of destination.
+	 * Will travel to designated position, while constantly updating its heading.
+	 * @param x 	<code>double</code> X coordinate value of destination in cm.
+	 * @param y 	<code>double</code> Y coordinate value of destination in cm.
 	 */
 	public void travelTo(double x, double y) {
 		double minAng;
@@ -143,7 +144,7 @@ public class Navigation extends Thread
 	}
 	
 	/**
-	 * return whether the robot is navigating
+	 * Returns whether the robot is navigating.
 	 * @return
 	 */
 	public boolean navigating(){
@@ -155,9 +156,9 @@ public class Navigation extends Thread
 	}
 
 	/** 
-	 * Takes as arguments an angle in degrees and a boolean. Turns the robot to a given heading, used in conjunciton with {@link #travelTo(double, double)}
-	 * @param angle 	The angle (in degrees) to which the robot should turn
-	 * @param stop 		A <code>boolean</code> dictating whether or not the motors should stop upon completion of the turn
+	 * Turns the robot to a given heading, used in conjunciton with {@link #travelTo(double, double)}
+	 * @param angle 	the angle (in degrees) to which the robot should turn
+	 * @param stop 		a <code>boolean</code> dictating whether or not the motors should stop upon completion of the turn
 	 */
 	public void turnTo(double angle, boolean stop) {
 
@@ -185,9 +186,9 @@ public class Navigation extends Thread
 	}
 	
 	/** 
-	 * Takes as arguments an angle in degrees and a boolean. Turns the robot to a given heading, used in conjunciton with {@link #travelTo(double, double)}
-	 * @param angle 	The angle (in degrees) to which the robot should turn
-	 * @param stop 		A <code>boolean</code> dictating whether or not the motors should stop upon completion of the turn
+	 * Turns the robot to a given heading, used in conjunciton with {@link #travelTo(double, double)}
+	 * @param angle 	the angle (in degrees) to which the robot should turn
+	 * @param stop 		a <code>boolean</code> dictating whether or not the motors should stop upon completion of the turn
 	 */
 	public void revisedTurnTo(double angle, boolean stop) {
 
@@ -211,7 +212,7 @@ public class Navigation extends Thread
 	}
 	
 	/**
-	 * return whether the robot is turning
+	 * Returns whether the robot is turning
 	 * @return
 	 */
 	public boolean turning(){
@@ -220,7 +221,7 @@ public class Navigation extends Thread
 
 	/**
 	 * Makes the robot go forward a set distance in cm.
-	 * @param distance 		The <code>double</code> distance in cm to go forward
+	 * @param distance 		the <code>double</code> distance in cm to go forward
 	 */
 	public void goForward(double distance) 
 	{
@@ -236,13 +237,9 @@ public class Navigation extends Thread
 			} else {
 				this.setSpeeds(-SLOW,-SLOW);
 			}
-			
 		}
-		
 		this.setSpeeds(0,0);
 	}
-	
-
 	
 	/**
 	 * Makes the robot travel forward indefinitely until stopped/interrupted.
@@ -269,9 +266,9 @@ public class Navigation extends Thread
 	}
 	
 	/**
-	 * Set the destionation waypoints
-	 * @param x
-	 * @param y
+	 * Set the destination waypoints
+	 * @param x	x coordinate in cm
+	 * @param y	y coordinate in cm
 	 */
 	public void setWaypoints(double x, double y){
 		this.waypointX = x;

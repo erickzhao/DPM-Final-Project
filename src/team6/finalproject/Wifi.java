@@ -7,8 +7,9 @@ import lejos.hardware.ev3.LocalEV3;
 import lejos.hardware.lcd.TextLCD;
 
 /**
- * Class that allows the robot to receive coordinates via wifi. Displays transmitted coordinates
+ * Class that allows the robot to receive coordinates via WiFi. Displays transmitted coordinates.
  * @author Sean Lawlor, Myriam Ayad 
+ * @version 1.0
  */
 
 public class Wifi {
@@ -40,10 +41,11 @@ public class Wifi {
 	public static double ourBadZoneX1, ourBadZoneX2; //X-coordinates of avoiding zone
 	public static double ourBadZoneY1, ourBadZoneY2; //Y-coordinates of avoiding zone
 	
-	
-	
 	private static TextLCD LCD = LocalEV3.get().getTextLCD();
 	
+	/**
+	 * Gets the parameters from the WiFi conenction and stores them into static variables.
+	 */
 	public static void getParameters(){
 		LCD.clear();
 		
@@ -117,37 +119,48 @@ public class Wifi {
 		}
 	}
 	
-	//Method to flip for different starting points
-	
+	/**
+	 * Flips the x coordinate given for the green and red zones according to which corner
+	 * the robot is starting in. This is done to make the search algorithm identical for
+	 * all four starting corners.
+	 * @param startPos	the corner in which we are starting in
+	 * @param x			the x coordinate being passed in by WiFi
+	 * @param y			the y coordinate being passed in by WiFi
+	 * @return			the x portion of the flipped coordinate
+	 */
 	public static int changeOrientationX(int startPos, int x, int y) {
 		
 		int tmp;
 		
       	if (startPos == 1) {
-				//We're good
-      		
+      		//no change
       	}
       	else if (startPos == 2) {
           		tmp = x;
                 x = y;
           		y = GRID_SIZE - tmp;
-          		
       	}
       	else if (startPos == 3) {
           		x = GRID_SIZE - x;
           		y = GRID_SIZE - y;
-          		
 		}
       	else if (startPos == 4) {
           		tmp = y;
           		y = x;
-          		x = GRID_SIZE - tmp;
-         		
+          		x = GRID_SIZE - tmp;	
 		}
-		return x;
-			
-		}
-public static int changeOrientationY(int startPos, int x, int y) {
+		return x;	
+	}
+	/**
+	 * Flips the y coordinate given for the green and red zones according to which corner
+	 * the robot is starting in. This is done to make the search algorithm identical for
+	 * all four starting corners.
+	 * @param startPos	the corner in which we are starting in
+	 * @param x			the x coordinate being passed in by WiFi
+	 * @param y			the y coordinate being passed in by WiFi
+	 * @return			the y portion of the flipped coordinate
+	 */
+	public static int changeOrientationY(int startPos, int x, int y) {
 		
 		int tmp;
 		
